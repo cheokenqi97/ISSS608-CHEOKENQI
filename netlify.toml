@@ -2,8 +2,9 @@
   publish = "_site"
   command = """
     set -e
+    QVER=1.5.57
     mkdir -p $HOME/quarto
-    curl -L -o quarto.tgz https://github.com/quarto-dev/quarto-cli/releases/latest/download/quarto-linux-amd64.tar.gz
+    curl -L -o quarto.tgz https://github.com/quarto-dev/quarto-cli/releases/download/v${QVER}/quarto-${QVER}-linux-amd64.tar.gz
     tar -xzf quarto.tgz -C $HOME/quarto --strip-components=1
     export PATH="$HOME/quarto/bin:$PATH"
     quarto --version
