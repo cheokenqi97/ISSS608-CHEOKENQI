@@ -2,20 +2,12 @@
   publish = "_site"
   command = """
     set -e
-
-    # install R (required for .qmd with R)
-    sudo apt-get update
-    sudo apt-get install -y r-base
-
-    # install Quarto
     QVER=1.5.57
     mkdir -p $HOME/quarto
     curl -L -o quarto.tgz https://github.com/quarto-dev/quarto-cli/releases/download/v${QVER}/quarto-${QVER}-linux-amd64.tar.gz
     tar -xzf quarto.tgz -C $HOME/quarto --strip-components=1
     export PATH="$HOME/quarto/bin:$PATH"
-
     quarto --version
     R --version
-
     quarto render
   """
