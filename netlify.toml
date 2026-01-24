@@ -8,5 +8,5 @@
     tar -xzf quarto.tgz -C $HOME/quarto --strip-components=1
     export PATH="$HOME/quarto/bin:$PATH"
     quarto --version
-    quarto render index.qmd
+    quarto render
   """
