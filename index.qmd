@@ -1,8 +1,34 @@
 ---
-title: "ISSS608-CHEOKENQI"
-format: html
+title: ""
+page-layout: full
+toc: false
 ---
 
-Hello! welcome! 😇
+# 👋 Welcome
 
-Designing in progress...
+## ISSS608 – Visual Analytics Coursework Website  
+**Cheok En Qi**
+
+This website contains my coursework and hands-on exercises for ISSS608,  
+focusing on **data visualisation, analytics, and storytelling using R & Quarto**.
+
+---
+
+## Exercises
+
+<div style="margin-top:30px">
+
+<a class="card-link" href="HE01.qmd">
+<div class="home-card" style="max-width:420px">
+<h3>Hands-on Exercises</h3>
+<p>View all hands-on exercise submissions and visualisation work →</p>
+</div>
+</a>
+
+</div>
+
+---
+
+##  About
+
+ [About Me](about.qmd)

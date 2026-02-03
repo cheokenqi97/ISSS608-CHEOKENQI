@@ -3,32 +3,48 @@ project:
 
 website:
   title: "ISSS608 - Coursework Website for CHEOK EN QI"
+  search: true
+
   navbar:
-    background: "#e0ae24"
+    background: "#2563eb"   
+    foreground: "white"
+    collapse-below: lg
+
     left:
-      - text: "Hands-on Exercise"
+      - text: "Hands-on Exercises"
         menu:
-          - text: "Hands-on Exercise 1"
+          - text: "HE01"
             href: HE01.qmd
-          - text: "Hands-on Exercise 2"
+          - text: "HE02"
             href: HE02.qmd
-          - text: "Hands-on Exercise 3"
+          - text: "HE03"
             href: HE03.qmd
-          - text: "Hands-on Exercise 4"
-            href: HE04.qmd 
-      - text: "In-class Exercise"
-    #   menu:
-    #      - text: "In-class Exercise 1"
-    #        href: IE01.qmd
+          - text: "HE04"
+            href: HE04.qmd
+
     right:
-      - href: index.qmd
-        text: Home
-      - href: about.qmd
-        text: About
+      - icon: house
+        href: index.qmd
+        aria-label: Home
+      - icon: person-circle
+        href: about.qmd
+        aria-label: About
+      - icon: github
+        href: "https://github.com/cheokenqi97"
+        aria-label: GitHub
+
+  page-footer:
+    left: "Made with Quarto ✨"
+    right: "ISSS608"
 
 format:
   html:
     theme: cosmo
+    css: styles.css
     toc: true
+    toc-location: right
+    toc-title: "On this page"
+    toc-depth: 2
+    smooth-scroll: true
 
 editor: visual
