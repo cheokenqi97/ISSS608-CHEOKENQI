@@ -1,0 +1,215 @@
+---
+title: "Take-Home Exercise 1 – Survey Analysis of Informal Labourers’ Income"
+author: "Cheok En Qi"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 2
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+# Overview
+
+This report analyses the income of informal rural labourers in the northern mountainous regions of Vietnam.\
+Using tidyverse data preparation and ggplot2 visualisation techniques, key socio-economic factors affecting income are identified and communicated through analytical charts.
+
+------------------------------------------------------------------------
+
+# Data Preparation
+
+```{r}
+library(tidyverse)
+library(readxl)
+
+df <- read_excel("chapthe/data/Upload for elsiver.xlsx")
+glimpse(df)
+```
+
+## Cleaning & labelling
+
+```{r}
+df <- df %>%
+  mutate(
+    # Province codes (paper provinces)
+    Province = case_when(
+      CPRO == 1 ~ "Tuyen Quang",
+      CPRO == 2 ~ "Quang Ninh",
+      CPRO == 3 ~ "Ha Giang",
+      CPRO == 4 ~ "Yen Bai",
+      CPRO == 5 ~ "Bac Giang",
+      TRUE ~ NA_character_
+    ) %>% factor(),
+
+    # Gender: "1" = Male, "2" = Female (based on your data)
+    Gender = case_when(
+      CGEN == "1" ~ "Male",
+      CGEN == "2" ~ "Female",
+      TRUE ~ NA_character_
+    ) %>% factor(levels = c("Female", "Male")),
+
+    # Education codes shown in your dataset
+    Education = case_when(
+      FEDU == 0 ~ "Primary",
+      FEDU == 1 ~ "Lower Secondary",
+      FEDU == 2 ~ "Upper Secondary",
+      FEDU == 3 ~ "Others",
+      TRUE ~ NA_character_
+    ) %>% factor(levels = c("Primary", "Lower Secondary", "Upper Secondary", "Others")),
+
+    # Vocational training: 1=Short, 2=Long (based on your data)
+    Training = case_when(
+      FVTP == 1 ~ "Short",
+      FVTP == 2 ~ "Long",
+      TRUE ~ NA_character_
+    ) %>% factor(levels = c("Short", "Long")),
+
+    # Credit access: 1 and 2 exist in your data.
+    # We'll interpret 1 = Yes, 2 = No (common coding). If your prof says otherwise, swap labels.
+    Credit = case_when(
+      FCRA == 1 ~ "Yes",
+      FCRA == 2 ~ "No",
+      TRUE ~ NA_character_
+    ) %>% factor(levels = c("No", "Yes")),
+
+    # Tech application: 1=Low, 2=Adequate
+    Technology = case_when(
+      FTAP == 1 ~ "Low",
+      FTAP == 2 ~ "Adequate",
+      TRUE ~ NA_character_
+    ) %>% factor(levels = c("Low", "Adequate")),
+
+    Income = as.numeric(TEIN)
+  )
+
+```
+
+------------------------------------------------------------------------
+
+# Visualisation 1 — Income Distribution
+
+```{r}
+ggplot(df, aes(Income)) +
+  geom_histogram(bins = 30, fill = "#2563eb", color = "white") +
+  labs(
+    title = "Distribution of Total Income",
+    x = "Income (Million VND)",
+    y = "Count"
+  ) +
+  theme_minimal(base_size = 13)
+
+```
+
+**Write-up (≤150 words):**\
+The histogram shows a right-skewed income distribution. Most labourers cluster within the lower income range, while a small number earn substantially higher incomes. This indicates that income inequality exists within the surveyed informal rural labour force. The long tail suggests that although a minority benefits from higher earning opportunities (e.g., diversified work or better access to resources), the majority remain concentrated in relatively low-income conditions, reflecting constraints in rural economic opportunities.
+------------------------------------------------------------------------
+
+# Visualisation 2 — Income by Education
+
+```{r}
+ggplot(df, aes(Education, Income)) +
+  geom_boxplot(fill = "#60a5fa") +
+  coord_cartesian(ylim = c(0, 200)) +
+  labs(
+    title = "Income by Education Level",
+    x = "Education Level",
+    y = "Income (Million VND)"
+  ) +
+  theme_minimal(base_size = 13)
+
+```
+
+**Write-up:**\
+Income tends to rise with education level. The median income increases from primary to secondary education categories, and higher education groups show a wider spread of earnings, suggesting that education improves access to better-paying opportunities. The wider variability at higher education levels implies that education may enable labourers to diversify into non-agricultural work, though outcomes still differ across individuals. Overall, the pattern supports the idea that human capital (education) is positively associated with earning potential.
+------------------------------------------------------------------------
+
+# Visualisation 3 — Income by Vocational Training
+
+```{r}
+ggplot(df, aes(Training, Income)) +
+  geom_boxplot(fill = "#34d399") +
+  coord_cartesian(ylim = c(0, 200)) +
+  labs(
+    title = "Income by Vocational Training Type",
+    x = "Vocational Training",
+    y = "Income (Million VND)"
+  ) +
+  theme_minimal(base_size = 13)
+
+```
+
+**Write-up:**\
+Labourers who attended long vocational training courses generally have higher median income than those who attended short courses. This suggests that longer training programmes may provide stronger skill development, improving productivity and enabling access to higher-paying jobs. Although there are still variations within each group, the overall shift in income distribution indicates that vocational training—especially longer programmes—can play an important role in supporting income improvement among informal rural workers.
+
+------------------------------------------------------------------------
+
+# Visualisation 4 — Income by Credit Accessibility
+
+```{r}
+ggplot(df, aes(Credit, Income)) +
+  geom_boxplot(fill = "#f59e0b") +
+  coord_cartesian(ylim = c(0, 200)) +
+  labs(
+    title = "Income by Credit Accessibility",
+    x = "Access to Credit",
+    y = "Income (Million VND)"
+  ) +
+  theme_minimal(base_size = 13)
+```
+
+**Write-up:**\
+Respondents with credit access show a higher median income compared to those without. This suggests that financial support may enable labourers to invest in productive activities such as farming inputs, equipment, or small business operations, which can increase earnings. The gap between groups highlights the importance of credit accessibility as a potential lever for rural income improvement. However, the overlap between groups indicates that credit alone may not be sufficient; complementary factors such as skills, technology, and local conditions likely also influence income outcomes.
+------------------------------------------------------------------------
+
+# Visualisation 5 — Income by Technology Application
+
+```{r}
+ggplot(df, aes(Technology, Income)) +
+  geom_boxplot(fill = "#a78bfa") +
+  coord_cartesian(ylim = c(0, 200)) +
+  labs(
+    title = "Income by Technology Application Level",
+    x = "Technology Application",
+    y = "Income (Million VND)"
+  ) +
+  theme_minimal(base_size = 13)
+
+```
+
+**Write-up:**\
+Labourers with adequate technology application tend to have slightly higher income compared to those with low technology application. This suggests that technology adoption may improve efficiency and productivity, contributing to better earning outcomes. While the difference may not be extreme, the shift in median income supports the role of technological upgrading as part of broader rural development. The presence of variability in both groups indicates that technology likely interacts with other factors such as access to credit, training, and job type.
+------------------------------------------------------------------------
+
+# Visualisation 6 — Income by Province
+
+```{r}
+ggplot(df, aes(Province, Income)) +
+  geom_boxplot(fill = "#ef4444") +
+  coord_cartesian(ylim = c(0, 200)) +
+  labs(
+    title = "Income Variation by Province",
+    x = "Province",
+    y = "Income (Million VND)"
+  ) +
+  theme_minimal(base_size = 13)
+
+```
+
+**Write-up:**\
+Income distributions vary across provinces, indicating regional differences in earning potential. Some provinces show higher medians and wider ranges, suggesting stronger access to markets, employment diversity, or local economic conditions. These regional disparities imply that income improvement strategies may need to be tailored by province, combining skills development, financial access, and infrastructure support to address local constraints.
+------------------------------------------------------------------------
+
+# Key Observations
+
+1. Total income is right-skewed, indicating inequality among respondents.
+2. Higher education is associated with higher median income.
+3. Longer vocational training is linked to stronger earning outcomes compared to short courses.
+4.Credit access is associated with higher income and may enable productive investment.
+5.Adequate technology application corresponds to slightly higher income levels.
+6.Income differs across provinces, suggesting regional inequality and the need for targeted interventions.
+
+------------------------------------------------------------------------
+

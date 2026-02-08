@@ -21,7 +21,13 @@ website:
             href: HE03.qmd
           - text: "HE04"
             href: HE04.qmd
-
+          - text: "HE05"
+            href: HE05.qmd
+      - text: "Take-home Exercises"
+        menu:
+          - text: "TH01"
+            href: TH01.qmd            
+        
     right:
       - icon: house
         href: index.qmd

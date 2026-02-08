@@ -264,5 +264,180 @@
     "title": "Hands-on Exercise 3",
     "section": "4.4.1 Building an animated bubble plot: ggplotly() method",
     "text": "4.4.1 Building an animated bubble plot: ggplotly() method\n\ngg &lt;- ggplot(globalPop, aes(x = Old, y = Young, size = Population,  colour = Country)) + geom_point(aes(size = Population, frame = Year), alpha = 0.7) + scale_colour_manual(values = country_colors) + scale_size(range = c(2, 12)) + labs(x = '% Aged', y = '% Young') + theme(legend.position='none') \n\nggplotly(gg)    \n\n\n\n\n\n\n4.4.2 Building an animated bubble plot: plot_ly() method\n\nbp &lt;- globalPop %&gt;% plot_ly(x = ~Old, y = ~Young, size = ~Population, color = ~Continent, sizes = c(2, 100), frame = ~Year, text = ~Country, hoverinfo = \"text\", type = 'scatter', mode = 'markers') %&gt;% layout(showlegend = FALSE) \n\nbp"
+  },
+  {
+    "objectID": "THE01.html",
+    "href": "THE01.html",
+    "title": "Take-Home Exercise 1 – Survey Analysis of Informal Labourers’ Income",
+    "section": "",
+    "text": "This report analyses the income of informal rural labourers in the northern mountainous regions of Vietnam.\nUsing tidyverse data preparation and ggplot2 visualisation techniques, key socio-economic factors affecting income are identified and communicated through analytical charts."
+  },
+  {
+    "objectID": "THE01.html#cleaning-labelling",
+    "href": "THE01.html#cleaning-labelling",
+    "title": "Take-Home Exercise 1 – Survey Analysis of Informal Labourers’ Income",
+    "section": "Cleaning & labelling",
+    "text": "Cleaning & labelling\n\ndf &lt;- df %&gt;%\n  mutate(\n    # Province codes (paper provinces)\n    Province = case_when(\n      CPRO == 1 ~ \"Tuyen Quang\",\n      CPRO == 2 ~ \"Quang Ninh\",\n      CPRO == 3 ~ \"Ha Giang\",\n      CPRO == 4 ~ \"Yen Bai\",\n      CPRO == 5 ~ \"Bac Giang\",\n      TRUE ~ NA_character_\n    ) %&gt;% factor(),\n\n    # Gender: \"1\" = Male, \"2\" = Female (based on your data)\n    Gender = case_when(\n      CGEN == \"1\" ~ \"Male\",\n      CGEN == \"2\" ~ \"Female\",\n      TRUE ~ NA_character_\n    ) %&gt;% factor(levels = c(\"Female\", \"Male\")),\n\n    # Education codes shown in your dataset\n    Education = case_when(\n      FEDU == 0 ~ \"Primary\",\n      FEDU == 1 ~ \"Lower Secondary\",\n      FEDU == 2 ~ \"Upper Secondary\",\n      FEDU == 3 ~ \"Others\",\n      TRUE ~ NA_character_\n    ) %&gt;% factor(levels = c(\"Primary\", \"Lower Secondary\", \"Upper Secondary\", \"Others\")),\n\n    # Vocational training: 1=Short, 2=Long (based on your data)\n    Training = case_when(\n      FVTP == 1 ~ \"Short\",\n      FVTP == 2 ~ \"Long\",\n      TRUE ~ NA_character_\n    ) %&gt;% factor(levels = c(\"Short\", \"Long\")),\n\n    # Credit access: 1 and 2 exist in your data.\n    # We'll interpret 1 = Yes, 2 = No (common coding). If your prof says otherwise, swap labels.\n    Credit = case_when(\n      FCRA == 1 ~ \"Yes\",\n      FCRA == 2 ~ \"No\",\n      TRUE ~ NA_character_\n    ) %&gt;% factor(levels = c(\"No\", \"Yes\")),\n\n    # Tech application: 1=Low, 2=Adequate\n    Technology = case_when(\n      FTAP == 1 ~ \"Low\",\n      FTAP == 2 ~ \"Adequate\",\n      TRUE ~ NA_character_\n    ) %&gt;% factor(levels = c(\"Low\", \"Adequate\")),\n\n    Income = as.numeric(TEIN)\n  )"
+  },
+  {
+    "objectID": "HE05.html#getting-started",
+    "href": "HE05.html#getting-started",
+    "title": "Hands-on Exercise 5",
+    "section": "Getting Started",
+    "text": "Getting Started\nInstall and launch the following R packages\n\npacman::p_load(plotly, ggtern, tidyverse)"
+  },
+  {
+    "objectID": "HE05.html#data",
+    "href": "HE05.html#data",
+    "title": "Hands-on Exercise 5",
+    "section": "Data",
+    "text": "Data\nLoading the data to the R environment by using read_csv() function of readr package\n\npop_data &lt;- read.csv(\"chap05/data/respopagsex2000to2018_tidy.csv\")"
+  },
+  {
+    "objectID": "HE05.html#preparing-the-data",
+    "href": "HE05.html#preparing-the-data",
+    "title": "Hands-on Exercise 5",
+    "section": "13.3.3 Preparing the Data",
+    "text": "13.3.3 Preparing the Data\n\n#Deriving the young, economy active and old measures\nagpop_mutated &lt;- pop_data %&gt;%\n  mutate(`Year` = as.character(Year))%&gt;%\n  spread(AG, Population) %&gt;%\n  mutate(YOUNG = rowSums(.[4:8]))%&gt;%\n  mutate(ACTIVE = rowSums(.[9:16]))  %&gt;%\n  mutate(OLD = rowSums(.[17:21])) %&gt;%\n  mutate(TOTAL = rowSums(.[22:24])) %&gt;%\n  filter(Year == 2018)%&gt;%\n  filter(TOTAL &gt; 0)"
+  },
+  {
+    "objectID": "HE05.html#plotting-ternary-diagram-with-r",
+    "href": "HE05.html#plotting-ternary-diagram-with-r",
+    "title": "Hands-on Exercise 5",
+    "section": "13.4 Plotting Ternary Diagram with R",
+    "text": "13.4 Plotting Ternary Diagram with R\n\n13.4.1 Plotting a static ternary diagram\n\n#Building the static ternary plot\nggtern(data=agpop_mutated,aes(x=YOUNG,y=ACTIVE, z=OLD)) +\n  geom_point()\n\n\n\n\n\n\n\n#Building the static ternary plot\nggtern(data=agpop_mutated, aes(x=YOUNG,y=ACTIVE, z=OLD)) +\n  geom_point() +\n  labs(title=\"Population structure, 2015\") +\n  theme_rgbw()\n\n\n\n\n\n\n\n\n\n\n13.4.2 Plotting an interative ternary diagram\n\n# reusable function for creating annotation object\nlabel &lt;- function(txt) {\n  list(\n    text = txt, \n    x = 0.1, y = 1,\n    ax = 0, ay = 0,\n    xref = \"paper\", yref = \"paper\", \n    align = \"center\",\n    font = list(family = \"serif\", size = 15, color = \"white\"),\n    bgcolor = \"#b3b3b3\", bordercolor = \"black\", borderwidth = 2\n  )\n}\n\n# reusable function for axis formatting\naxis &lt;- function(txt) {\n  list(\n    title = txt, tickformat = \".0%\", tickfont = list(size = 10)\n  )\n}\n\nternaryAxes &lt;- list(\n  aaxis = axis(\"Young\"), \n  baxis = axis(\"Active\"), \n  caxis = axis(\"Old\")\n)\n\n# Initiating a plotly visualization \nplot_ly(\n  agpop_mutated, \n  a = ~YOUNG, \n  b = ~ACTIVE, \n  c = ~OLD, \n  color = I(\"black\"), \n  type = \"scatterternary\"\n) %&gt;%\n  layout(\n    annotations = label(\"Ternary Markers\"), \n    ternary = ternaryAxes\n  )"
+  },
+  {
+    "objectID": "HE05.html#getting-started-1",
+    "href": "HE05.html#getting-started-1",
+    "title": "Hands-on Exercise 5",
+    "section": "Getting Started",
+    "text": "Getting Started\nInstall and launch the following R packages\n\npacman::p_load(corrplot, ggstatsplot, tidyverse)"
+  },
+  {
+    "objectID": "HE05.html#data-1",
+    "href": "HE05.html#data-1",
+    "title": "Hands-on Exercise 5",
+    "section": "Data",
+    "text": "Data\nLoading the data to the R environment by using read_csv() function of readr package\n\nwine &lt;- read.csv(\"chap05/data/wine_quality.csv\")"
+  },
+  {
+    "objectID": "HE05.html#building-correlation-matrix-pairs-method",
+    "href": "HE05.html#building-correlation-matrix-pairs-method",
+    "title": "Hands-on Exercise 5",
+    "section": "6.4 Building Correlation Matrix: pairs() method",
+    "text": "6.4 Building Correlation Matrix: pairs() method\n\n6.4.1 Building a basic correlation matrix\n\npairs(wine[,1:11])\n\n\n\n\n\n\n\npairs(wine[,2:12])\n\n\n\n\n\n\n\n\n\n\n6.4.2 Drawing the lower corner\n\npairs(wine[,2:12], upper.panel = NULL)\n\n\n\n\n\n\n\npairs(wine[,2:12], lower.panel = NULL)\n\n\n\n\n\n\n\n\n\n\n6.4.3 Including with correlation coefficients\n\npanel.cor &lt;- function(x, y, digits=2, prefix=\"\", cex.cor, ...) {\nusr &lt;- par(\"usr\")\non.exit(par(usr))\npar(usr = c(0, 1, 0, 1))\nr &lt;- abs(cor(x, y, use=\"complete.obs\"))\ntxt &lt;- format(c(r, 0.123456789), digits=digits)[1]\ntxt &lt;- paste(prefix, txt, sep=\"\")\nif(missing(cex.cor)) cex.cor &lt;- 0.8/strwidth(txt)\ntext(0.5, 0.5, txt, cex = cex.cor * (1 + r) / 2)\n}\n\npairs(wine[,2:12], \n      upper.panel = panel.cor)"
+  },
+  {
+    "objectID": "HE05.html#visualising-correlation-matrix-ggcormat",
+    "href": "HE05.html#visualising-correlation-matrix-ggcormat",
+    "title": "Hands-on Exercise 5",
+    "section": "6.5 Visualising Correlation Matrix: ggcormat()",
+    "text": "6.5 Visualising Correlation Matrix: ggcormat()\n\n6.5.1 The basic plot\n\nggstatsplot::ggcorrmat(data = wine, cor.vars = 1:11)\n\n\n\n\n\n\n\nggstatsplot::ggcorrmat(data = wine, cor.vars = 1:11, ggcorrplot.args = list(outline.color = \"black\", hc.order = TRUE, tl.cex = 10), title = \"Correlogram for wine dataset\", subtitle = \"Four pairs are no significant at p &lt; 0.05\")\n\n\n\n\n\n\n\nggplot.component = list(theme(text=element_text(size=5), axis.text.x = element_text(size = 8), axis.text.y = element_text(size = 8)))"
+  },
+  {
+    "objectID": "HE05.html#building-multiple-plots",
+    "href": "HE05.html#building-multiple-plots",
+    "title": "Hands-on Exercise 5",
+    "section": "6.6 Building multiple plots",
+    "text": "6.6 Building multiple plots\n\ngrouped_ggcorrmat(data = wine, cor.vars = 1:11, grouping.var = type, type = \"robust\", p.adjust.method = \"holm\", plotgrid.args = list(ncol = 2), ggcorrplot.args = list(outline.color = \"black\", hc.order = TRUE, tl.cex = 10), annotation.args = list(tag_levels = \"a\", title = \"Correlogram for wine dataset\", subtitle = \"The measures are: alcohol, sulphates, fixed acidity, citric acid, chlorides, residual sugar, density, free sulfur dioxide and volatile acidity\", caption = \"Dataset: UCI Machine Learning Repository\"))"
+  },
+  {
+    "objectID": "HE05.html#visualising-correlation-matrix-using-corrplot-package",
+    "href": "HE05.html#visualising-correlation-matrix-using-corrplot-package",
+    "title": "Hands-on Exercise 5",
+    "section": "6.7 Visualising Correlation Matrix using corrplot Package",
+    "text": "6.7 Visualising Correlation Matrix using corrplot Package\n\n6.7.1 Getting started with corrplot\n\nwine.cor &lt;- cor(wine[, 1:11])\n\ncorrplot(wine.cor)\n\n\n\n\n\n\n\n\n\n\n6.7.2 Working with visual geometrics\n\ncorrplot(wine.cor, method = \"ellipse\") \n\n\n\n\n\n\n\ncorrplot(wine.cor, method = \"ellipse\", type=\"lower\")\n\n\n\n\n\n\n\ncorrplot(wine.cor, method = \"ellipse\", type=\"lower\", diag = FALSE, tl.col = \"black\")\n\n\n\n\n\n\n\n\n\n\n6.7.3 Working with layout\n\ncorrplot(wine.cor, \n         method = \"ellipse\", \n         type=\"lower\")\n\n\n\n\n\n\n\ncorrplot(wine.cor, \n         method = \"ellipse\", \n         type=\"lower\",\n         diag = FALSE,\n         tl.col = \"black\")\n\n\n\n\n\n\n\n\n\n\n6.7.4 Working with mixed layout\n\ncorrplot.mixed(wine.cor, lower = \"ellipse\", upper = \"number\", tl.pos = \"lt\", diag = \"l\", tl.col = \"black\")\n\n\n\n\n\n\n\ncorrplot.mixed(wine.cor, lower = \"ellipse\", upper = \"number\", tl.pos = \"lt\", diag = \"l\", tl.col = \"black\")\n\n\n\n6.7.5 Combining corrgram with the significant test\n\nwine.sig = cor.mtest(wine.cor, conf.level= .95)\n\ncorrplot(wine.cor, method = \"number\", type = \"lower\", diag = FALSE,\ntl.col = \"black\", tl.srt = 45, p.mat = wine.sig$p, sig.level = .05)\n\n\n\n\n\n\n\n\n\n\n6.7.6 Reorder a corrgram\n\ncorrplot.mixed(wine.cor, \n               lower = \"ellipse\", \n               upper = \"number\",\n               tl.pos = \"lt\",\n               diag = \"l\",\n               order=\"AOE\",\n               tl.col = \"black\")\n\n\n\n\n\n\n\n\n\n\n6.7.7 Reordering a correlation matrix using hclust\n\ncorrplot(wine.cor, \n         method = \"ellipse\", \n         tl.pos = \"lt\",\n         tl.col = \"black\",\n         order=\"hclust\",\n         hclust.method = \"ward.D\",\n         addrect = 3)"
+  },
+  {
+    "objectID": "HE05.html#getting-started-2",
+    "href": "HE05.html#getting-started-2",
+    "title": "Hands-on Exercise 5",
+    "section": "Getting Started",
+    "text": "Getting Started\nInstall and launch the following R packages\n\npacman::p_load(seriation, dendextend, heatmaply, tidyverse)"
+  },
+  {
+    "objectID": "HE05.html#data-2",
+    "href": "HE05.html#data-2",
+    "title": "Hands-on Exercise 5",
+    "section": "Data",
+    "text": "Data\nLoading the data to the R environment by using read_csv() function of readr package\n\nwh &lt;- read_csv(\"chap05/data/WHData-2018.csv\")\n\nPreparing the data Transforming the data frame into a matrix\n\nwh$Country &lt;- make.unique(as.character(wh$Country))\nrow.names(wh) &lt;- wh$Country\n\nTransforming the data frame into a matrix\n\nwh1 &lt;- dplyr::select(wh, c(3, 7:12))\nwh_matrix &lt;- data.matrix(wh1)"
+  },
+  {
+    "objectID": "HE05.html#static-heatmap",
+    "href": "HE05.html#static-heatmap",
+    "title": "Hands-on Exercise 5",
+    "section": "14.4 Static Heatmap",
+    "text": "14.4 Static Heatmap\n\n14.4.1 heatmap() of R Stats\n\nwh_heatmap &lt;- heatmap(wh_matrix, Rowv=NA, Colv=NA)\n\n\n\n\n\n\n\nwh_heatmap &lt;- heatmap(wh_matrix)\n\n\n\n\n\n\n\nwh_heatmap &lt;- heatmap(wh_matrix,\n                      scale=\"column\",\n                      cexRow = 0.6, \n                      cexCol = 0.8,\n                      margins = c(10, 4))"
+  },
+  {
+    "objectID": "HE05.html#creating-interactive-heatmap",
+    "href": "HE05.html#creating-interactive-heatmap",
+    "title": "Hands-on Exercise 5",
+    "section": "14.5 Creating Interactive Heatmap",
+    "text": "14.5 Creating Interactive Heatmap\n\n14.5.1 Working with heatmaply\n\nheatmaply(mtcars)\n\n\n\n\nheatmaply(wh_matrix[, -c(1, 2, 4, 5)])\n\n\n\n\n\n\n\n14.5.2 Data trasformation\n\n14.5.2.1 Scaling method\n\nheatmaply(wh_matrix[, -c(1, 2, 4, 5)], scale = \"column\")\n\n\n\n\n\n\n\n14.5.2.2 Normalising method\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]))\n\n\n\n\n\n\n\n14.5.2.3 Percentising method\n\nheatmaply(percentize(wh_matrix[, -c(1, 2, 4, 5)]))\n\n\n\n\n\n\n\n\n14.5.3 Clustering algorithm\n\n\n14.5.4 Manual approach\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]), dist_method = \"euclidean\", hclust_method = \"ward.D\")\n\n\n\n\n\n\n\n14.5.5 Statistical approach\n\nwh_d &lt;- dist(normalize(wh_matrix[, -c(1, 2, 4, 5)]), method = \"euclidean\")\ndend_expend(wh_d)[[3]]\n\n  dist_methods hclust_methods     optim\n1      unknown         ward.D 0.6765398\n2      unknown        ward.D2 0.6700807\n3      unknown         single 0.7219100\n4      unknown       complete 0.7259444\n5      unknown        average 0.8023959\n6      unknown       mcquitty 0.7031276\n7      unknown         median 0.7654802\n8      unknown       centroid 0.8122677\n\nwh_clust &lt;- hclust(wh_d, method = \"average\")\nnum_k &lt;- find_k(wh_clust)\nplot(num_k)\n\n\n\n\n\n\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]), dist_method = \"euclidean\", hclust_method = \"average\", k_row = 3)\n\n\n\n\n\n\n\n14.5.6 Seriation\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]), seriate = \"OLO\")\n\n\n\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]), seriate = \"GW\")\n\n\n\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]), seriate = \"mean\")\n\n\n\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]), seriate = \"none\")\n\n\n\n\n\n\n\n14.5.7 Working with colour palettes\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]), seriate = \"none\", colors = Blues)\n\n\n\n\n\n\n\n14.5.8 The finishing touch\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]), Colv=NA, seriate = \"none\", colors = Blues, k_row = 5, margins = c(NA,200,60,NA), fontsize_row = 4, fontsize_col = 5, main=\"World Happiness Score and Variables by Country, 2018 \\nDataTransformation using Normalise Method\", xlab = \"World Happiness Indicators\", ylab = \"World Countries\")"
+  },
+  {
+    "objectID": "HE05.html#getting-started-3",
+    "href": "HE05.html#getting-started-3",
+    "title": "Hands-on Exercise 5",
+    "section": "Getting Started",
+    "text": "Getting Started\nInstall and launch the following R packages\n\npacman::p_load(GGally, parallelPlot, tidyverse)\n\n\nThe downloaded binary packages are in\n    /var/folders/mm/41xy1t717j5gv9_l7byvcmh80000gn/T//RtmpY6CxBN/downloaded_packages\n\n\n\nThe downloaded binary packages are in\n    /var/folders/mm/41xy1t717j5gv9_l7byvcmh80000gn/T//RtmpY6CxBN/downloaded_packages"
+  },
+  {
+    "objectID": "HE05.html#data-3",
+    "href": "HE05.html#data-3",
+    "title": "Hands-on Exercise 5",
+    "section": "Data",
+    "text": "Data\nLoading the data to the R environment by using read_csv() function of readr package\n\nwh &lt;- read_csv(\"chap05/data/WHData-2018.csv\")"
+  },
+  {
+    "objectID": "HE05.html#plotting-static-parallel-coordinates-plot",
+    "href": "HE05.html#plotting-static-parallel-coordinates-plot",
+    "title": "Hands-on Exercise 5",
+    "section": "15.4 Plotting Static Parallel Coordinates Plot",
+    "text": "15.4 Plotting Static Parallel Coordinates Plot\n\n15.4.1 Plotting a simple parallel coordinates\n\nggparcoord(data = wh, \n           columns = c(7:12))\n\n\n\n\n\n\n\n\n\n\n15.4.2 Plotting a parallel coordinates with boxplot\n\nggparcoord(data = wh, \n           columns = c(7:12), \n           groupColumn = 2,\n           scale = \"uniminmax\",\n           alphaLines = 0.2,\n           boxplot = TRUE, \n           title = \"Parallel Coordinates Plot of World Happines Variables\")\n\n\n\n\n\n\n\n\n\n\n15.4.3 Parallel coordinates with facet\n\nggparcoord(data = wh, \n           columns = c(7:12), \n           groupColumn = 2,\n           scale = \"uniminmax\",\n           alphaLines = 0.2,\n           boxplot = TRUE, \n           title = \"Multiple Parallel Coordinates Plots of World Happines Variables by Region\") +\n  facet_wrap(~ Region)\n\n\n\n\n\n\n\n\n\n\n15.4.4 Rotating x-axis text label\n\nggparcoord(data = wh, \n           columns = c(7:12), \n           groupColumn = 2,\n           scale = \"uniminmax\",\n           alphaLines = 0.2,\n           boxplot = TRUE, \n           title = \"Multiple Parallel Coordinates Plots of World Happines Variables by Region\") +\n  facet_wrap(~ Region) + \n  theme(axis.text.x = element_text(angle = 30))\n\n\n\n\n\n\n\n\n\n\n15.4.5 Adjusting the rotated x-axis text label\n\nggparcoord(data = wh, \n           columns = c(7:12), \n           groupColumn = 2,\n           scale = \"uniminmax\",\n           alphaLines = 0.2,\n           boxplot = TRUE, \n           title = \"Multiple Parallel Coordinates Plots of World Happines Variables by Region\") +\n  facet_wrap(~ Region) + \n  theme(axis.text.x = element_text(angle = 30, hjust=1))"
+  },
+  {
+    "objectID": "HE05.html#plotting-interactive-parallel-coordinates-plot-parallelplot-methods",
+    "href": "HE05.html#plotting-interactive-parallel-coordinates-plot-parallelplot-methods",
+    "title": "Hands-on Exercise 5",
+    "section": "15.5 Plotting Interactive Parallel Coordinates Plot: parallelPlot methods",
+    "text": "15.5 Plotting Interactive Parallel Coordinates Plot: parallelPlot methods\n\n15.5.1 The basic plot\n\nwh &lt;- wh %&gt;%\n  select(\"Happiness score\", c(7:12))\nparallelPlot(wh,\n             width = 320,\n             height = 250)\n\n\n\n\n\n\n\n15.5.2 Rotate axis label\n\nparallelPlot(wh,\n             rotateTitle = TRUE)\n\n\n\n\n\n\n\n15.5.3 Changing the colour scheme\n\nparallelPlot(wh,\n             continuousCS = \"YlOrRd\",\n             rotateTitle = TRUE)\n\n\n\n\n\n\n\n15.5.4 Parallel coordinates plot with histogram\n\nhistoVisibility &lt;- rep(TRUE, ncol(wh))\nparallelPlot(wh,\n             rotateTitle = TRUE,\n             histoVisibility = histoVisibility)"
+  },
+  {
+    "objectID": "HE05.html#getting-started-4",
+    "href": "HE05.html#getting-started-4",
+    "title": "Hands-on Exercise 5",
+    "section": "Getting Started",
+    "text": "Getting Started\nInstall and launch the following R packages\n\npacman::p_load(treemap, treemapify, tidyverse) \n\n\nThe downloaded binary packages are in\n    /var/folders/mm/41xy1t717j5gv9_l7byvcmh80000gn/T//RtmpY6CxBN/downloaded_packages\n\n\n\nThe downloaded binary packages are in\n    /var/folders/mm/41xy1t717j5gv9_l7byvcmh80000gn/T//RtmpY6CxBN/downloaded_packages"
+  },
+  {
+    "objectID": "HE05.html#data-4",
+    "href": "HE05.html#data-4",
+    "title": "Hands-on Exercise 5",
+    "section": "Data",
+    "text": "Data\nLoading the data to the R environment by using read_csv() function of readr package\n\nrealis2018 &lt;- read_csv(\"chap05/data/realis2018.csv\")\n\n\n16.3.3 Grouped summaries without the Pipe\n\nrealis2018_grouped &lt;- group_by(realis2018, `Project Name`,\n                               `Planning Region`, `Planning Area`, \n                               `Property Type`, `Type of Sale`)\nrealis2018_summarised &lt;- summarise(realis2018_grouped, \n                          `Total Unit Sold` = sum(`No. of Units`, na.rm = TRUE),\n                          `Total Area` = sum(`Area (sqm)`, na.rm = TRUE),\n                          `Median Unit Price ($ psm)` = median(`Unit Price ($ psm)`, na.rm = TRUE), \n                          `Median Transacted Price` = median(`Transacted Price ($)`, na.rm = TRUE))\n\n\n\n16.3.4 Grouped summaries with the pipe\n\nrealis2018_summarised &lt;- realis2018 %&gt;% \n  group_by(`Project Name`,`Planning Region`, \n           `Planning Area`, `Property Type`, \n           `Type of Sale`) %&gt;%\n  summarise(`Total Unit Sold` = sum(`No. of Units`, na.rm = TRUE), \n            `Total Area` = sum(`Area (sqm)`, na.rm = TRUE),\n            `Median Unit Price ($ psm)` = median(`Unit Price ($ psm)`, na.rm = TRUE),\n            `Median Transacted Price` = median(`Transacted Price ($)`, na.rm = TRUE))"
+  },
+  {
+    "objectID": "HE05.html#designing-treemap-with-treemap-package",
+    "href": "HE05.html#designing-treemap-with-treemap-package",
+    "title": "Hands-on Exercise 5",
+    "section": "16.4 Designing Treemap with treemap Package",
+    "text": "16.4 Designing Treemap with treemap Package\n\n16.4.1 Designing a static treemap\n\nrealis2018_selected &lt;- realis2018_summarised %&gt;%\n  filter(`Property Type` == \"Condominium\", `Type of Sale` == \"Resale\")\n\n\n\n16.4.2 Using the basic arguments\n\ntreemap(realis2018_selected,\n        index=c(\"Planning Region\", \"Planning Area\", \"Project Name\"),\n        vSize=\"Total Unit Sold\",\n        vColor=\"Median Unit Price ($ psm)\",\n        title=\"Resale Condominium by Planning Region and Area, 2017\",\n        title.legend = \"Median Unit Price (S$ per sq. m)\"\n        )\n\n\n\n\n\n\n\n\n\n\n16.4.3 Working with vColor and type arguments\n\ntreemap(realis2018_selected,\n        index=c(\"Planning Region\", \"Planning Area\", \"Project Name\"),\n        vSize=\"Total Unit Sold\",\n        vColor=\"Median Unit Price ($ psm)\",\n        type = \"value\",\n        title=\"Resale Condominium by Planning Region and Area, 2017\",\n        title.legend = \"Median Unit Price (S$ per sq. m)\"\n        )\n\n\n\n\n\n\n\n\n\n\n16.4.4 Colours in treemap package\n\n\n16.4.5 The “value” type treemap\n\ntreemap(realis2018_selected,\n        index=c(\"Planning Region\", \"Planning Area\", \"Project Name\"),\n        vSize=\"Total Unit Sold\",\n        vColor=\"Median Unit Price ($ psm)\",\n        type=\"value\",\n        palette=\"RdYlBu\", \n        title=\"Resale Condominium by Planning Region and Area, 2017\",\n        title.legend = \"Median Unit Price (S$ per sq. m)\"\n        )\n\n\n\n\n\n\n\n\n\n\n16.4.6 The “manual” type treemap\n\ntreemap(realis2018_selected,\n        index=c(\"Planning Region\", \"Planning Area\", \"Project Name\"),\n        vSize=\"Total Unit Sold\",\n        vColor=\"Median Unit Price ($ psm)\",\n        type=\"manual\",\n        palette=\"RdYlBu\", \n        title=\"Resale Condominium by Planning Region and Area, 2017\",\n        title.legend = \"Median Unit Price (S$ per sq. m)\"\n        )\n\n\n\n\n\n\n\ntreemap(realis2018_selected,\n        index=c(\"Planning Region\", \"Planning Area\", \"Project Name\"),\n        vSize=\"Total Unit Sold\",\n        vColor=\"Median Unit Price ($ psm)\",\n        type=\"manual\",\n        palette=\"Blues\", \n        title=\"Resale Condominium by Planning Region and Area, 2017\",\n        title.legend = \"Median Unit Price (S$ per sq. m)\"\n        )\n\n\n\n\n\n\n\n\n\n\n16.4.7 Treemap Layout\ntreemap() supports two popular treemap layouts, namely: “squarified” and “pivotSize”. The default is “pivotSize”.\nThe squarified treemap algorithm (Bruls et al., 2000) produces good aspect ratios, but ignores the sorting order of the rectangles (sortID). The ordered treemap, pivot-by-size, algorithm (Bederson et al., 2002) takes the sorting order (sortID) into account while aspect ratios are still acceptable.\n\n\n16.4.8 Working with algorithm argument\n\ntreemap(realis2018_selected,\n        index=c(\"Planning Region\", \"Planning Area\", \"Project Name\"),\n        vSize=\"Total Unit Sold\",\n        vColor=\"Median Unit Price ($ psm)\",\n        type=\"manual\",\n        palette=\"Blues\", \n        algorithm = \"squarified\",\n        title=\"Resale Condominium by Planning Region and Area, 2017\",\n        title.legend = \"Median Unit Price (S$ per sq. m)\"\n        )\n\n\n\n\n\n\n\n\n\n\n16.4.9 Using sortID\n\ntreemap(realis2018_selected,\n        index=c(\"Planning Region\", \"Planning Area\", \"Project Name\"),\n        vSize=\"Total Unit Sold\",\n        vColor=\"Median Unit Price ($ psm)\",\n        type=\"manual\",\n        palette=\"Blues\", \n        algorithm = \"pivotSize\",\n        sortID = \"Median Transacted Price\",\n        title=\"Resale Condominium by Planning Region and Area, 2017\",\n        title.legend = \"Median Unit Price (S$ per sq. m)\"\n        )"
+  },
+  {
+    "objectID": "HE05.html#designing-treemap-using-treemapify-package",
+    "href": "HE05.html#designing-treemap-using-treemapify-package",
+    "title": "Hands-on Exercise 5",
+    "section": "16.5 Designing Treemap using treemapify Package",
+    "text": "16.5 Designing Treemap using treemapify Package\n\n16.5.1 Designing a basic treemap\n\nggplot(data=realis2018_selected, \n       aes(area = `Total Unit Sold`,\n           fill = `Median Unit Price ($ psm)`),\n       layout = \"scol\",\n       start = \"bottomleft\") + \n  geom_treemap() +\n  scale_fill_gradient(low = \"light blue\", high = \"blue\")\n\n\n\n\n\n\n\n\n\n\n16.5.2 Defining hierarchy\n\nggplot(data=realis2018_selected, \n       aes(area = `Total Unit Sold`,\n           fill = `Median Unit Price ($ psm)`,\n           subgroup = `Planning Region`),\n       start = \"topleft\") + \n  geom_treemap()\n\n\n\n\n\n\n\nggplot(data=realis2018_selected, \n       aes(area = `Total Unit Sold`,\n           fill = `Median Unit Price ($ psm)`,\n           subgroup = `Planning Region`,\n           subgroup2 = `Planning Area`)) + \n  geom_treemap()\n\n\n\n\n\n\n\nggplot(data=realis2018_selected, \n       aes(area = `Total Unit Sold`,\n           fill = `Median Unit Price ($ psm)`,\n           subgroup = `Planning Region`,\n           subgroup2 = `Planning Area`)) + \n  geom_treemap() +\n  geom_treemap_subgroup2_border(colour = \"gray40\",\n                                size = 2) +\n  geom_treemap_subgroup_border(colour = \"gray20\")"
+  },
+  {
+    "objectID": "HE05.html#designing-interactive-treemap-using-d3treer",
+    "href": "HE05.html#designing-interactive-treemap-using-d3treer",
+    "title": "Hands-on Exercise 5",
+    "section": "16.6 Designing Interactive Treemap using d3treeR",
+    "text": "16.6 Designing Interactive Treemap using d3treeR\n\n16.6.1 Installing d3treeR package\n\ninstall.packages(\"devtools\")\n\n\nThe downloaded binary packages are in\n    /var/folders/mm/41xy1t717j5gv9_l7byvcmh80000gn/T//RtmpY6CxBN/downloaded_packages\n\nlibrary(devtools)\ninstall_github(\"timelyportfolio/d3treeR\")\n\nrappdirs    (0.3.3  -&gt; 0.3.4    ) [CRAN]\nbase64enc   (0.1-3  -&gt; 0.1-6    ) [CRAN]\nbslib       (0.9.0  -&gt; 0.10.0   ) [CRAN]\nviridisLite (0.4.2  -&gt; 0.4.3    ) [CRAN]\nxfun        (0.55   -&gt; 0.56     ) [CRAN]\nggplot2     (4.0.1  -&gt; 4.0.2    ) [CRAN]\ndata.table  (1.18.0 -&gt; 1.18.2.1 ) [CRAN]\nXML         (NA     -&gt; 3.99-0.20) [CRAN]\ngridSVG     (NA     -&gt; 1.7-7    ) [CRAN]\ndata.tree   (NA     -&gt; 1.2.0    ) [CRAN]\n\n\n\nThe downloaded binary packages are in\n    /var/folders/mm/41xy1t717j5gv9_l7byvcmh80000gn/T//RtmpY6CxBN/downloaded_packages\n── R CMD build ─────────────────────────────────────────────────────────────────\n* checking for file ‘/private/var/folders/mm/41xy1t717j5gv9_l7byvcmh80000gn/T/RtmpY6CxBN/remotes11a8660e9e402/d3treeR-d3treeR-ebb833d/DESCRIPTION’ ... OK\n* preparing ‘d3treeR’:\n* checking DESCRIPTION meta-information ... OK\n* checking for LF line-endings in source and make files and shell scripts\n* checking for empty or unneeded directories\nOmitted ‘LazyData’ from DESCRIPTION\n* building ‘d3treeR_0.1.tar.gz’\n\nlibrary(d3treeR)\n\n\n\n16.6.2 Designing An Interactive Treemap\n\ntm &lt;- treemap(realis2018_summarised,\n        index=c(\"Planning Region\", \"Planning Area\"),\n        vSize=\"Total Unit Sold\",\n        vColor=\"Median Unit Price ($ psm)\",\n        type=\"value\",\n        title=\"Private Residential Property Sold, 2017\",\n        title.legend = \"Median Unit Price (S$ per sq. m)\"\n        )\n\nd3tree(tm,rootname = \"Singapore\" )"
   }
 ]
