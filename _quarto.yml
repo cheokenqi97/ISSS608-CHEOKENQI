@@ -23,6 +23,8 @@ website:
             href: HE04.qmd
           - text: "HE05"
             href: HE05.qmd
+          - text: "HE06"
+            href: HE06.qmd           
       - text: "Take-home Exercises"
         menu:
           - text: "TH01"
@@ -42,7 +44,7 @@ website:
   page-footer:
     left: "Made with Quarto ✨"
     right: "ISSS608"
-
+ 
 format:
   html:
     theme: cosmo
