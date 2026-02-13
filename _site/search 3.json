@@ -189,118 +189,6 @@
     "text": "16.6 Designing Interactive Treemap using d3treeR\n\n16.6.1 Installing d3treeR package\n\ninstall.packages(\"devtools\")\n\n\nThe downloaded binary packages are in\n    /var/folders/mm/41xy1t717j5gv9_l7byvcmh80000gn/T//RtmpY6CxBN/downloaded_packages\n\nlibrary(devtools)\ninstall_github(\"timelyportfolio/d3treeR\")\n\nrappdirs    (0.3.3  -&gt; 0.3.4    ) [CRAN]\nbase64enc   (0.1-3  -&gt; 0.1-6    ) [CRAN]\nbslib       (0.9.0  -&gt; 0.10.0   ) [CRAN]\nviridisLite (0.4.2  -&gt; 0.4.3    ) [CRAN]\nxfun        (0.55   -&gt; 0.56     ) [CRAN]\nggplot2     (4.0.1  -&gt; 4.0.2    ) [CRAN]\ndata.table  (1.18.0 -&gt; 1.18.2.1 ) [CRAN]\nXML         (NA     -&gt; 3.99-0.20) [CRAN]\ngridSVG     (NA     -&gt; 1.7-7    ) [CRAN]\ndata.tree   (NA     -&gt; 1.2.0    ) [CRAN]\n\n\n\nThe downloaded binary packages are in\n    /var/folders/mm/41xy1t717j5gv9_l7byvcmh80000gn/T//RtmpY6CxBN/downloaded_packages\n── R CMD build ─────────────────────────────────────────────────────────────────\n* checking for file ‘/private/var/folders/mm/41xy1t717j5gv9_l7byvcmh80000gn/T/RtmpY6CxBN/remotes11a8660e9e402/d3treeR-d3treeR-ebb833d/DESCRIPTION’ ... OK\n* preparing ‘d3treeR’:\n* checking DESCRIPTION meta-information ... OK\n* checking for LF line-endings in source and make files and shell scripts\n* checking for empty or unneeded directories\nOmitted ‘LazyData’ from DESCRIPTION\n* building ‘d3treeR_0.1.tar.gz’\n\nlibrary(d3treeR)\n\n\n\n16.6.2 Designing An Interactive Treemap\n\ntm &lt;- treemap(realis2018_summarised,\n        index=c(\"Planning Region\", \"Planning Area\"),\n        vSize=\"Total Unit Sold\",\n        vColor=\"Median Unit Price ($ psm)\",\n        type=\"value\",\n        title=\"Private Residential Property Sold, 2017\",\n        title.legend = \"Median Unit Price (S$ per sq. m)\"\n        )\n\nd3tree(tm,rootname = \"Singapore\" )"
   },
   {
-    "objectID": "HE06.html#getting-started",
-    "href": "HE06.html#getting-started",
-    "title": "Hands-on Exercise 6",
-    "section": "Getting Started",
-    "text": "Getting Started\nInstall and launch the following R packages\n\npacman::p_load(\n  scales,\n  viridis,\n  lubridate,\n  ggthemes,\n  gridExtra,\n  readxl,\n  knitr,\n  data.table,\n  ggHoriPlot,\n  tidyverse\n)\n\nlibrary(CGPfunctions)\n?newggslopegraph"
-  },
-  {
-    "objectID": "HE06.html#data",
-    "href": "HE06.html#data",
-    "title": "Hands-on Exercise 6",
-    "section": "Data",
-    "text": "Data\nLoading the data to the R environment by using read_csv() function of readr package\n\nattacks &lt;- read_csv(\"chap06/data//eventlog.csv\")"
-  },
-  {
-    "objectID": "HE06.html#plotting-calendar-heatmap",
-    "href": "HE06.html#plotting-calendar-heatmap",
-    "title": "Hands-on Exercise 6",
-    "section": "17.4 Plotting Calendar Heatmap",
-    "text": "17.4 Plotting Calendar Heatmap\n\n17.4.3 Examining the data structure\n\nkable(head(attacks))\n\n\n\n\ntimestamp\nsource_country\ntz\n\n\n\n\n2015-03-12 15:59:16\nCN\nAsia/Shanghai\n\n\n2015-03-12 16:00:48\nFR\nEurope/Paris\n\n\n2015-03-12 16:02:26\nCN\nAsia/Shanghai\n\n\n2015-03-12 16:02:38\nUS\nAmerica/Chicago\n\n\n2015-03-12 16:03:22\nCN\nAsia/Shanghai\n\n\n2015-03-12 16:03:45\nCN\nAsia/Shanghai\n\n\n\n\n\n\n\n17.4.4 Data Preparation\n\nmake_hr_wkday &lt;- function(ts, sc, tz) {\n  real_times &lt;- ymd_hms(ts, \n                        tz = tz[1], \n                        quiet = TRUE)\n  dt &lt;- data.table(source_country = sc,\n                   wkday = weekdays(real_times),\n                   hour = hour(real_times))\n  return(dt)\n}\n\nwkday_levels &lt;- c('Saturday', 'Friday', \n                  'Thursday', 'Wednesday', \n                  'Tuesday', 'Monday', \n                  'Sunday')\n\nattacks &lt;- attacks %&gt;%\n  group_by(tz) %&gt;%\n  do(make_hr_wkday(.$timestamp, \n                   .$source_country, \n                   .$tz)) %&gt;% \n  ungroup() %&gt;% \n  mutate(wkday = factor(\n    wkday, levels = wkday_levels),\n    hour  = factor(\n      hour, levels = 0:23))\n\nkable(head(attacks))\n\n\n\n\ntz\nsource_country\nwkday\nhour\n\n\n\n\nAfrica/Cairo\nBG\nSaturday\n20\n\n\nAfrica/Cairo\nTW\nSunday\n6\n\n\nAfrica/Cairo\nTW\nSunday\n8\n\n\nAfrica/Cairo\nCN\nSunday\n11\n\n\nAfrica/Cairo\nUS\nSunday\n15\n\n\nAfrica/Cairo\nCA\nMonday\n11\n\n\n\n\n\n\n\n17.4.5 Building the Calendar Heatmaps\n\ngrouped &lt;- attacks %&gt;% \n  count(wkday, hour) %&gt;% \n  ungroup() %&gt;%\n  na.omit()\n\nggplot(grouped, \n       aes(hour, \n           wkday, \n           fill = n)) + \ngeom_tile(color = \"white\", \n          size = 0.1) + \ntheme_tufte(base_family = \"Helvetica\") + \ncoord_equal() +\nscale_fill_gradient(name = \"# of attacks\",\n                    low = \"sky blue\", \n                    high = \"dark blue\") +\nlabs(x = NULL, \n     y = NULL, \n     title = \"Attacks by weekday and time of day\") +\ntheme(axis.ticks = element_blank(),\n      plot.title = element_text(hjust = 0.5),\n      legend.title = element_text(size = 8),\n      legend.text = element_text(size = 6) )\n\n\n\n\n\n\n\n\n\n\n17.4.6 Building Multiple Calendar Heatmaps\n\ntop4 &lt;- attacks %&gt;% \n  count(source_country, sort = TRUE) %&gt;% \n  slice(1:4) %&gt;% \n  pull(source_country)\n\ngrouped &lt;- attacks %&gt;% \n  filter(source_country %in% top4) %&gt;%\n  count(source_country, wkday, hour) %&gt;% \n  ungroup() %&gt;%\n  na.omit()\n\nggplot(grouped, \n       aes(hour, \n           wkday, \n           fill = n)) + \ngeom_tile(color = \"white\", \n          size = 0.1) + \ntheme_tufte(base_family = \"Helvetica\") + \ncoord_equal() +\nfacet_wrap(~source_country, ncol = 2) +\nscale_fill_gradient(name = \"# of attacks\",\n                    low = \"sky blue\", \n                    high = \"dark blue\") +\nlabs(x = NULL, \n     y = NULL, \n     title = \"Attacks by weekday and time of day (Top 4 source countries)\") +\ntheme(axis.ticks = element_blank(),\n      plot.title = element_text(hjust = 0.5),\n      legend.title = element_text(size = 8),\n      legend.text = element_text(size = 6) )\n\n\n\n\n\n\n\n\n\n\n17.4.7 Plotting Multiple Calendar Heatmaps\n\nattacks_by_country &lt;- count(\n  attacks, source_country) %&gt;%\n  mutate(percent = percent(n/sum(n))) %&gt;%\n  arrange(desc(n))\n\ntop4 &lt;- attacks_by_country$source_country[1:4]\ntop4_attacks &lt;- attacks %&gt;%\n  filter(source_country %in% top4) %&gt;%\n  count(source_country, wkday, hour) %&gt;%\n  ungroup() %&gt;%\n  mutate(source_country = factor(\n    source_country, levels = top4)) %&gt;%\n  na.omit()\n\n\n\n17.4.8 Plotting Multiple Calendar Heatmaps\n\nggplot(top4_attacks, \n       aes(hour, \n           wkday, \n           fill = n)) + \n  geom_tile(color = \"white\", \n          size = 0.1) + \n  theme_tufte(base_family = \"Helvetica\") + \n  coord_equal() +\n  scale_fill_gradient(name = \"# of attacks\",\n                    low = \"sky blue\", \n                    high = \"dark blue\") +\n  facet_wrap(~source_country, ncol = 2) +\n  labs(x = NULL, y = NULL, \n     title = \"Attacks on top 4 countries by weekday and time of day\") +\n  theme(axis.ticks = element_blank(),\n        axis.text.x = element_text(size = 7),\n        plot.title = element_text(hjust = 0.5),\n        legend.title = element_text(size = 8),\n        legend.text = element_text(size = 6) )"
-  },
-  {
-    "objectID": "HE06.html#plotting-cycle-plot",
-    "href": "HE06.html#plotting-cycle-plot",
-    "title": "Hands-on Exercise 6",
-    "section": "17.5 Plotting Cycle Plot",
-    "text": "17.5 Plotting Cycle Plot\n\n17.5.1 Step 1: Data Import\n\nair &lt;- read_excel(\"chap06/data/arrivals_by_air.xlsx\")\n\n\n\n17.5.2 Step 2: Deriving month and year fields\n\nair$month &lt;- factor(month(air$`Month-Year`), \n                    levels=1:12, \n                    labels=month.abb, \n                    ordered=TRUE) \nair$year &lt;- year(ymd(air$`Month-Year`))\n\n\n\n17.5.3 Step 4: Extracting the target country\n\nVietnam &lt;- air %&gt;% \n  select(`Vietnam`, \n         month, \n         year) %&gt;%\n  filter(year &gt;= 2010)\n\n\n\n17.5.4 Step 5: Computing year average arrivals by month\n\nhline.data &lt;- Vietnam %&gt;% \n  group_by(month) %&gt;%\n  summarise(avgvalue = mean(`Vietnam`))\n\n\n\n17.5.5 Srep 6: Plotting the cycle plot\n\nggplot() + \n  geom_line(data=Vietnam,\n            aes(x=year, \n                y=`Vietnam`, \n                group=month), \n            colour=\"black\") +\n  geom_hline(aes(yintercept=avgvalue), \n             data=hline.data, \n             linetype=6, \n             colour=\"red\", \n             size=0.5) + \n  facet_grid(~month) +\n  labs(axis.text.x = element_blank(),\n       title = \"Visitor arrivals from Vietnam by air, Jan 2010-Dec 2019\") +\n  xlab(\"\") +\n  ylab(\"No. of Visitors\") +\n  theme_tufte(base_family = \"Helvetica\")"
-  },
-  {
-    "objectID": "HE06.html#plotting-slopegraph",
-    "href": "HE06.html#plotting-slopegraph",
-    "title": "Hands-on Exercise 6",
-    "section": "17.6 Plotting Slopegraph",
-    "text": "17.6 Plotting Slopegraph\n\n17.6.1 Step 1: Data Import\n\nrice &lt;- read_csv(\"chap06/data/rice.csv\")"
-  },
-  {
-    "objectID": "HE06.html#step-2-plotting-the-slopegraph",
-    "href": "HE06.html#step-2-plotting-the-slopegraph",
-    "title": "Hands-on Exercise 6",
-    "section": "17.6.2 Step 2: Plotting the slopegraph",
-    "text": "17.6.2 Step 2: Plotting the slopegraph\n\nrice %&gt;% \n  mutate(Year = factor(Year)) %&gt;%\n  filter(Year %in% c(1961, 1980)) %&gt;%\n  newggslopegraph(Year, Yield, Country,\n                Title = \"Rice Yield of Top 11 Asian Counties\",\n                SubTitle = \"1961-1980\",\n                Caption = \"Prepared by: Dr. Kam Tin Seong\")"
-  },
-  {
-    "objectID": "THE01.html",
-    "href": "THE01.html",
-    "title": "Take-Home Exercise 1:Survey Analysis of Informal Labourers’ Income",
-    "section": "",
-    "text": "This report analyses the income of informal rural labourers in the northern mountainous regions of Vietnam."
-  },
-  {
-    "objectID": "THE01.html#data-cleaning-and-prepartion",
-    "href": "THE01.html#data-cleaning-and-prepartion",
-    "title": "Take-Home Exercise 1:Survey Analysis of Informal Labourers’ Income",
-    "section": "Data cleaning and prepartion",
-    "text": "Data cleaning and prepartion\nThe dataset was cleaned and prepared before performing data visualization and analysis\nCategorical variables for example, province, gender, education, training and credit access were converted into factor variables\nContinuous measures for example income were also converted to numeric format to ensure accurate plotting.\nLikert-scale items were also converted to numeric values\nInvalid entries were also set to NA to exclude them from the data\n\ndf &lt;- df_raw\n\n# Categorical variables converted factor\ndf$cpro &lt;- factor(df$cpro)\ndf$cgen &lt;- factor(df$cgen)\ndf$crac &lt;- factor(df$crac)\ndf$cjob &lt;- factor(df$cjob)\ndf$cqui &lt;- factor(df$cqui)\n\ndf$fedu &lt;- factor(df$fedu)\ndf$fvtp &lt;- factor(df$fvtp)\ndf$fcra &lt;- factor(df$fcra)\ndf$ftap &lt;- factor(df$ftap)\n\n\n# Numeric / continuous variables\ndf$tein &lt;- as.numeric(df$tein)\ndf$tain &lt;- as.numeric(df$tain)\ndf$tsii &lt;- as.numeric(df$tsii)\ndf$toin &lt;- as.numeric(df$toin)\ndf$lcre &lt;- as.numeric(df$lcre)\ndf$lsav &lt;- as.numeric(df$lsav)\ndf$lwda &lt;- as.numeric(df$lwda)\n\n\n# Likert-scale converted to numeric\ndf$ppo1 &lt;- as.numeric(df$ppo1)\ndf$ppo2 &lt;- as.numeric(df$ppo2)\ndf$ppo3 &lt;- as.numeric(df$ppo3)\ndf$ppo4 &lt;- as.numeric(df$ppo4)\ndf$ppo5 &lt;- as.numeric(df$ppo5)\n\ndf$aro1 &lt;- as.numeric(df$aro1)\ndf$aro2 &lt;- as.numeric(df$aro2)\ndf$aro3 &lt;- as.numeric(df$aro3)\ndf$aro4 &lt;- as.numeric(df$aro4)\ndf$aro5 &lt;- as.numeric(df$aro5)\n\n\n# convert to NA\ndf$aro2[df$aro2 &gt; 3] &lt;- NA\n\n\n#final cleaned dataset\ndf$income &lt;- df$tein\n\n\nsummary(df)\n\n cpro    cgen    crac      cjob       cqui          tein       \n 1:150   1:592   1:336   1   :515   1   : 30   Min.   :  0.00  \n 2:144   2:133   2:389   2   : 62   2   :102   1st Qu.: 23.00  \n 3:141                   3   : 99   3   :307   Median : 31.50  \n 4:143                   NA's: 49   4   :118   Mean   : 38.00  \n 5:147                              5   :164   3rd Qu.: 42.25  \n                                    NA's:  4   Max.   :560.00  \n                                               NA's   :1       \n      tain             tsii              toin          fedu       fvtp    \n Min.   :  0.00   Min.   :  0.000   Min.   : -6.00   0   :474   1   :610  \n 1st Qu.: 17.00   1st Qu.:  0.000   1st Qu.:  0.00   1   :136   2   : 92  \n Median : 23.00   Median :  0.000   Median :  3.00   2   : 73   NA's: 23  \n Mean   : 23.81   Mean   :  5.566   Mean   :  8.65   3   : 19             \n 3rd Qu.: 30.00   3rd Qu.:  6.500   3rd Qu.: 10.00   NA's: 23             \n Max.   :340.00   Max.   :100.000   Max.   :180.00                        \n NA's   :1        NA's   :6                                               \n   fcra       ftap          lho1          lho2          lho3          lho4    \n 1   :636   1   :296   Min.   :1     Min.   :1     Min.   :1     Min.   :1    \n 2   : 87   2   :327   1st Qu.:1     1st Qu.:1     1st Qu.:1     1st Qu.:1    \n NA's:  2   NA's:102   Median :1     Median :1     Median :1     Median :1    \n                       Mean   :1     Mean   :1     Mean   :1     Mean   :1    \n                       3rd Qu.:1     3rd Qu.:1     3rd Qu.:1     3rd Qu.:1    \n                       Max.   :1     Max.   :1     Max.   :1     Max.   :1    \n                       NA's   :512   NA's   :402   NA's   :616   NA's   :653  \n      lcre             lsav              lwda            ppo1      \n Min.   :  0.00   Min.   :   0.00   Min.   :  0.0   Min.   :0.000  \n 1st Qu.:  7.00   1st Qu.:   5.00   1st Qu.:180.0   1st Qu.:1.000  \n Median : 10.00   Median :  10.00   Median :200.0   Median :2.000  \n Mean   : 27.96   Mean   :  44.17   Mean   :219.8   Mean   :2.548  \n 3rd Qu.: 20.00   3rd Qu.:  20.00   3rd Qu.:300.0   3rd Qu.:4.000  \n Max.   :600.00   Max.   :5000.00   Max.   :500.0   Max.   :5.000  \n NA's   :636      NA's   :520       NA's   :160     NA's   :209    \n      ppo2            ppo3            ppo4            ppo5            aro1     \n Min.   :0.000   Min.   :1.000   Min.   :1.000   Min.   :1.000   Min.   :1.00  \n 1st Qu.:1.000   1st Qu.:2.000   1st Qu.:1.000   1st Qu.:1.000   1st Qu.:1.00  \n Median :2.000   Median :2.000   Median :1.000   Median :2.000   Median :1.00  \n Mean   :2.236   Mean   :2.449   Mean   :1.321   Mean   :1.842   Mean   :1.43  \n 3rd Qu.:3.000   3rd Qu.:3.000   3rd Qu.:1.000   3rd Qu.:3.000   3rd Qu.:2.00  \n Max.   :5.000   Max.   :5.000   Max.   :3.000   Max.   :3.000   Max.   :3.00  \n NA's   :230     NA's   :88      NA's   :99      NA's   :106     NA's   :102   \n      aro2            aro3            aro4            aro5      \n Min.   :1.000   Min.   :1.000   Min.   :1.000   Min.   :1.000  \n 1st Qu.:1.000   1st Qu.:1.000   1st Qu.:1.000   1st Qu.:1.000  \n Median :1.000   Median :1.000   Median :1.000   Median :1.000  \n Mean   :1.365   Mean   :1.124   Mean   :1.657   Mean   :1.712  \n 3rd Qu.:1.000   3rd Qu.:1.000   3rd Qu.:2.000   3rd Qu.:2.000  \n Max.   :3.000   Max.   :3.000   Max.   :3.000   Max.   :3.000  \n NA's   :103     NA's   :89      NA's   :112     NA's   :108    \n     income      \n Min.   :  0.00  \n 1st Qu.: 23.00  \n Median : 31.50  \n Mean   : 38.00  \n 3rd Qu.: 42.25  \n Max.   :560.00  \n NA's   :1"
-  },
-  {
-    "objectID": "THE01.html#visualisation-1-income-distribution",
-    "href": "THE01.html#visualisation-1-income-distribution",
-    "title": "Take-Home Exercise 1:Survey Analysis of Informal Labourers’ Income",
-    "section": "Visualisation 1 — Income Distribution",
-    "text": "Visualisation 1 — Income Distribution\n\n\n\n\n\n\n\nNoteVisualisation 1 — Income Distribution\n\n\n\n\nVisualCode\n\n\n\n\n\n\n\n\n\n\n\n\n\nggplot(df, aes(x = income)) +\n  geom_histogram(bins = 30, color = \"white\") +\n  labs(title = \"Income Distribution\", x = \"Income\", y = \"Count\") +\n  theme_minimal()\n\n\n\nObservation:\nIncome is right-skewed. Most labourers fall within lower income brackets while only a small proportion earn substantially higher incomes, indicating inequality in earnings."
-  },
-  {
-    "objectID": "THE01.html#visualisation-2-income-by-province-group-cpro",
-    "href": "THE01.html#visualisation-2-income-by-province-group-cpro",
-    "title": "Take-Home Exercise 1:Survey Analysis of Informal Labourers’ Income",
-    "section": "Visualisation 2 — Income by Province Group (CPRO)",
-    "text": "Visualisation 2 — Income by Province Group (CPRO)\n\n\n\n\n\n\n\nNoteVisualisation 2 — Income by Province Group (CPRO)\n\n\n\n\nVisualCode\n\n\n\n\n\n\n\n\n\n\n\n\n\nggplot(df, aes(cpro, income)) +\n  geom_boxplot(fill = \"steelblue\") +\n  labs(title = \"Income by Province Group\",\n       x = \"Province\",\n       y = \"Income\") +\n  theme_minimal()\n\n\n\nObservation:\nIncome levels differ across provinces, suggesting regional variation in job opportunities and economic development."
-  },
-  {
-    "objectID": "THE01.html#visualisation-3-income-by-education-level",
-    "href": "THE01.html#visualisation-3-income-by-education-level",
-    "title": "Take-Home Exercise 1:Survey Analysis of Informal Labourers’ Income",
-    "section": "Visualisation 3 — Income by Education Level",
-    "text": "Visualisation 3 — Income by Education Level\n\n\n\n\n\n\n\nNoteVisualisation 3 — Income by Education Level\n\n\n\n\nVisualCode\n\n\n\n\n\n\n\n\n\n\n\n\n\nggplot(df, aes(fedu, income)) +\n  geom_boxplot(fill = \"steelblue\") +\n  labs(title = \"Income by Education Level\",\n       x = \"Education Level\",\n       y = \"Income\") +\n  theme_minimal()\n\n\n\nObservation:\nHigher education categories tend to have higher median incomes, indicating that education improves earning potential."
-  },
-  {
-    "objectID": "THE01.html#visualisation-4-income-by-credit-access",
-    "href": "THE01.html#visualisation-4-income-by-credit-access",
-    "title": "Take-Home Exercise 1:Survey Analysis of Informal Labourers’ Income",
-    "section": "Visualisation 4 — Income by Credit Access",
-    "text": "Visualisation 4 — Income by Credit Access\n\n\n\n\n\n\n\nNoteVisualisation 4 — Income by Credit Access\n\n\n\n\nVisualCode\n\n\n\n\n\n\n\n\n\n\n\n\n\ndf_credit &lt;- df |&gt; drop_na(fcra, income)\n\nggplot(df_credit, aes(fcra, income)) +\n  geom_boxplot(fill = \"steelblue\") +\n  labs(title = \"Income by Credit Access\",\n       x = \"Credit Access\",\n       y = \"Income\") +\n  theme_minimal()\n\n\n\nObservation:\nRespondents with access to credit generally report slightly higher median incomes, suggesting financial access may facilitate business expansion or improved employment opportunities."
-  },
-  {
-    "objectID": "THE01.html#visualisation-5-income-vs-savings",
-    "href": "THE01.html#visualisation-5-income-vs-savings",
-    "title": "Take-Home Exercise 1:Survey Analysis of Informal Labourers’ Income",
-    "section": "Visualisation 5 — Income vs Savings",
-    "text": "Visualisation 5 — Income vs Savings\n\n\n\n\n\n\n\nNoteVisualisation 5 — Income vs Savings\n\n\n\n\nVisualCode\n\n\n\n\n\n\n\n\n\n\n\n\n\ndf_scatter &lt;- df |&gt; drop_na(income, lsav)\n\nggplot(df_scatter, aes(income, lsav)) +\n  geom_point(alpha = 0.4) +\n  geom_smooth(method = \"lm\") +\n  labs(title = \"Income vs Savings\",\n       x = \"Income\",\n       y = \"Savings\") +\n  theme_minimal()\n\n\n\nObservation:\nSavings increase as income rises, indicating a positive linear relationship between earning capacity and savings ability."
-  },
-  {
-    "objectID": "THE01.html#visualisation-6-income-by-gender-and-training",
-    "href": "THE01.html#visualisation-6-income-by-gender-and-training",
-    "title": "Take-Home Exercise 1:Survey Analysis of Informal Labourers’ Income",
-    "section": "Visualisation 6 — Income by Gender and Training",
-    "text": "Visualisation 6 — Income by Gender and Training\n\n\n\n\n\n\n\nNoteVisualisation 6 — Income by Gender and Training\n\n\n\n\nVisualCode\n\n\n\n\n\n\n\n\n\n\n\n\n\np1 &lt;- ggplot(df, aes(cgen, income)) +\n  geom_boxplot() +\n  theme_minimal()\n\np2 &lt;- ggplot(df, aes(fvtp, income)) +\n  geom_boxplot() +\n  theme_minimal()\n\np1 + p2\n\n\n\nObservation:\nIncome differences across gender and training status are modest with overlapping distributions."
-  },
-  {
-    "objectID": "THE01.html#visualisation-7-likert-response-distribution-ppo1-aro4",
-    "href": "THE01.html#visualisation-7-likert-response-distribution-ppo1-aro4",
-    "title": "Take-Home Exercise 1:Survey Analysis of Informal Labourers’ Income",
-    "section": "Visualisation 7 — Likert Response Distribution (PPO1 & ARO4)",
-    "text": "Visualisation 7 — Likert Response Distribution (PPO1 & ARO4)\n\n\n\n\n\n\n\nNoteVisualisation 7 — Likert Response Distribution (PPO1 & ARO4)\n\n\n\n\nVisualCode\n\n\n\n\n\n\n\n\n\n\n\n\n\np1 &lt;- df |&gt; \n  drop_na(ppo1) |&gt; \n  count(ppo1) |&gt; \n  ggplot(aes(x = \"\", y = n, fill = factor(ppo1))) +\n  geom_col(position = \"fill\") +\n  scale_y_continuous(labels = scales::percent_format()) +\n  labs(title = \"PPO1 Response Distribution\",\n       x = NULL,\n       y = \"Share\",\n       fill = \"Score\") +\n  theme_minimal()\n\np2 &lt;- df |&gt; \n  drop_na(aro4) |&gt; \n  count(aro4) |&gt; \n  ggplot(aes(x = \"\", y = n, fill = factor(aro4))) +\n  geom_col(position = \"fill\") +\n  scale_y_continuous(labels = scales::percent_format()) +\n  labs(title = \"ARO4 Response Distribution\",\n       x = NULL,\n       y = \"Share\",\n       fill = \"Score\") +\n  theme_minimal()\n\np1 + p2\n\n\n\nObservation:\nResponses cluster around mid-to-high scores, indicating generally positive perceptions."
-  },
-  {
-    "objectID": "THE01.html#visualisation-8-ppo-correlation-heatmap",
-    "href": "THE01.html#visualisation-8-ppo-correlation-heatmap",
-    "title": "Take-Home Exercise 1:Survey Analysis of Informal Labourers’ Income",
-    "section": "Visualisation 8 — PPO Correlation Heatmap",
-    "text": "Visualisation 8 — PPO Correlation Heatmap\n\n\n\n\n\n\n\nNoteVisualisation 8 — PPO Correlation Heatmap\n\n\n\n\nVisualCode\n\n\n\n\n\n\n\n\n\n\n\n\n\nppo_vars &lt;- c(\"ppo1\",\"ppo2\",\"ppo3\",\"ppo4\",\"ppo5\")\n\ndf_ppo &lt;- df |&gt; \n  select(all_of(ppo_vars)) |&gt; \n  drop_na()\n\ncorr_mat &lt;- cor(df_ppo, method = \"spearman\")\n\ncorr_long &lt;- as.data.frame(as.table(corr_mat))\ncolnames(corr_long) &lt;- c(\"Var1\", \"Var2\", \"Rho\")\n\nggplot(corr_long, aes(x = Var1, y = Var2, fill = Rho)) +\n  geom_tile(color = \"white\") +\n  scale_fill_gradient2(midpoint = 0, limits = c(-1, 1)) +\n  labs(title = \"Spearman Correlation Among PPO Likert Items\",\n       x = NULL,\n       y = NULL,\n       fill = \"ρ\") +\n  theme_minimal() +\n  theme(axis.text.x = element_text(angle = 90, hjust = 1),\n        panel.grid = element_blank())\n\n\n\nObservation:\nThe PPO items show moderate positive correlations, indicating related but distinct perceptions."
-  },
-  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "👋 Welcome",
@@ -327,6 +215,20 @@
     "title": "👋 Welcome",
     "section": "",
     "text": "About Me"
+  },
+  {
+    "objectID": "THE01.html",
+    "href": "THE01.html",
+    "title": "Take-Home Exercise 1:Survey Analysis of Informal Labourers’ Income",
+    "section": "",
+    "text": "This report analyses the income of informal rural labourers in the northern mountainous regions of Vietnam."
+  },
+  {
+    "objectID": "THE01.html#cleaning-labelling",
+    "href": "THE01.html#cleaning-labelling",
+    "title": "Take-Home Exercise 1 – Survey Analysis of Informal Labourers’ Income",
+    "section": "Cleaning & labelling",
+    "text": "Cleaning & labelling\n\ndf &lt;- df %&gt;%\n  mutate(\n    # Province codes (paper provinces)\n    Province = case_when(\n      CPRO == 1 ~ \"Tuyen Quang\",\n      CPRO == 2 ~ \"Quang Ninh\",\n      CPRO == 3 ~ \"Ha Giang\",\n      CPRO == 4 ~ \"Yen Bai\",\n      CPRO == 5 ~ \"Bac Giang\",\n      TRUE ~ NA_character_\n    ) %&gt;% factor(),\n\n    # Gender: \"1\" = Male, \"2\" = Female (based on your data)\n    Gender = case_when(\n      CGEN == \"1\" ~ \"Male\",\n      CGEN == \"2\" ~ \"Female\",\n      TRUE ~ NA_character_\n    ) %&gt;% factor(levels = c(\"Female\", \"Male\")),\n\n    # Education codes shown in your dataset\n    Education = case_when(\n      FEDU == 0 ~ \"Primary\",\n      FEDU == 1 ~ \"Lower Secondary\",\n      FEDU == 2 ~ \"Upper Secondary\",\n      FEDU == 3 ~ \"Others\",\n      TRUE ~ NA_character_\n    ) %&gt;% factor(levels = c(\"Primary\", \"Lower Secondary\", \"Upper Secondary\", \"Others\")),\n\n    # Vocational training: 1=Short, 2=Long (based on your data)\n    Training = case_when(\n      FVTP == 1 ~ \"Short\",\n      FVTP == 2 ~ \"Long\",\n      TRUE ~ NA_character_\n    ) %&gt;% factor(levels = c(\"Short\", \"Long\")),\n\n    # Credit access: 1 and 2 exist in your data.\n    # We'll interpret 1 = Yes, 2 = No (common coding). If your prof says otherwise, swap labels.\n    Credit = case_when(\n      FCRA == 1 ~ \"Yes\",\n      FCRA == 2 ~ \"No\",\n      TRUE ~ NA_character_\n    ) %&gt;% factor(levels = c(\"No\", \"Yes\")),\n\n    # Tech application: 1=Low, 2=Adequate\n    Technology = case_when(\n      FTAP == 1 ~ \"Low\",\n      FTAP == 2 ~ \"Adequate\",\n      TRUE ~ NA_character_\n    ) %&gt;% factor(levels = c(\"Low\", \"Adequate\")),\n\n    Income = as.numeric(TEIN)\n  )"
   },
   {
     "objectID": "about.html",
@@ -537,5 +439,117 @@
     "title": "Hands-on Exercise 3",
     "section": "4.4.1 Building an animated bubble plot: ggplotly() method",
     "text": "4.4.1 Building an animated bubble plot: ggplotly() method\n\ngg &lt;- ggplot(globalPop, aes(x = Old, y = Young, size = Population,  colour = Country)) + geom_point(aes(size = Population, frame = Year), alpha = 0.7) + scale_colour_manual(values = country_colors) + scale_size(range = c(2, 12)) + labs(x = '% Aged', y = '% Young') + theme(legend.position='none') \n\nggplotly(gg)    \n\n\n\n\n\n\n4.4.2 Building an animated bubble plot: plot_ly() method\n\nbp &lt;- globalPop %&gt;% plot_ly(x = ~Old, y = ~Young, size = ~Population, color = ~Continent, sizes = c(2, 100), frame = ~Year, text = ~Country, hoverinfo = \"text\", type = 'scatter', mode = 'markers') %&gt;% layout(showlegend = FALSE) \n\nbp"
+  },
+  {
+    "objectID": "THE01.html#data-cleaning-and-prepartion",
+    "href": "THE01.html#data-cleaning-and-prepartion",
+    "title": "Take-Home Exercise 1:Survey Analysis of Informal Labourers’ Income",
+    "section": "Data cleaning and prepartion",
+    "text": "Data cleaning and prepartion\nThe dataset was cleaned and prepared before performing data visualization and analysis\nCategorical variables for example, province, gender, education, training and credit access were converted into factor variables\nContinuous measures for example income were also converted to numeric format to ensure accurate plotting.\nLikert-scale items were also converted to numeric values\nInvalid entries were also set to NA to exclude them from the data\n\ndf &lt;- df_raw\n\n# Categorical variables converted factor\ndf$cpro &lt;- factor(df$cpro)\ndf$cgen &lt;- factor(df$cgen)\ndf$crac &lt;- factor(df$crac)\ndf$cjob &lt;- factor(df$cjob)\ndf$cqui &lt;- factor(df$cqui)\n\ndf$fedu &lt;- factor(df$fedu)\ndf$fvtp &lt;- factor(df$fvtp)\ndf$fcra &lt;- factor(df$fcra)\ndf$ftap &lt;- factor(df$ftap)\n\n\n# Numeric / continuous variables\ndf$tein &lt;- as.numeric(df$tein)\ndf$tain &lt;- as.numeric(df$tain)\ndf$tsii &lt;- as.numeric(df$tsii)\ndf$toin &lt;- as.numeric(df$toin)\ndf$lcre &lt;- as.numeric(df$lcre)\ndf$lsav &lt;- as.numeric(df$lsav)\ndf$lwda &lt;- as.numeric(df$lwda)\n\n\n# Likert-scale converted to numeric\ndf$ppo1 &lt;- as.numeric(df$ppo1)\ndf$ppo2 &lt;- as.numeric(df$ppo2)\ndf$ppo3 &lt;- as.numeric(df$ppo3)\ndf$ppo4 &lt;- as.numeric(df$ppo4)\ndf$ppo5 &lt;- as.numeric(df$ppo5)\n\ndf$aro1 &lt;- as.numeric(df$aro1)\ndf$aro2 &lt;- as.numeric(df$aro2)\ndf$aro3 &lt;- as.numeric(df$aro3)\ndf$aro4 &lt;- as.numeric(df$aro4)\ndf$aro5 &lt;- as.numeric(df$aro5)\n\n\n# convert to NA\ndf$aro2[df$aro2 &gt; 3] &lt;- NA\n\n\n#final cleaned dataset\ndf$income &lt;- df$tein\n\n\nsummary(df)\n\n cpro    cgen    crac      cjob       cqui          tein       \n 1:150   1:592   1:336   1   :515   1   : 30   Min.   :  0.00  \n 2:144   2:133   2:389   2   : 62   2   :102   1st Qu.: 23.00  \n 3:141                   3   : 99   3   :307   Median : 31.50  \n 4:143                   NA's: 49   4   :118   Mean   : 38.00  \n 5:147                              5   :164   3rd Qu.: 42.25  \n                                    NA's:  4   Max.   :560.00  \n                                               NA's   :1       \n      tain             tsii              toin          fedu       fvtp    \n Min.   :  0.00   Min.   :  0.000   Min.   : -6.00   0   :474   1   :610  \n 1st Qu.: 17.00   1st Qu.:  0.000   1st Qu.:  0.00   1   :136   2   : 92  \n Median : 23.00   Median :  0.000   Median :  3.00   2   : 73   NA's: 23  \n Mean   : 23.81   Mean   :  5.566   Mean   :  8.65   3   : 19             \n 3rd Qu.: 30.00   3rd Qu.:  6.500   3rd Qu.: 10.00   NA's: 23             \n Max.   :340.00   Max.   :100.000   Max.   :180.00                        \n NA's   :1        NA's   :6                                               \n   fcra       ftap          lho1          lho2          lho3          lho4    \n 1   :636   1   :296   Min.   :1     Min.   :1     Min.   :1     Min.   :1    \n 2   : 87   2   :327   1st Qu.:1     1st Qu.:1     1st Qu.:1     1st Qu.:1    \n NA's:  2   NA's:102   Median :1     Median :1     Median :1     Median :1    \n                       Mean   :1     Mean   :1     Mean   :1     Mean   :1    \n                       3rd Qu.:1     3rd Qu.:1     3rd Qu.:1     3rd Qu.:1    \n                       Max.   :1     Max.   :1     Max.   :1     Max.   :1    \n                       NA's   :512   NA's   :402   NA's   :616   NA's   :653  \n      lcre             lsav              lwda            ppo1      \n Min.   :  0.00   Min.   :   0.00   Min.   :  0.0   Min.   :0.000  \n 1st Qu.:  7.00   1st Qu.:   5.00   1st Qu.:180.0   1st Qu.:1.000  \n Median : 10.00   Median :  10.00   Median :200.0   Median :2.000  \n Mean   : 27.96   Mean   :  44.17   Mean   :219.8   Mean   :2.548  \n 3rd Qu.: 20.00   3rd Qu.:  20.00   3rd Qu.:300.0   3rd Qu.:4.000  \n Max.   :600.00   Max.   :5000.00   Max.   :500.0   Max.   :5.000  \n NA's   :636      NA's   :520       NA's   :160     NA's   :209    \n      ppo2            ppo3            ppo4            ppo5            aro1     \n Min.   :0.000   Min.   :1.000   Min.   :1.000   Min.   :1.000   Min.   :1.00  \n 1st Qu.:1.000   1st Qu.:2.000   1st Qu.:1.000   1st Qu.:1.000   1st Qu.:1.00  \n Median :2.000   Median :2.000   Median :1.000   Median :2.000   Median :1.00  \n Mean   :2.236   Mean   :2.449   Mean   :1.321   Mean   :1.842   Mean   :1.43  \n 3rd Qu.:3.000   3rd Qu.:3.000   3rd Qu.:1.000   3rd Qu.:3.000   3rd Qu.:2.00  \n Max.   :5.000   Max.   :5.000   Max.   :3.000   Max.   :3.000   Max.   :3.00  \n NA's   :230     NA's   :88      NA's   :99      NA's   :106     NA's   :102   \n      aro2            aro3            aro4            aro5      \n Min.   :1.000   Min.   :1.000   Min.   :1.000   Min.   :1.000  \n 1st Qu.:1.000   1st Qu.:1.000   1st Qu.:1.000   1st Qu.:1.000  \n Median :1.000   Median :1.000   Median :1.000   Median :1.000  \n Mean   :1.365   Mean   :1.124   Mean   :1.657   Mean   :1.712  \n 3rd Qu.:1.000   3rd Qu.:1.000   3rd Qu.:2.000   3rd Qu.:2.000  \n Max.   :3.000   Max.   :3.000   Max.   :3.000   Max.   :3.000  \n NA's   :103     NA's   :89      NA's   :112     NA's   :108    \n     income      \n Min.   :  0.00  \n 1st Qu.: 23.00  \n Median : 31.50  \n Mean   : 38.00  \n 3rd Qu.: 42.25  \n Max.   :560.00  \n NA's   :1"
+  },
+  {
+    "objectID": "THE01.html#visualisation-2-income-by-province-group-cpro",
+    "href": "THE01.html#visualisation-2-income-by-province-group-cpro",
+    "title": "Take-Home Exercise 1:Survey Analysis of Informal Labourers’ Income",
+    "section": "Visualisation 2 — Income by Province Group (CPRO)",
+    "text": "Visualisation 2 — Income by Province Group (CPRO)\n\n\n\n\n\n\n\nNoteVisualisation 2 — Income by Province Group (CPRO)\n\n\n\n\nVisualCode\n\n\n\n\n\n\n\n\n\n\n\n\n\nggplot(df, aes(cpro, income)) +\n  geom_boxplot(fill = \"steelblue\") +\n  labs(title = \"Income by Province Group\",\n       x = \"Province\",\n       y = \"Income\") +\n  theme_minimal()\n\n\n\nObservation:\nIncome levels differ across provinces, suggesting regional variation in job opportunities and economic development."
+  },
+  {
+    "objectID": "THE01.html#section",
+    "href": "THE01.html#section",
+    "title": "Take-Home Exercise 1 – Survey Analysis of Informal Labourers’ Income",
+    "section": "————————————————————————",
+    "text": "————————————————————————\n\n\n\n\n\n\nNoteVisualisation 1: Income Distribution\n\n\n\n\nCode\nggplot(df, aes(x = income)) +\n  geom_histogram(bins = 30, color = \"white\") +\n  labs(\n    title = \"Distribution of Income\",\n    x = \"Income\",\n    y = \"Count\"\n  ) +\n  theme_minimal()\n\n\nVisual\n\n\n\n\n\n\n\n\n\nObservation:\nThe histogram shows a right-skewed income distribution. Most respondents are concentrated in the lower income range, while a smaller number earn substantially higher incomes."
+  },
+  {
+    "objectID": "THE01.html#visualisation-1-income-distribution",
+    "href": "THE01.html#visualisation-1-income-distribution",
+    "title": "Take-Home Exercise 1:Survey Analysis of Informal Labourers’ Income",
+    "section": "Visualisation 1 — Income Distribution",
+    "text": "Visualisation 1 — Income Distribution\n\n\n\n\n\n\n\nNoteVisualisation 1 — Income Distribution\n\n\n\n\nVisualCode\n\n\n\n\n\n\n\n\n\n\n\n\n\nggplot(df, aes(x = income)) +\n  geom_histogram(bins = 30, color = \"white\") +\n  labs(title = \"Income Distribution\", x = \"Income\", y = \"Count\") +\n  theme_minimal()\n\n\n\nObservation:\nIncome is right-skewed. Most labourers fall within lower income brackets while only a small proportion earn substantially higher incomes, indicating inequality in earnings."
+  },
+  {
+    "objectID": "THE01.html#visualisation-5-income-vs-savings",
+    "href": "THE01.html#visualisation-5-income-vs-savings",
+    "title": "Take-Home Exercise 1:Survey Analysis of Informal Labourers’ Income",
+    "section": "Visualisation 5 — Income vs Savings",
+    "text": "Visualisation 5 — Income vs Savings\n\n\n\n\n\n\n\nNoteVisualisation 5 — Income vs Savings\n\n\n\n\nVisualCode\n\n\n\n\n\n\n\n\n\n\n\n\n\ndf_scatter &lt;- df |&gt; drop_na(income, lsav)\n\nggplot(df_scatter, aes(income, lsav)) +\n  geom_point(alpha = 0.4) +\n  geom_smooth(method = \"lm\") +\n  labs(title = \"Income vs Savings\",\n       x = \"Income\",\n       y = \"Savings\") +\n  theme_minimal()\n\n\n\nObservation:\nSavings increase as income rises, indicating a positive linear relationship between earning capacity and savings ability."
+  },
+  {
+    "objectID": "THE01.html#visualisation-3-income-by-education-level",
+    "href": "THE01.html#visualisation-3-income-by-education-level",
+    "title": "Take-Home Exercise 1:Survey Analysis of Informal Labourers’ Income",
+    "section": "Visualisation 3 — Income by Education Level",
+    "text": "Visualisation 3 — Income by Education Level\n\n\n\n\n\n\n\nNoteVisualisation 3 — Income by Education Level\n\n\n\n\nVisualCode\n\n\n\n\n\n\n\n\n\n\n\n\n\nggplot(df, aes(fedu, income)) +\n  geom_boxplot(fill = \"steelblue\") +\n  labs(title = \"Income by Education Level\",\n       x = \"Education Level\",\n       y = \"Income\") +\n  theme_minimal()\n\n\n\nObservation:\nHigher education categories tend to have higher median incomes, indicating that education improves earning potential."
+  },
+  {
+    "objectID": "THE01.html#visualisation-4-income-by-credit-access",
+    "href": "THE01.html#visualisation-4-income-by-credit-access",
+    "title": "Take-Home Exercise 1:Survey Analysis of Informal Labourers’ Income",
+    "section": "Visualisation 4 — Income by Credit Access",
+    "text": "Visualisation 4 — Income by Credit Access\n\n\n\n\n\n\n\nNoteVisualisation 4 — Income by Credit Access\n\n\n\n\nVisualCode\n\n\n\n\n\n\n\n\n\n\n\n\n\ndf_credit &lt;- df |&gt; drop_na(fcra, income)\n\nggplot(df_credit, aes(fcra, income)) +\n  geom_boxplot(fill = \"steelblue\") +\n  labs(title = \"Income by Credit Access\",\n       x = \"Credit Access\",\n       y = \"Income\") +\n  theme_minimal()\n\n\n\nObservation:\nRespondents with access to credit generally report slightly higher median incomes, suggesting financial access may facilitate business expansion or improved employment opportunities."
+  },
+  {
+    "objectID": "THE01.html#visualisation-6-income-by-gender-and-training",
+    "href": "THE01.html#visualisation-6-income-by-gender-and-training",
+    "title": "Take-Home Exercise 1:Survey Analysis of Informal Labourers’ Income",
+    "section": "Visualisation 6 — Income by Gender and Training",
+    "text": "Visualisation 6 — Income by Gender and Training\n\n\n\n\n\n\n\nNoteVisualisation 6 — Income by Gender and Training\n\n\n\n\nVisualCode\n\n\n\n\n\n\n\n\n\n\n\n\n\np1 &lt;- ggplot(df, aes(cgen, income)) +\n  geom_boxplot() +\n  theme_minimal()\n\np2 &lt;- ggplot(df, aes(fvtp, income)) +\n  geom_boxplot() +\n  theme_minimal()\n\np1 + p2\n\n\n\nObservation:\nIncome differences across gender and training status are modest with overlapping distributions."
+  },
+  {
+    "objectID": "THE01.html#visualisation-7-likert-response-distribution-ppo1-aro4",
+    "href": "THE01.html#visualisation-7-likert-response-distribution-ppo1-aro4",
+    "title": "Take-Home Exercise 1:Survey Analysis of Informal Labourers’ Income",
+    "section": "Visualisation 7 — Likert Response Distribution (PPO1 & ARO4)",
+    "text": "Visualisation 7 — Likert Response Distribution (PPO1 & ARO4)\n\n\n\n\n\n\n\nNoteVisualisation 7 — Likert Response Distribution (PPO1 & ARO4)\n\n\n\n\nVisualCode\n\n\n\n\n\n\n\n\n\n\n\n\n\np1 &lt;- df |&gt; \n  drop_na(ppo1) |&gt; \n  count(ppo1) |&gt; \n  ggplot(aes(x = \"\", y = n, fill = factor(ppo1))) +\n  geom_col(position = \"fill\") +\n  scale_y_continuous(labels = scales::percent_format()) +\n  labs(title = \"PPO1 Response Distribution\",\n       x = NULL,\n       y = \"Share\",\n       fill = \"Score\") +\n  theme_minimal()\n\np2 &lt;- df |&gt; \n  drop_na(aro4) |&gt; \n  count(aro4) |&gt; \n  ggplot(aes(x = \"\", y = n, fill = factor(aro4))) +\n  geom_col(position = \"fill\") +\n  scale_y_continuous(labels = scales::percent_format()) +\n  labs(title = \"ARO4 Response Distribution\",\n       x = NULL,\n       y = \"Share\",\n       fill = \"Score\") +\n  theme_minimal()\n\np1 + p2\n\n\n\nObservation:\nResponses cluster around mid-to-high scores, indicating generally positive perceptions."
+  },
+  {
+    "objectID": "THE01.html#visualisation-8-ppo-correlation-heatmap",
+    "href": "THE01.html#visualisation-8-ppo-correlation-heatmap",
+    "title": "Take-Home Exercise 1:Survey Analysis of Informal Labourers’ Income",
+    "section": "Visualisation 8 — PPO Correlation Heatmap",
+    "text": "Visualisation 8 — PPO Correlation Heatmap\n\n\n\n\n\n\n\nNoteVisualisation 8 — PPO Correlation Heatmap\n\n\n\n\nVisualCode\n\n\n\n\n\n\n\n\n\n\n\n\n\nppo_vars &lt;- c(\"ppo1\",\"ppo2\",\"ppo3\",\"ppo4\",\"ppo5\")\n\ndf_ppo &lt;- df |&gt; \n  select(all_of(ppo_vars)) |&gt; \n  drop_na()\n\ncorr_mat &lt;- cor(df_ppo, method = \"spearman\")\n\ncorr_long &lt;- as.data.frame(as.table(corr_mat))\ncolnames(corr_long) &lt;- c(\"Var1\", \"Var2\", \"Rho\")\n\nggplot(corr_long, aes(x = Var1, y = Var2, fill = Rho)) +\n  geom_tile(color = \"white\") +\n  scale_fill_gradient2(midpoint = 0, limits = c(-1, 1)) +\n  labs(title = \"Spearman Correlation Among PPO Likert Items\",\n       x = NULL,\n       y = NULL,\n       fill = \"ρ\") +\n  theme_minimal() +\n  theme(axis.text.x = element_text(angle = 90, hjust = 1),\n        panel.grid = element_blank())\n\n\n\nObservation:\nThe PPO items show moderate positive correlations, indicating related but distinct perceptions."
+  },
+  {
+    "objectID": "HE06.html#getting-started",
+    "href": "HE06.html#getting-started",
+    "title": "Hands-on Exercise 6",
+    "section": "Getting Started",
+    "text": "Getting Started\nInstall and launch the following R packages\n\npacman::p_load(\n  scales,\n  viridis,\n  lubridate,\n  ggthemes,\n  gridExtra,\n  readxl,\n  knitr,\n  data.table,\n  ggHoriPlot,\n  tidyverse\n)\n\nlibrary(CGPfunctions)\n?newggslopegraph"
+  },
+  {
+    "objectID": "HE06.html#data",
+    "href": "HE06.html#data",
+    "title": "Hands-on Exercise 6",
+    "section": "Data",
+    "text": "Data\nLoading the data to the R environment by using read_csv() function of readr package\n\nattacks &lt;- read_csv(\"chap06/data//eventlog.csv\")"
+  },
+  {
+    "objectID": "HE06.html#plotting-calendar-heatmap",
+    "href": "HE06.html#plotting-calendar-heatmap",
+    "title": "Hands-on Exercise 6",
+    "section": "17.4 Plotting Calendar Heatmap",
+    "text": "17.4 Plotting Calendar Heatmap\n\n17.4.3 Examining the data structure\n\nkable(head(attacks))\n\n\n\n\ntimestamp\nsource_country\ntz\n\n\n\n\n2015-03-12 15:59:16\nCN\nAsia/Shanghai\n\n\n2015-03-12 16:00:48\nFR\nEurope/Paris\n\n\n2015-03-12 16:02:26\nCN\nAsia/Shanghai\n\n\n2015-03-12 16:02:38\nUS\nAmerica/Chicago\n\n\n2015-03-12 16:03:22\nCN\nAsia/Shanghai\n\n\n2015-03-12 16:03:45\nCN\nAsia/Shanghai\n\n\n\n\n\n\n\n17.4.4 Data Preparation\n\nmake_hr_wkday &lt;- function(ts, sc, tz) {\n  real_times &lt;- ymd_hms(ts, \n                        tz = tz[1], \n                        quiet = TRUE)\n  dt &lt;- data.table(source_country = sc,\n                   wkday = weekdays(real_times),\n                   hour = hour(real_times))\n  return(dt)\n}\n\nwkday_levels &lt;- c('Saturday', 'Friday', \n                  'Thursday', 'Wednesday', \n                  'Tuesday', 'Monday', \n                  'Sunday')\n\nattacks &lt;- attacks %&gt;%\n  group_by(tz) %&gt;%\n  do(make_hr_wkday(.$timestamp, \n                   .$source_country, \n                   .$tz)) %&gt;% \n  ungroup() %&gt;% \n  mutate(wkday = factor(\n    wkday, levels = wkday_levels),\n    hour  = factor(\n      hour, levels = 0:23))\n\nkable(head(attacks))\n\n\n\n\ntz\nsource_country\nwkday\nhour\n\n\n\n\nAfrica/Cairo\nBG\nSaturday\n20\n\n\nAfrica/Cairo\nTW\nSunday\n6\n\n\nAfrica/Cairo\nTW\nSunday\n8\n\n\nAfrica/Cairo\nCN\nSunday\n11\n\n\nAfrica/Cairo\nUS\nSunday\n15\n\n\nAfrica/Cairo\nCA\nMonday\n11\n\n\n\n\n\n\n\n17.4.5 Building the Calendar Heatmaps\n\ngrouped &lt;- attacks %&gt;% \n  count(wkday, hour) %&gt;% \n  ungroup() %&gt;%\n  na.omit()\n\nggplot(grouped, \n       aes(hour, \n           wkday, \n           fill = n)) + \ngeom_tile(color = \"white\", \n          size = 0.1) + \ntheme_tufte(base_family = \"Helvetica\") + \ncoord_equal() +\nscale_fill_gradient(name = \"# of attacks\",\n                    low = \"sky blue\", \n                    high = \"dark blue\") +\nlabs(x = NULL, \n     y = NULL, \n     title = \"Attacks by weekday and time of day\") +\ntheme(axis.ticks = element_blank(),\n      plot.title = element_text(hjust = 0.5),\n      legend.title = element_text(size = 8),\n      legend.text = element_text(size = 6) )\n\n\n\n\n\n\n\n\n\n\n17.4.6 Building Multiple Calendar Heatmaps\n\ntop4 &lt;- attacks %&gt;% \n  count(source_country, sort = TRUE) %&gt;% \n  slice(1:4) %&gt;% \n  pull(source_country)\n\ngrouped &lt;- attacks %&gt;% \n  filter(source_country %in% top4) %&gt;%\n  count(source_country, wkday, hour) %&gt;% \n  ungroup() %&gt;%\n  na.omit()\n\nggplot(grouped, \n       aes(hour, \n           wkday, \n           fill = n)) + \ngeom_tile(color = \"white\", \n          size = 0.1) + \ntheme_tufte(base_family = \"Helvetica\") + \ncoord_equal() +\nfacet_wrap(~source_country, ncol = 2) +\nscale_fill_gradient(name = \"# of attacks\",\n                    low = \"sky blue\", \n                    high = \"dark blue\") +\nlabs(x = NULL, \n     y = NULL, \n     title = \"Attacks by weekday and time of day (Top 4 source countries)\") +\ntheme(axis.ticks = element_blank(),\n      plot.title = element_text(hjust = 0.5),\n      legend.title = element_text(size = 8),\n      legend.text = element_text(size = 6) )\n\n\n\n\n\n\n\n\n\n\n17.4.7 Plotting Multiple Calendar Heatmaps\n\nattacks_by_country &lt;- count(\n  attacks, source_country) %&gt;%\n  mutate(percent = percent(n/sum(n))) %&gt;%\n  arrange(desc(n))\n\ntop4 &lt;- attacks_by_country$source_country[1:4]\ntop4_attacks &lt;- attacks %&gt;%\n  filter(source_country %in% top4) %&gt;%\n  count(source_country, wkday, hour) %&gt;%\n  ungroup() %&gt;%\n  mutate(source_country = factor(\n    source_country, levels = top4)) %&gt;%\n  na.omit()\n\n\n\n17.4.8 Plotting Multiple Calendar Heatmaps\n\nggplot(top4_attacks, \n       aes(hour, \n           wkday, \n           fill = n)) + \n  geom_tile(color = \"white\", \n          size = 0.1) + \n  theme_tufte(base_family = \"Helvetica\") + \n  coord_equal() +\n  scale_fill_gradient(name = \"# of attacks\",\n                    low = \"sky blue\", \n                    high = \"dark blue\") +\n  facet_wrap(~source_country, ncol = 2) +\n  labs(x = NULL, y = NULL, \n     title = \"Attacks on top 4 countries by weekday and time of day\") +\n  theme(axis.ticks = element_blank(),\n        axis.text.x = element_text(size = 7),\n        plot.title = element_text(hjust = 0.5),\n        legend.title = element_text(size = 8),\n        legend.text = element_text(size = 6) )"
+  },
+  {
+    "objectID": "HE06.html#plotting-cycle-plot",
+    "href": "HE06.html#plotting-cycle-plot",
+    "title": "Hands-on Exercise 6",
+    "section": "17.5 Plotting Cycle Plot",
+    "text": "17.5 Plotting Cycle Plot\n\n17.5.1 Step 1: Data Import\n\nair &lt;- read_excel(\"chap06/data/arrivals_by_air.xlsx\")\n\n\n\n17.5.2 Step 2: Deriving month and year fields\n\nair$month &lt;- factor(month(air$`Month-Year`), \n                    levels=1:12, \n                    labels=month.abb, \n                    ordered=TRUE) \nair$year &lt;- year(ymd(air$`Month-Year`))\n\n\n\n17.5.3 Step 4: Extracting the target country\n\nVietnam &lt;- air %&gt;% \n  select(`Vietnam`, \n         month, \n         year) %&gt;%\n  filter(year &gt;= 2010)\n\n\n\n17.5.4 Step 5: Computing year average arrivals by month\n\nhline.data &lt;- Vietnam %&gt;% \n  group_by(month) %&gt;%\n  summarise(avgvalue = mean(`Vietnam`))\n\n\n\n17.5.5 Srep 6: Plotting the cycle plot\n\nggplot() + \n  geom_line(data=Vietnam,\n            aes(x=year, \n                y=`Vietnam`, \n                group=month), \n            colour=\"black\") +\n  geom_hline(aes(yintercept=avgvalue), \n             data=hline.data, \n             linetype=6, \n             colour=\"red\", \n             size=0.5) + \n  facet_grid(~month) +\n  labs(axis.text.x = element_blank(),\n       title = \"Visitor arrivals from Vietnam by air, Jan 2010-Dec 2019\") +\n  xlab(\"\") +\n  ylab(\"No. of Visitors\") +\n  theme_tufte(base_family = \"Helvetica\")"
+  },
+  {
+    "objectID": "HE06.html#plotting-slopegraph",
+    "href": "HE06.html#plotting-slopegraph",
+    "title": "Hands-on Exercise 6",
+    "section": "17.6 Plotting Slopegraph",
+    "text": "17.6 Plotting Slopegraph\n\n17.6.1 Step 1: Data Import\n\nrice &lt;- read_csv(\"chap06/data/rice.csv\")"
+  },
+  {
+    "objectID": "HE06.html#step-2-plotting-the-slopegraph",
+    "href": "HE06.html#step-2-plotting-the-slopegraph",
+    "title": "Hands-on Exercise 6",
+    "section": "17.6.2 Step 2: Plotting the slopegraph",
+    "text": "17.6.2 Step 2: Plotting the slopegraph\n\nrice %&gt;% \n  mutate(Year = factor(Year)) %&gt;%\n  filter(Year %in% c(1961, 1980)) %&gt;%\n  newggslopegraph(Year, Yield, Country,\n                Title = \"Rice Yield of Top 11 Asian Counties\",\n                SubTitle = \"1961-1980\",\n                Caption = \"Prepared by: Dr. Kam Tin Seong\")"
   }
 ]
