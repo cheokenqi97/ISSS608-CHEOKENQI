@@ -165,7 +165,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-take-home-exercises">    
         <li>
-    <a class="dropdown-item" href="./THE01.html">
+    <a class="dropdown-item" href="./TH01.qmd">
  <span class="dropdown-text">TH01</span></a>
   </li>  
     </ul>
@@ -371,13 +371,16 @@ $ ARO5 &lt;dbl&gt; 1, 1, 1, NA, 1, 1, 3, 3, 3, 3, 3, NA, NA, 1, NA, NA, NA, NA, 
 <span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">lsav =</span> <span class="fu">as.numeric</span>(lsav),</span>
 <span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">lwda =</span> <span class="fu">as.numeric</span>(lwda),</span>
 <span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">income =</span> tein</span>
-<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">aro2 =</span> <span class="fu">na_if</span>(aro2, <span class="dv">11</span>),</span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>    <span class="at">aro4 =</span> <span class="fu">suppressWarnings</span>(<span class="fu">as.numeric</span>(aro4)),</span>
 <span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(income))</span>
-<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>    <span class="at">income =</span> tein</span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
 <span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(income))</span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 724
 Columns: 31
@@ -409,7 +412,7 @@ $ ppo5   &lt;dbl&gt; 3, 1, 1, NA, 1, 1, 3, 3, 3, 3, 3, NA, NA, 1, NA, NA, NA, NA
 $ aro1   &lt;dbl&gt; 3, 1, 1, NA, 1, 1, 2, 2, 2, 2, 2, NA, NA, NA, NA, NA, NA, NA, N…
 $ aro2   &lt;dbl&gt; 1, 1, 1, NA, 1, 1, 1, 1, 1, 2, 1, NA, NA, 2, NA, NA, NA, NA, NA…
 $ aro3   &lt;dbl&gt; 1, 1, 1, NA, 1, 1, 3, 3, 2, 3, 3, NA, NA, 1, NA, 1, NA, NA, NA,…
-$ aro4   &lt;chr&gt; "3", "3", NA, NA, "2", "2", "3", "3", "3", "3", "3", NA, NA, "3…
+$ aro4   &lt;dbl&gt; 3, 3, NA, NA, 2, 2, 3, 3, 3, 3, 3, NA, NA, 3, NA, NA, NA, NA, N…
 $ aro5   &lt;dbl&gt; 1, 1, 1, NA, 1, 1, 3, 3, 3, 3, 3, NA, NA, 1, NA, NA, NA, NA, NA…
 $ income &lt;dbl&gt; 37, 25, 33, 35, 36, 21, 35, 36, 38, 30, 58, 24, 32, 11, 22, 95,…</code></pre>
 </div>
@@ -437,7 +440,7 @@ $ income &lt;dbl&gt; 37, 25, 33, 35, 36, 21, 35, 36, 38, 30, 58, 24, 32, 11, 22,
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="THE01_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Untitled_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -504,8 +507,7 @@ $ income &lt;dbl&gt; 37, 25, 33, 35, 36, 21, 35, 36, 38, 30, 58, 24, 32, 11, 22,
 <span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    ),</span>
 <span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">2</span>,</span>
 <span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Summary Statistics of Income"</span></span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -536,7 +538,7 @@ The income distribution is heavily right-skewed, with the majority of labourers 
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="THE01_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Untitled_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -591,7 +593,7 @@ The income distribution is heavily right-skewed, with the majority of labourers 
 </div>
 </div>
 <p><strong>Observation:</strong><br>
-Income varies across provinces, education levels, and credit access categories. Education shows the clearest pattern, with higher education levels generally associated with higher median incomes. Credit access is linked to slightly higher earnings, while provincial differences are present but less pronounced.</p>
+Income varies across provinces, education levels, and credit access categories. Education shows the clearest pattern, with higher education levels generally associated with higher median incomes. Credit access is linked to slightly higher earnings, while provincial differences are present but less pronounced. Values above the 98th percentile were visually capped to prevent extreme outliers from dominating the comparison, and missing values were excluded for clearer group contrasts.</p>
 </div>
 </div>
 <hr>
@@ -617,7 +619,7 @@ Income varies across provinces, education levels, and credit access categories. 
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="THE01_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Untitled_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -672,65 +674,64 @@ Income varies across provinces, education levels, and credit access categories. 
 </div>
 </div>
 <div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>y_max <span class="ot">&lt;-</span> <span class="fu">quantile</span>(df<span class="sc">$</span>income, <span class="fl">0.95</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot A: Income by Gender</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>df_gender <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">drop_na</span>(income, cgen)</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>p_gender <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df_gender, <span class="fu">aes</span>(<span class="at">x =</span> cgen, <span class="at">y =</span> income)) <span class="sc">+</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, y_max)) <span class="sc">+</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Income by Gender"</span>,</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Gender"</span>,</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Income (Million VND)"</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co">#  Plot B: Income by Vocational Training Type</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>df_training <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">drop_na</span>(income, fvtp)</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>p_training <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df_training, <span class="fu">aes</span>(<span class="at">x =</span> fvtp, <span class="at">y =</span> income)) <span class="sc">+</span></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, y_max)) <span class="sc">+</span></span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Income by Vocational Training Type"</span>,</span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Training type"</span>,</span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Income (Million VND)"</span></span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>p_gender <span class="sc">+</span> p_training</span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Summary Table</span></span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>summary_v3 <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
-<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>  df_gender <span class="sc">%&gt;%</span></span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(<span class="at">Group =</span> <span class="st">"Gender"</span>, <span class="at">Category =</span> cgen) <span class="sc">%&gt;%</span></span>
-<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(</span>
-<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>      <span class="at">N =</span> <span class="fu">n</span>(),</span>
-<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>      <span class="at">Median_Income =</span> <span class="fu">median</span>(income, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>      <span class="at">Mean_Income =</span> <span class="fu">mean</span>(income, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>      <span class="at">SD =</span> <span class="fu">sd</span>(income, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>      <span class="at">.groups =</span> <span class="st">"drop"</span></span>
-<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>  df_training <span class="sc">%&gt;%</span></span>
-<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(<span class="at">Group =</span> <span class="st">"Training type"</span>, <span class="at">Category =</span> fvtp) <span class="sc">%&gt;%</span></span>
-<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(</span>
-<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>      <span class="at">N =</span> <span class="fu">n</span>(),</span>
-<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>      <span class="at">Median_Income =</span> <span class="fu">median</span>(income, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>      <span class="at">Mean_Income =</span> <span class="fu">mean</span>(income, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>      <span class="at">SD =</span> <span class="fu">sd</span>(income, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>      <span class="at">.groups =</span> <span class="st">"drop"</span></span>
-<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(summary_v3, <span class="at">digits =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>y_max <span class="ot">&lt;-</span> <span class="fu">quantile</span>(df<span class="sc">$</span>income, <span class="fl">0.95</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot A: Income by Gender</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>df_gender <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">drop_na</span>(income, cgen)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>p_gender <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df_gender, <span class="fu">aes</span>(<span class="at">x =</span> cgen, <span class="at">y =</span> income)) <span class="sc">+</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, y_max)) <span class="sc">+</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Income by Gender"</span>,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Gender"</span>,</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Income (Million VND)"</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co">#  Plot B: Income by Vocational Training Type</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>df_training <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">drop_na</span>(income, fvtp)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>p_training <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df_training, <span class="fu">aes</span>(<span class="at">x =</span> fvtp, <span class="at">y =</span> income)) <span class="sc">+</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, y_max)) <span class="sc">+</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Income by Vocational Training Type"</span>,</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Training type"</span>,</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Income (Million VND)"</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>p_gender <span class="sc">+</span> p_training</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Summary Table</span></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>summary_v3 <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>  df_gender <span class="sc">%&gt;%</span></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(<span class="at">Group =</span> <span class="st">"Gender"</span>, <span class="at">Category =</span> cgen) <span class="sc">%&gt;%</span></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>      <span class="at">N =</span> <span class="fu">n</span>(),</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>      <span class="at">Median_Income =</span> <span class="fu">median</span>(income, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>      <span class="at">Mean_Income =</span> <span class="fu">mean</span>(income, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>      <span class="at">SD =</span> <span class="fu">sd</span>(income, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>      <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>  df_training <span class="sc">%&gt;%</span></span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(<span class="at">Group =</span> <span class="st">"Training type"</span>, <span class="at">Category =</span> fvtp) <span class="sc">%&gt;%</span></span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(</span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>      <span class="at">N =</span> <span class="fu">n</span>(),</span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>      <span class="at">Median_Income =</span> <span class="fu">median</span>(income, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>      <span class="at">Mean_Income =</span> <span class="fu">mean</span>(income, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>      <span class="at">SD =</span> <span class="fu">sd</span>(income, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>      <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(summary_v3, <span class="at">digits =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
 <p><strong>Observation:</strong><br>
-Income differences across gender appear minimal, with considerable overlap between the two groups. In contrast, vocational training type shows a clearer gap: respondents who attended long courses report substantially higher incomes than those who attended short courses. However, variability within each group remains large, especially for the long-course group. This suggests that factors beyond gender and training type also contribute to income differences.</p>
+Income differences across gender appear modest, with considerable overlap between the two groups. In contrast, vocational training type shows a clearer gap: respondents who attended long courses report substantially higher incomes than those who attended short courses. However, variability within each group remains large, especially for the long-course group. This suggests that factors beyond gender and training type also contribute to income differences.</p>
 </div>
 </div>
 <hr>
@@ -756,7 +757,7 @@ Income differences across gender appear minimal, with considerable overlap betwe
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="THE01_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Untitled_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -852,7 +853,7 @@ Savings show a weak relationship with income, with points widely dispersed and c
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="THE01_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Untitled_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -938,13 +939,12 @@ Savings show a weak relationship with income, with points widely dispersed and c
 <span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>      <span class="at">.groups =</span> <span class="st">"drop"</span></span>
 <span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    ),</span>
 <span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">2</span>,</span>
-<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Income Summary by PPO1 Score&lt;br&gt;Scale: 1 = strongly disagree to 5 = strongly agree (as defined in the survey)"</span></span>
-<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Income Summary by PPO1 Score&lt;br&gt;Scale: 1 = strongly disagree to 5 = strongly agree (as defined in the survey)"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
 <p><strong>Observation:</strong><br>
-PPO1 reflects respondents’ views on training-related policy/support. This visualisation explores whether income levels differ across PPO1 score categories. Income distributions overlap heavily across PPO1 score levels, and median income changes only minimally from scores 1 to 5. While the mean income is higher for some scores , the large differences indicate that a small number of high-income outliers likely drive these differences. Overall, the plot suggests no clear or strong relationship between PPO1 score and income.</p>
+Income varies widely within each PPO1 score level, with substantial overlap across categories. Median income changes only modestly across PPO1 scores, and the differences between levels are small relative to overall dispersion. This suggests PPO1 is not strongly associated with income.</p>
 </div>
 </div>
 <hr>
@@ -970,7 +970,7 @@ PPO1 reflects respondents’ views on training-related policy/support. This visu
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="THE01_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Untitled_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1026,7 +1026,7 @@ PPO1 reflects respondents’ views on training-related policy/support. This visu
 <span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co">#  Plot Heatmap</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Plot Heatmap</span></span>
 <span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>df_hm <span class="sc">%&gt;%</span></span>
 <span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(fedu, income_band) <span class="sc">%&gt;%</span></span>
 <span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(fedu) <span class="sc">%&gt;%</span></span>
@@ -1043,7 +1043,7 @@ PPO1 reflects respondents’ views on training-related policy/support. This visu
 <span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>)</span>
 <span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Summary Table</span></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Summary Table</span></span>
 <span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(</span>
 <span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>  df_hm <span class="sc">%&gt;%</span></span>
 <span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">count</span>(fedu, <span class="at">name =</span> <span class="st">"Respondents"</span>) <span class="sc">%&gt;%</span></span>
@@ -1056,16 +1056,15 @@ PPO1 reflects respondents’ views on training-related policy/support. This visu
 </div>
 </div>
 <p><strong>Observation:</strong><br>
-The heatmap shows, within each education group, the proportion of respondents in each income quartile (Q1 = lowest income, Q4 = highest). Respondents with primary and lower secondary education are more concentrated in the lower income bands (Q1–Q2), while upper secondary and “others” show a relatively higher share in the upper bands (Q3–Q4). This pattern suggests a mild positive relationship between education attainment and income.</p>
+The heatmap shows the share of respondents in each income quartile within each education group. Higher education levels tend to have a larger proportion of respondents in the upper income bands (Q3–Q4), while primary and lower secondary groups are more concentrated in Q1–Q2, suggesting a mild positive association between education attainment and income. .</p>
 </div>
 </div>
 <hr>
 </section>
 <section id="overall-observations" class="level1">
 <h1>Overall Observations</h1>
-<p>Income of informal rural labourers in the northern mountainous regions of Vietnam is highly uneven and right-skewed, with most labourers clustered at lower income levels and a small group earning much more.</p>
-<p>Across the factors examined, education stands out as the strongest and most consistent correlate of income, reflected in higher medians and a greater share in upper income quartiles for more educated respondents.</p>
-<p>Credit access and vocational training type show secondary, weaker patterns , but dispersion remains large, suggesting other influences are also important. In contrast, province, gender, savings , and PPO1 show modest or minimal differentiation in income.</p>
+<p>Across all visualisations, income among informal rural labourers in northern mountainous Vietnam is strongly right-skewed and unevenly distributed. Most respondents earn relatively low incomes, while a small group earns substantially more, indicating clear income inequality. Among the socioeconomic factors, education shows the most consistent association with income. Higher education levels are linked to higher median incomes and a greater concentration in upper income quartiles. Credit access displays a mild positive relationship with income, while provincial differences are comparatively modest.</p>
+<p>Gender differences are limited, with substantial overlap in income distributions. Training participation is associated with slightly higher median income, though variability within groups remains large. Income and savings are positively but weakly related. Perception measures (PPO1) show minimal income differences. Overall, education appears to be the most structurally relevant factor associated with income variation.</p>
 
 
 </section>

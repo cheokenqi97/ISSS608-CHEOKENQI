@@ -28,7 +28,7 @@ website:
       - text: "Take-home Exercises"
         menu:
           - text: "TH01"
-            href: TH01.qmd            
+            href: THE01.qmd            
         
     right:
       - icon: house
