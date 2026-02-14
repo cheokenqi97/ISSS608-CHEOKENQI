@@ -218,35 +218,80 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
-  <ul class="collapse">
+  <ul>
   <li><a href="#lesson-4a-visualising-distribution" id="toc-lesson-4a-visualising-distribution" class="nav-link active" data-scroll-target="#lesson-4a-visualising-distribution">Lesson 4A: Visualising Distribution</a>
   <ul class="collapse">
   <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started">Getting Started</a></li>
   <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
-  <li><a href="#visualising-distribution-with-ridgeline-plot" id="toc-visualising-distribution-with-ridgeline-plot" class="nav-link" data-scroll-target="#visualising-distribution-with-ridgeline-plot">9.3 Visualising Distribution with Ridgeline Plot</a></li>
-  <li><a href="#visualising-distribution-with-raincloud-plot" id="toc-visualising-distribution-with-raincloud-plot" class="nav-link" data-scroll-target="#visualising-distribution-with-raincloud-plot">9.4 Visualising Distribution with Raincloud Plot</a></li>
+  <li><a href="#visualising-distribution-with-ridgeline-plot" id="toc-visualising-distribution-with-ridgeline-plot" class="nav-link" data-scroll-target="#visualising-distribution-with-ridgeline-plot">9.3 Visualising Distribution with Ridgeline Plot</a>
+  <ul class="collapse">
+  <li><a href="#plotting-ridgeline-graph-ggridges-method" id="toc-plotting-ridgeline-graph-ggridges-method" class="nav-link" data-scroll-target="#plotting-ridgeline-graph-ggridges-method">9.3.1 Plotting ridgeline graph: ggridges method</a></li>
+  <li><a href="#varying-fill-colors-along-the-x-axis" id="toc-varying-fill-colors-along-the-x-axis" class="nav-link" data-scroll-target="#varying-fill-colors-along-the-x-axis">9.3.2 Varying fill colors along the x axis</a></li>
+  <li><a href="#mapping-the-probabilities-directly-onto-colour" id="toc-mapping-the-probabilities-directly-onto-colour" class="nav-link" data-scroll-target="#mapping-the-probabilities-directly-onto-colour">9.3.3 Mapping the probabilities directly onto colour</a></li>
+  <li><a href="#ridgeline-plots-with-quantile-lines" id="toc-ridgeline-plots-with-quantile-lines" class="nav-link" data-scroll-target="#ridgeline-plots-with-quantile-lines">9.3.4 Ridgeline plots with quantile lines</a></li>
+  </ul></li>
+  <li><a href="#visualising-distribution-with-raincloud-plot" id="toc-visualising-distribution-with-raincloud-plot" class="nav-link" data-scroll-target="#visualising-distribution-with-raincloud-plot">9.4 Visualising Distribution with Raincloud Plot</a>
+  <ul class="collapse">
+  <li><a href="#plotting-a-half-eye-graph" id="toc-plotting-a-half-eye-graph" class="nav-link" data-scroll-target="#plotting-a-half-eye-graph">9.4.1 Plotting a Half Eye graph</a></li>
+  </ul></li>
   <li><a href="#adding-the-boxplot-with-geom_boxplot" id="toc-adding-the-boxplot-with-geom_boxplot" class="nav-link" data-scroll-target="#adding-the-boxplot-with-geom_boxplot">9.4.2 Adding the boxplot with geom_boxplot()</a></li>
-  <li><a href="#adding-the-dot-plots-with-stat_dots" id="toc-adding-the-dot-plots-with-stat_dots" class="nav-link" data-scroll-target="#adding-the-dot-plots-with-stat_dots">9.4.3 Adding the Dot Plots with stat_dots()</a></li>
+  <li><a href="#adding-the-dot-plots-with-stat_dots" id="toc-adding-the-dot-plots-with-stat_dots" class="nav-link" data-scroll-target="#adding-the-dot-plots-with-stat_dots">9.4.3 Adding the Dot Plots with stat_dots()</a>
+  <ul class="collapse">
+  <li><a href="#finishing-touch" id="toc-finishing-touch" class="nav-link" data-scroll-target="#finishing-touch">9.4.4 Finishing touch</a></li>
+  </ul></li>
   </ul></li>
   <li><a href="#lesson-4b-visual-statistical-analysis" id="toc-lesson-4b-visual-statistical-analysis" class="nav-link" data-scroll-target="#lesson-4b-visual-statistical-analysis">Lesson 4B: Visual Statistical Analysis</a>
   <ul class="collapse">
   <li><a href="#getting-started-1" id="toc-getting-started-1" class="nav-link" data-scroll-target="#getting-started-1">Getting Started</a></li>
-  <li><a href="#data-1" id="toc-data-1" class="nav-link" data-scroll-target="#data-1">Data</a></li>
+  <li><a href="#data-1" id="toc-data-1" class="nav-link" data-scroll-target="#data-1">Data</a>
+  <ul class="collapse">
+  <li><a href="#one-sample-test-gghistostats-method" id="toc-one-sample-test-gghistostats-method" class="nav-link" data-scroll-target="#one-sample-test-gghistostats-method">10.3.3 One-sample test: gghistostats() method</a></li>
+  <li><a href="#unpacking-the-bayes-factor" id="toc-unpacking-the-bayes-factor" class="nav-link" data-scroll-target="#unpacking-the-bayes-factor">10.3.4 Unpacking the Bayes Factor</a></li>
+  <li><a href="#how-to-interpret-bayes-factor" id="toc-how-to-interpret-bayes-factor" class="nav-link" data-scroll-target="#how-to-interpret-bayes-factor">10.3.5 How to interpret Bayes Factor</a></li>
+  <li><a href="#two-sample-mean-test-ggbetweenstats" id="toc-two-sample-mean-test-ggbetweenstats" class="nav-link" data-scroll-target="#two-sample-mean-test-ggbetweenstats">10.3.6 Two-sample mean test: ggbetweenstats()</a></li>
+  <li><a href="#significant-test-of-correlation-ggscatterstats" id="toc-significant-test-of-correlation-ggscatterstats" class="nav-link" data-scroll-target="#significant-test-of-correlation-ggscatterstats">10.3.8 Significant Test of Correlation: ggscatterstats()</a></li>
+  </ul></li>
   </ul></li>
   <li><a href="#lesson-4c-visualising-uncertainty" id="toc-lesson-4c-visualising-uncertainty" class="nav-link" data-scroll-target="#lesson-4c-visualising-uncertainty">Lesson 4C: Visualising Uncertainty</a>
   <ul class="collapse">
   <li><a href="#getting-started-2" id="toc-getting-started-2" class="nav-link" data-scroll-target="#getting-started-2">Getting Started</a></li>
   <li><a href="#data-2" id="toc-data-2" class="nav-link" data-scroll-target="#data-2">Data</a></li>
-  <li><a href="#visualizing-the-uncertainty-of-point-estimates-ggplot2-methods" id="toc-visualizing-the-uncertainty-of-point-estimates-ggplot2-methods" class="nav-link" data-scroll-target="#visualizing-the-uncertainty-of-point-estimates-ggplot2-methods">11.3 Visualizing the uncertainty of point estimates: ggplot2 methods</a></li>
-  <li><a href="#visualising-uncertainty-ggdist-package" id="toc-visualising-uncertainty-ggdist-package" class="nav-link" data-scroll-target="#visualising-uncertainty-ggdist-package">11.4 Visualising Uncertainty: ggdist package</a></li>
-  <li><a href="#visualising-uncertainty-with-hypothetical-outcome-plots-hops" id="toc-visualising-uncertainty-with-hypothetical-outcome-plots-hops" class="nav-link" data-scroll-target="#visualising-uncertainty-with-hypothetical-outcome-plots-hops">11.5 Visualising Uncertainty with Hypothetical Outcome Plots (HOPs)</a></li>
+  <li><a href="#visualizing-the-uncertainty-of-point-estimates-ggplot2-methods" id="toc-visualizing-the-uncertainty-of-point-estimates-ggplot2-methods" class="nav-link" data-scroll-target="#visualizing-the-uncertainty-of-point-estimates-ggplot2-methods">11.3 Visualizing the uncertainty of point estimates: ggplot2 methods</a>
+  <ul class="collapse">
+  <li><a href="#plotting-standard-error-bars-of-point-estimates" id="toc-plotting-standard-error-bars-of-point-estimates" class="nav-link" data-scroll-target="#plotting-standard-error-bars-of-point-estimates">11.3.1 Plotting standard error bars of point estimates</a></li>
+  <li><a href="#plotting-confidence-interval-of-point-estimates" id="toc-plotting-confidence-interval-of-point-estimates" class="nav-link" data-scroll-target="#plotting-confidence-interval-of-point-estimates">11.3.2 Plotting confidence interval of point estimates</a></li>
+  <li><a href="#visualizing-the-uncertainty-of-point-estimates-with-interactive-error-bars" id="toc-visualizing-the-uncertainty-of-point-estimates-with-interactive-error-bars" class="nav-link" data-scroll-target="#visualizing-the-uncertainty-of-point-estimates-with-interactive-error-bars">11.3.3 Visualizing the uncertainty of point estimates with interactive error bars</a></li>
+  </ul></li>
+  <li><a href="#visualising-uncertainty-ggdist-package" id="toc-visualising-uncertainty-ggdist-package" class="nav-link" data-scroll-target="#visualising-uncertainty-ggdist-package">11.4 Visualising Uncertainty: ggdist package</a>
+  <ul class="collapse">
+  <li><a href="#visualizing-the-uncertainty-of-point-estimates-ggdist-methods" id="toc-visualizing-the-uncertainty-of-point-estimates-ggdist-methods" class="nav-link" data-scroll-target="#visualizing-the-uncertainty-of-point-estimates-ggdist-methods">11.4.1 Visualizing the uncertainty of point estimates: ggdist methods</a></li>
+  <li><a href="#visualizing-the-uncertainty-of-point-estimates-ggdist-methods-1" id="toc-visualizing-the-uncertainty-of-point-estimates-ggdist-methods-1" class="nav-link" data-scroll-target="#visualizing-the-uncertainty-of-point-estimates-ggdist-methods-1">11.4.2 Visualizing the uncertainty of point estimates: ggdist methods</a></li>
+  <li><a href="#visualizing-the-uncertainty-of-point-estimates-ggdist-methods-2" id="toc-visualizing-the-uncertainty-of-point-estimates-ggdist-methods-2" class="nav-link" data-scroll-target="#visualizing-the-uncertainty-of-point-estimates-ggdist-methods-2">11.4.3 Visualizing the uncertainty of point estimates: ggdist methods</a></li>
+  </ul></li>
+  <li><a href="#visualising-uncertainty-with-hypothetical-outcome-plots-hops" id="toc-visualising-uncertainty-with-hypothetical-outcome-plots-hops" class="nav-link" data-scroll-target="#visualising-uncertainty-with-hypothetical-outcome-plots-hops">11.5 Visualising Uncertainty with Hypothetical Outcome Plots (HOPs)</a>
+  <ul class="collapse">
+  <li><a href="#installing-ungeviz-package" id="toc-installing-ungeviz-package" class="nav-link" data-scroll-target="#installing-ungeviz-package">11.5.1 Installing ungeviz package</a></li>
+  <li><a href="#launch-the-application-in-r" id="toc-launch-the-application-in-r" class="nav-link" data-scroll-target="#launch-the-application-in-r">11.5.2 Launch the application in R</a></li>
+  <li><a href="#visualising-uncertainty-with-hypothetical-outcome-plots-hops-1" id="toc-visualising-uncertainty-with-hypothetical-outcome-plots-hops-1" class="nav-link" data-scroll-target="#visualising-uncertainty-with-hypothetical-outcome-plots-hops-1">11.5.3 Visualising Uncertainty with Hypothetical Outcome Plots (HOPs)</a></li>
+  </ul></li>
   </ul></li>
   <li><a href="#lesson-4d-funnel-plots-for-fair-comparisons" id="toc-lesson-4d-funnel-plots-for-fair-comparisons" class="nav-link" data-scroll-target="#lesson-4d-funnel-plots-for-fair-comparisons">Lesson 4D: Funnel Plots for Fair Comparisons</a>
   <ul class="collapse">
   <li><a href="#getting-started-3" id="toc-getting-started-3" class="nav-link" data-scroll-target="#getting-started-3">Getting Started</a></li>
   <li><a href="#data-3" id="toc-data-3" class="nav-link" data-scroll-target="#data-3">Data</a></li>
-  <li><a href="#funnelplotr-methods" id="toc-funnelplotr-methods" class="nav-link" data-scroll-target="#funnelplotr-methods">8.4 FunnelPlotR methods</a></li>
-  <li><a href="#funnel-plot-for-fair-visual-comparison-ggplot2-methods" id="toc-funnel-plot-for-fair-visual-comparison-ggplot2-methods" class="nav-link" data-scroll-target="#funnel-plot-for-fair-visual-comparison-ggplot2-methods">8.5 Funnel Plot for Fair Visual Comparison: ggplot2 methods</a></li>
+  <li><a href="#funnelplotr-methods" id="toc-funnelplotr-methods" class="nav-link" data-scroll-target="#funnelplotr-methods">8.4 FunnelPlotR methods</a>
+  <ul class="collapse">
+  <li><a href="#funnelplotr-methods-the-basic-plot" id="toc-funnelplotr-methods-the-basic-plot" class="nav-link" data-scroll-target="#funnelplotr-methods-the-basic-plot">8.4.1 FunnelPlotR methods: The basic plot</a></li>
+  <li><a href="#funnelplotr-methods-makeover-1" id="toc-funnelplotr-methods-makeover-1" class="nav-link" data-scroll-target="#funnelplotr-methods-makeover-1">8.4.2 FunnelPlotR methods: Makeover 1</a></li>
+  <li><a href="#funnelplotr-methods-makeover-2" id="toc-funnelplotr-methods-makeover-2" class="nav-link" data-scroll-target="#funnelplotr-methods-makeover-2">8.4.3 FunnelPlotR methods: Makeover 2</a></li>
+  </ul></li>
+  <li><a href="#funnel-plot-for-fair-visual-comparison-ggplot2-methods" id="toc-funnel-plot-for-fair-visual-comparison-ggplot2-methods" class="nav-link" data-scroll-target="#funnel-plot-for-fair-visual-comparison-ggplot2-methods">8.5 Funnel Plot for Fair Visual Comparison: ggplot2 methods</a>
+  <ul class="collapse">
+  <li><a href="#computing-the-basic-derived-fields" id="toc-computing-the-basic-derived-fields" class="nav-link" data-scroll-target="#computing-the-basic-derived-fields">8.5.1 Computing the basic derived fields</a></li>
+  <li><a href="#calculate-lower-and-upper-limits-for-95-and-99.9-ci" id="toc-calculate-lower-and-upper-limits-for-95-and-99.9-ci" class="nav-link" data-scroll-target="#calculate-lower-and-upper-limits-for-95-and-99.9-ci">8.5.2 Calculate lower and upper limits for 95% and 99.9% CI</a></li>
+  <li><a href="#plotting-a-static-funnel-plot" id="toc-plotting-a-static-funnel-plot" class="nav-link" data-scroll-target="#plotting-a-static-funnel-plot">8.5.3 Plotting a static funnel plot</a></li>
+  <li><a href="#interactive-funnel-plot-plotly-ggplot2" id="toc-interactive-funnel-plot-plotly-ggplot2" class="nav-link" data-scroll-target="#interactive-funnel-plot-plotly-ggplot2">8.5.4 Interactive Funnel Plot: plotly + ggplot2</a></li>
+  </ul></li>
   </ul></li>
   </ul>
 </nav>

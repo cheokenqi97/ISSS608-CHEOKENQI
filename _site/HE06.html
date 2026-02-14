@@ -202,14 +202,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
-  <ul class="collapse">
+  <ul>
   <li><a href="#lesson-6-visualising-and-analysing-time-oriented-data" id="toc-lesson-6-visualising-and-analysing-time-oriented-data" class="nav-link active" data-scroll-target="#lesson-6-visualising-and-analysing-time-oriented-data">Lesson 6: Visualising and Analysing Time-oriented Data</a>
   <ul class="collapse">
   <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started">Getting Started</a></li>
   <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
-  <li><a href="#plotting-calendar-heatmap" id="toc-plotting-calendar-heatmap" class="nav-link" data-scroll-target="#plotting-calendar-heatmap">17.4 Plotting Calendar Heatmap</a></li>
-  <li><a href="#plotting-cycle-plot" id="toc-plotting-cycle-plot" class="nav-link" data-scroll-target="#plotting-cycle-plot">17.5 Plotting Cycle Plot</a></li>
-  <li><a href="#plotting-slopegraph" id="toc-plotting-slopegraph" class="nav-link" data-scroll-target="#plotting-slopegraph">17.6 Plotting Slopegraph</a></li>
+  <li><a href="#plotting-calendar-heatmap" id="toc-plotting-calendar-heatmap" class="nav-link" data-scroll-target="#plotting-calendar-heatmap">17.4 Plotting Calendar Heatmap</a>
+  <ul class="collapse">
+  <li><a href="#examining-the-data-structure" id="toc-examining-the-data-structure" class="nav-link" data-scroll-target="#examining-the-data-structure">17.4.3 Examining the data structure</a></li>
+  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">17.4.4 Data Preparation</a></li>
+  <li><a href="#building-the-calendar-heatmaps" id="toc-building-the-calendar-heatmaps" class="nav-link" data-scroll-target="#building-the-calendar-heatmaps">17.4.5 Building the Calendar Heatmaps</a></li>
+  <li><a href="#building-multiple-calendar-heatmaps" id="toc-building-multiple-calendar-heatmaps" class="nav-link" data-scroll-target="#building-multiple-calendar-heatmaps">17.4.6 Building Multiple Calendar Heatmaps</a></li>
+  <li><a href="#plotting-multiple-calendar-heatmaps" id="toc-plotting-multiple-calendar-heatmaps" class="nav-link" data-scroll-target="#plotting-multiple-calendar-heatmaps">17.4.7 Plotting Multiple Calendar Heatmaps</a></li>
+  <li><a href="#plotting-multiple-calendar-heatmaps-1" id="toc-plotting-multiple-calendar-heatmaps-1" class="nav-link" data-scroll-target="#plotting-multiple-calendar-heatmaps-1">17.4.8 Plotting Multiple Calendar Heatmaps</a></li>
+  </ul></li>
+  <li><a href="#plotting-cycle-plot" id="toc-plotting-cycle-plot" class="nav-link" data-scroll-target="#plotting-cycle-plot">17.5 Plotting Cycle Plot</a>
+  <ul class="collapse">
+  <li><a href="#step-1-data-import" id="toc-step-1-data-import" class="nav-link" data-scroll-target="#step-1-data-import">17.5.1 Step 1: Data Import</a></li>
+  <li><a href="#step-2-deriving-month-and-year-fields" id="toc-step-2-deriving-month-and-year-fields" class="nav-link" data-scroll-target="#step-2-deriving-month-and-year-fields">17.5.2 Step 2: Deriving month and year fields</a></li>
+  <li><a href="#step-4-extracting-the-target-country" id="toc-step-4-extracting-the-target-country" class="nav-link" data-scroll-target="#step-4-extracting-the-target-country">17.5.3 Step 4: Extracting the target country</a></li>
+  <li><a href="#step-5-computing-year-average-arrivals-by-month" id="toc-step-5-computing-year-average-arrivals-by-month" class="nav-link" data-scroll-target="#step-5-computing-year-average-arrivals-by-month">17.5.4 Step 5: Computing year average arrivals by month</a></li>
+  <li><a href="#srep-6-plotting-the-cycle-plot" id="toc-srep-6-plotting-the-cycle-plot" class="nav-link" data-scroll-target="#srep-6-plotting-the-cycle-plot">17.5.5 Srep 6: Plotting the cycle plot</a></li>
+  </ul></li>
+  <li><a href="#plotting-slopegraph" id="toc-plotting-slopegraph" class="nav-link" data-scroll-target="#plotting-slopegraph">17.6 Plotting Slopegraph</a>
+  <ul class="collapse">
+  <li><a href="#step-1-data-import-1" id="toc-step-1-data-import-1" class="nav-link" data-scroll-target="#step-1-data-import-1">17.6.1 Step 1: Data Import</a></li>
+  </ul></li>
   <li><a href="#step-2-plotting-the-slopegraph" id="toc-step-2-plotting-the-slopegraph" class="nav-link" data-scroll-target="#step-2-plotting-the-slopegraph">17.6.2 Step 2: Plotting the slopegraph</a></li>
   </ul></li>
   </ul>
@@ -262,7 +280,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="getting-started">Getting Started</h2>
 <p>Install and launch the following R packages</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(scales, viridis, lubridate, ggthemes, gridExtra, readxl, knitr, data.table, CGPfunctions, ggHoriPlot, tidyverse, CGPfunctions)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(scales, viridis, lubridate, ggthemes, gridExtra, readxl, knitr, data.table, CGPfunctions, tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="data" class="level2">

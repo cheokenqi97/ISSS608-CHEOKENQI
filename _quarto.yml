@@ -52,7 +52,6 @@ format:
     toc: true
     toc-location: right
     toc-title: "On this page"
-    toc-depth: 2
     smooth-scroll: true
 
 editor: visual

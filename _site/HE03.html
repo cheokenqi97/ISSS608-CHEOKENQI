@@ -221,22 +221,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
-  <ul class="collapse">
+  <ul>
   <li><a href="#lesson-3-a-programming-interactive-data-visualization-with-r" id="toc-lesson-3-a-programming-interactive-data-visualization-with-r" class="nav-link active" data-scroll-target="#lesson-3-a-programming-interactive-data-visualization-with-r">Lesson 3-A: Programming Interactive Data Visualization with R</a>
   <ul class="collapse">
   <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started">Getting Started</a></li>
   <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
-  <li><a href="#interactive-data-visualisation---ggiraph-methods" id="toc-interactive-data-visualisation---ggiraph-methods" class="nav-link" data-scroll-target="#interactive-data-visualisation---ggiraph-methods">3.4 Interactive Data Visualisation - ggiraph methods</a></li>
-  <li><a href="#interactive-data-visualisation---plotly-methods" id="toc-interactive-data-visualisation---plotly-methods" class="nav-link" data-scroll-target="#interactive-data-visualisation---plotly-methods">3.7 Interactive Data Visualisation - plotly methods</a></li>
-  <li><a href="#interactive-data-visualisation---crosstalk-methods" id="toc-interactive-data-visualisation---crosstalk-methods" class="nav-link" data-scroll-target="#interactive-data-visualisation---crosstalk-methods">3.8 Interactive Data Visualisation - crosstalk methods</a></li>
+  <li><a href="#interactive-data-visualisation---ggiraph-methods" id="toc-interactive-data-visualisation---ggiraph-methods" class="nav-link" data-scroll-target="#interactive-data-visualisation---ggiraph-methods">3.4 Interactive Data Visualisation - ggiraph methods</a>
+  <ul class="collapse">
+  <li><a href="#tooltip-effect-with-tooltip-aesthetic" id="toc-tooltip-effect-with-tooltip-aesthetic" class="nav-link" data-scroll-target="#tooltip-effect-with-tooltip-aesthetic">3.4.1 Tooltip effect with tooltip aesthetic</a></li>
+  <li><a href="#displaying-multiple-information-on-tooltip" id="toc-displaying-multiple-information-on-tooltip" class="nav-link" data-scroll-target="#displaying-multiple-information-on-tooltip">3.5.1 Displaying multiple information on tooltip</a></li>
+  <li><a href="#displaying-statistics-on-tooltip" id="toc-displaying-statistics-on-tooltip" class="nav-link" data-scroll-target="#displaying-statistics-on-tooltip">3.6.2 Displaying statistics on tooltip</a></li>
+  <li><a href="#hover-effect-with-data_id-aesthetic" id="toc-hover-effect-with-data_id-aesthetic" class="nav-link" data-scroll-target="#hover-effect-with-data_id-aesthetic">3.6.3 Hover effect with data_id aesthetic</a></li>
+  <li><a href="#styling-hover-effect" id="toc-styling-hover-effect" class="nav-link" data-scroll-target="#styling-hover-effect">3.6.4 Styling hover effect</a></li>
+  <li><a href="#combining-tooltip-and-hover-effect" id="toc-combining-tooltip-and-hover-effect" class="nav-link" data-scroll-target="#combining-tooltip-and-hover-effect">3.6.5 Combining tooltip and hover effect</a></li>
+  <li><a href="#click-effect-with-onclick" id="toc-click-effect-with-onclick" class="nav-link" data-scroll-target="#click-effect-with-onclick">3.6.6 Click effect with onclick</a></li>
+  <li><a href="#coordinated-multiple-views-with-ggiraph" id="toc-coordinated-multiple-views-with-ggiraph" class="nav-link" data-scroll-target="#coordinated-multiple-views-with-ggiraph">3.6.7 Coordinated Multiple Views with ggiraph</a></li>
+  </ul></li>
+  <li><a href="#interactive-data-visualisation---plotly-methods" id="toc-interactive-data-visualisation---plotly-methods" class="nav-link" data-scroll-target="#interactive-data-visualisation---plotly-methods">3.7 Interactive Data Visualisation - plotly methods</a>
+  <ul class="collapse">
+  <li><a href="#creating-an-interactive-scatter-plot-plot_ly-method" id="toc-creating-an-interactive-scatter-plot-plot_ly-method" class="nav-link" data-scroll-target="#creating-an-interactive-scatter-plot-plot_ly-method">3.7.1 Creating an interactive scatter plot: plot_ly() method</a></li>
+  <li><a href="#working-with-visual-variable-plot_ly-method" id="toc-working-with-visual-variable-plot_ly-method" class="nav-link" data-scroll-target="#working-with-visual-variable-plot_ly-method">3.7.2 Working with visual variable: plot_ly() method</a></li>
+  <li><a href="#creating-an-interactive-scatter-plot-ggplotly-method" id="toc-creating-an-interactive-scatter-plot-ggplotly-method" class="nav-link" data-scroll-target="#creating-an-interactive-scatter-plot-ggplotly-method">3.7.3 Creating an interactive scatter plot: ggplotly() method</a></li>
+  <li><a href="#coordinated-multiple-views-with-plotly" id="toc-coordinated-multiple-views-with-plotly" class="nav-link" data-scroll-target="#coordinated-multiple-views-with-plotly">3.7.4 Coordinated Multiple Views with plotly</a></li>
+  </ul></li>
+  <li><a href="#interactive-data-visualisation---crosstalk-methods" id="toc-interactive-data-visualisation---crosstalk-methods" class="nav-link" data-scroll-target="#interactive-data-visualisation---crosstalk-methods">3.8 Interactive Data Visualisation - crosstalk methods</a>
+  <ul class="collapse">
+  <li><a href="#interactive-data-table-dt-package" id="toc-interactive-data-table-dt-package" class="nav-link" data-scroll-target="#interactive-data-table-dt-package">3.8.1 Interactive Data Table: DT package</a></li>
+  <li><a href="#linked-brushing-crosstalk-method" id="toc-linked-brushing-crosstalk-method" class="nav-link" data-scroll-target="#linked-brushing-crosstalk-method">3.8.2 Linked brushing: crosstalk method</a></li>
+  </ul></li>
   </ul></li>
   <li><a href="#lesson-3-b-programming-animated-statistical-graphics-with-r" id="toc-lesson-3-b-programming-animated-statistical-graphics-with-r" class="nav-link" data-scroll-target="#lesson-3-b-programming-animated-statistical-graphics-with-r">Lesson 3-B: Programming Animated Statistical Graphics with R</a>
   <ul class="collapse">
   <li><a href="#getting-started-1" id="toc-getting-started-1" class="nav-link" data-scroll-target="#getting-started-1">Getting Started</a></li>
   <li><a href="#data-1" id="toc-data-1" class="nav-link" data-scroll-target="#data-1">Data</a></li>
-  <li><a href="#animated-data-visualisation-gganimate-methods" id="toc-animated-data-visualisation-gganimate-methods" class="nav-link" data-scroll-target="#animated-data-visualisation-gganimate-methods">4.3 Animated Data Visualisation: gganimate methods</a></li>
+  <li><a href="#animated-data-visualisation-gganimate-methods" id="toc-animated-data-visualisation-gganimate-methods" class="nav-link" data-scroll-target="#animated-data-visualisation-gganimate-methods">4.3 Animated Data Visualisation: gganimate methods</a>
+  <ul class="collapse">
+  <li><a href="#building-a-static-population-bubble-plot" id="toc-building-a-static-population-bubble-plot" class="nav-link" data-scroll-target="#building-a-static-population-bubble-plot">4.3.1 Building a static population bubble plot</a></li>
+  <li><a href="#building-the-animated-bubble-plot" id="toc-building-the-animated-bubble-plot" class="nav-link" data-scroll-target="#building-the-animated-bubble-plot">4.3.2 Building the animated bubble plot</a></li>
+  </ul></li>
   <li><a href="#animated-data-visualisation-plotly" id="toc-animated-data-visualisation-plotly" class="nav-link" data-scroll-target="#animated-data-visualisation-plotly">4.4 Animated Data Visualisation: plotly</a></li>
-  <li><a href="#building-an-animated-bubble-plot-ggplotly-method" id="toc-building-an-animated-bubble-plot-ggplotly-method" class="nav-link" data-scroll-target="#building-an-animated-bubble-plot-ggplotly-method">4.4.1 Building an animated bubble plot: ggplotly() method</a></li>
+  <li><a href="#building-an-animated-bubble-plot-ggplotly-method" id="toc-building-an-animated-bubble-plot-ggplotly-method" class="nav-link" data-scroll-target="#building-an-animated-bubble-plot-ggplotly-method">4.4.1 Building an animated bubble plot: ggplotly() method</a>
+  <ul class="collapse">
+  <li><a href="#building-an-animated-bubble-plot-plot_ly-method" id="toc-building-an-animated-bubble-plot-plot_ly-method" class="nav-link" data-scroll-target="#building-an-animated-bubble-plot-plot_ly-method">4.4.2 Building an animated bubble plot: plot_ly() method</a></li>
+  </ul></li>
   </ul></li>
   </ul>
 </nav>

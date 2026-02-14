@@ -216,44 +216,113 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
-  <ul class="collapse">
+  <ul>
   <li><a href="#lesson-5a-creating-ternary-plot-with-r" id="toc-lesson-5a-creating-ternary-plot-with-r" class="nav-link active" data-scroll-target="#lesson-5a-creating-ternary-plot-with-r">Lesson 5a: Creating Ternary Plot with R</a>
   <ul class="collapse">
   <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started">Getting Started</a></li>
   <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
   <li><a href="#preparing-the-data" id="toc-preparing-the-data" class="nav-link" data-scroll-target="#preparing-the-data">13.3.3 Preparing the Data</a></li>
-  <li><a href="#plotting-ternary-diagram-with-r" id="toc-plotting-ternary-diagram-with-r" class="nav-link" data-scroll-target="#plotting-ternary-diagram-with-r">13.4 Plotting Ternary Diagram with R</a></li>
+  <li><a href="#plotting-ternary-diagram-with-r" id="toc-plotting-ternary-diagram-with-r" class="nav-link" data-scroll-target="#plotting-ternary-diagram-with-r">13.4 Plotting Ternary Diagram with R</a>
+  <ul class="collapse">
+  <li><a href="#plotting-a-static-ternary-diagram" id="toc-plotting-a-static-ternary-diagram" class="nav-link" data-scroll-target="#plotting-a-static-ternary-diagram">13.4.1 Plotting a static ternary diagram</a></li>
+  <li><a href="#plotting-an-interative-ternary-diagram" id="toc-plotting-an-interative-ternary-diagram" class="nav-link" data-scroll-target="#plotting-an-interative-ternary-diagram">13.4.2 Plotting an interative ternary diagram</a></li>
+  </ul></li>
   </ul></li>
   <li><a href="#lesson-5b-visual-correlation-analysis" id="toc-lesson-5b-visual-correlation-analysis" class="nav-link" data-scroll-target="#lesson-5b-visual-correlation-analysis">Lesson 5b: Visual Correlation Analysis</a>
   <ul class="collapse">
   <li><a href="#getting-started-1" id="toc-getting-started-1" class="nav-link" data-scroll-target="#getting-started-1">Getting Started</a></li>
   <li><a href="#data-1" id="toc-data-1" class="nav-link" data-scroll-target="#data-1">Data</a></li>
-  <li><a href="#building-correlation-matrix-pairs-method" id="toc-building-correlation-matrix-pairs-method" class="nav-link" data-scroll-target="#building-correlation-matrix-pairs-method">6.4 Building Correlation Matrix: pairs() method</a></li>
-  <li><a href="#visualising-correlation-matrix-ggcormat" id="toc-visualising-correlation-matrix-ggcormat" class="nav-link" data-scroll-target="#visualising-correlation-matrix-ggcormat">6.5 Visualising Correlation Matrix: ggcormat()</a></li>
+  <li><a href="#building-correlation-matrix-pairs-method" id="toc-building-correlation-matrix-pairs-method" class="nav-link" data-scroll-target="#building-correlation-matrix-pairs-method">6.4 Building Correlation Matrix: pairs() method</a>
+  <ul class="collapse">
+  <li><a href="#building-a-basic-correlation-matrix" id="toc-building-a-basic-correlation-matrix" class="nav-link" data-scroll-target="#building-a-basic-correlation-matrix">6.4.1 Building a basic correlation matrix</a></li>
+  <li><a href="#drawing-the-lower-corner" id="toc-drawing-the-lower-corner" class="nav-link" data-scroll-target="#drawing-the-lower-corner">6.4.2 Drawing the lower corner</a></li>
+  <li><a href="#including-with-correlation-coefficients" id="toc-including-with-correlation-coefficients" class="nav-link" data-scroll-target="#including-with-correlation-coefficients">6.4.3 Including with correlation coefficients</a></li>
+  </ul></li>
+  <li><a href="#visualising-correlation-matrix-ggcormat" id="toc-visualising-correlation-matrix-ggcormat" class="nav-link" data-scroll-target="#visualising-correlation-matrix-ggcormat">6.5 Visualising Correlation Matrix: ggcormat()</a>
+  <ul class="collapse">
+  <li><a href="#the-basic-plot" id="toc-the-basic-plot" class="nav-link" data-scroll-target="#the-basic-plot">6.5.1 The basic plot</a></li>
+  </ul></li>
   <li><a href="#building-multiple-plots" id="toc-building-multiple-plots" class="nav-link" data-scroll-target="#building-multiple-plots">6.6 Building multiple plots</a></li>
-  <li><a href="#visualising-correlation-matrix-using-corrplot-package" id="toc-visualising-correlation-matrix-using-corrplot-package" class="nav-link" data-scroll-target="#visualising-correlation-matrix-using-corrplot-package">6.7 Visualising Correlation Matrix using corrplot Package</a></li>
+  <li><a href="#visualising-correlation-matrix-using-corrplot-package" id="toc-visualising-correlation-matrix-using-corrplot-package" class="nav-link" data-scroll-target="#visualising-correlation-matrix-using-corrplot-package">6.7 Visualising Correlation Matrix using corrplot Package</a>
+  <ul class="collapse">
+  <li><a href="#getting-started-with-corrplot" id="toc-getting-started-with-corrplot" class="nav-link" data-scroll-target="#getting-started-with-corrplot">6.7.1 Getting started with corrplot</a></li>
+  <li><a href="#working-with-visual-geometrics" id="toc-working-with-visual-geometrics" class="nav-link" data-scroll-target="#working-with-visual-geometrics">6.7.2 Working with visual geometrics</a></li>
+  <li><a href="#working-with-layout" id="toc-working-with-layout" class="nav-link" data-scroll-target="#working-with-layout">6.7.3 Working with layout</a></li>
+  <li><a href="#working-with-mixed-layout" id="toc-working-with-mixed-layout" class="nav-link" data-scroll-target="#working-with-mixed-layout">6.7.4 Working with mixed layout</a></li>
+  <li><a href="#combining-corrgram-with-the-significant-test" id="toc-combining-corrgram-with-the-significant-test" class="nav-link" data-scroll-target="#combining-corrgram-with-the-significant-test">6.7.5 Combining corrgram with the significant test</a></li>
+  <li><a href="#reorder-a-corrgram" id="toc-reorder-a-corrgram" class="nav-link" data-scroll-target="#reorder-a-corrgram">6.7.6 Reorder a corrgram</a></li>
+  <li><a href="#reordering-a-correlation-matrix-using-hclust" id="toc-reordering-a-correlation-matrix-using-hclust" class="nav-link" data-scroll-target="#reordering-a-correlation-matrix-using-hclust">6.7.7 Reordering a correlation matrix using hclust</a></li>
+  </ul></li>
   </ul></li>
   <li><a href="#lesson-5c-heatmap-for-visualising-and-analysing-multivariate-data" id="toc-lesson-5c-heatmap-for-visualising-and-analysing-multivariate-data" class="nav-link" data-scroll-target="#lesson-5c-heatmap-for-visualising-and-analysing-multivariate-data">Lesson 5c: Heatmap for Visualising and Analysing Multivariate Data</a>
   <ul class="collapse">
   <li><a href="#getting-started-2" id="toc-getting-started-2" class="nav-link" data-scroll-target="#getting-started-2">Getting Started</a></li>
   <li><a href="#data-2" id="toc-data-2" class="nav-link" data-scroll-target="#data-2">Data</a></li>
-  <li><a href="#static-heatmap" id="toc-static-heatmap" class="nav-link" data-scroll-target="#static-heatmap">14.4 Static Heatmap</a></li>
-  <li><a href="#creating-interactive-heatmap" id="toc-creating-interactive-heatmap" class="nav-link" data-scroll-target="#creating-interactive-heatmap">14.5 Creating Interactive Heatmap</a></li>
+  <li><a href="#static-heatmap" id="toc-static-heatmap" class="nav-link" data-scroll-target="#static-heatmap">14.4 Static Heatmap</a>
+  <ul class="collapse">
+  <li><a href="#heatmap-of-r-stats" id="toc-heatmap-of-r-stats" class="nav-link" data-scroll-target="#heatmap-of-r-stats">14.4.1 heatmap() of R Stats</a></li>
+  </ul></li>
+  <li><a href="#creating-interactive-heatmap" id="toc-creating-interactive-heatmap" class="nav-link" data-scroll-target="#creating-interactive-heatmap">14.5 Creating Interactive Heatmap</a>
+  <ul class="collapse">
+  <li><a href="#working-with-heatmaply" id="toc-working-with-heatmaply" class="nav-link" data-scroll-target="#working-with-heatmaply">14.5.1 Working with heatmaply</a></li>
+  <li><a href="#data-trasformation" id="toc-data-trasformation" class="nav-link" data-scroll-target="#data-trasformation">14.5.2 Data trasformation</a></li>
+  <li><a href="#clustering-algorithm" id="toc-clustering-algorithm" class="nav-link" data-scroll-target="#clustering-algorithm">14.5.3 Clustering algorithm</a></li>
+  <li><a href="#manual-approach" id="toc-manual-approach" class="nav-link" data-scroll-target="#manual-approach">14.5.4 Manual approach</a></li>
+  <li><a href="#statistical-approach" id="toc-statistical-approach" class="nav-link" data-scroll-target="#statistical-approach">14.5.5 Statistical approach</a></li>
+  <li><a href="#seriation" id="toc-seriation" class="nav-link" data-scroll-target="#seriation">14.5.6 Seriation</a></li>
+  <li><a href="#working-with-colour-palettes" id="toc-working-with-colour-palettes" class="nav-link" data-scroll-target="#working-with-colour-palettes">14.5.7 Working with colour palettes</a></li>
+  <li><a href="#the-finishing-touch" id="toc-the-finishing-touch" class="nav-link" data-scroll-target="#the-finishing-touch">14.5.8 The finishing touch</a></li>
+  </ul></li>
   </ul></li>
   <li><a href="#lesson-5d-visual-multivariate-analysis-with-parallel-coordinates-plot" id="toc-lesson-5d-visual-multivariate-analysis-with-parallel-coordinates-plot" class="nav-link" data-scroll-target="#lesson-5d-visual-multivariate-analysis-with-parallel-coordinates-plot">Lesson 5d: Visual Multivariate Analysis with Parallel Coordinates Plot</a>
   <ul class="collapse">
   <li><a href="#getting-started-3" id="toc-getting-started-3" class="nav-link" data-scroll-target="#getting-started-3">Getting Started</a></li>
   <li><a href="#data-3" id="toc-data-3" class="nav-link" data-scroll-target="#data-3">Data</a></li>
-  <li><a href="#plotting-static-parallel-coordinates-plot" id="toc-plotting-static-parallel-coordinates-plot" class="nav-link" data-scroll-target="#plotting-static-parallel-coordinates-plot">15.4 Plotting Static Parallel Coordinates Plot</a></li>
-  <li><a href="#plotting-interactive-parallel-coordinates-plot-parallelplot-methods" id="toc-plotting-interactive-parallel-coordinates-plot-parallelplot-methods" class="nav-link" data-scroll-target="#plotting-interactive-parallel-coordinates-plot-parallelplot-methods">15.5 Plotting Interactive Parallel Coordinates Plot: parallelPlot methods</a></li>
+  <li><a href="#plotting-static-parallel-coordinates-plot" id="toc-plotting-static-parallel-coordinates-plot" class="nav-link" data-scroll-target="#plotting-static-parallel-coordinates-plot">15.4 Plotting Static Parallel Coordinates Plot</a>
+  <ul class="collapse">
+  <li><a href="#plotting-a-simple-parallel-coordinates" id="toc-plotting-a-simple-parallel-coordinates" class="nav-link" data-scroll-target="#plotting-a-simple-parallel-coordinates">15.4.1 Plotting a simple parallel coordinates</a></li>
+  <li><a href="#plotting-a-parallel-coordinates-with-boxplot" id="toc-plotting-a-parallel-coordinates-with-boxplot" class="nav-link" data-scroll-target="#plotting-a-parallel-coordinates-with-boxplot">15.4.2 Plotting a parallel coordinates with boxplot</a></li>
+  <li><a href="#parallel-coordinates-with-facet" id="toc-parallel-coordinates-with-facet" class="nav-link" data-scroll-target="#parallel-coordinates-with-facet">15.4.3 Parallel coordinates with facet</a></li>
+  <li><a href="#rotating-x-axis-text-label" id="toc-rotating-x-axis-text-label" class="nav-link" data-scroll-target="#rotating-x-axis-text-label">15.4.4 Rotating x-axis text label</a></li>
+  <li><a href="#adjusting-the-rotated-x-axis-text-label" id="toc-adjusting-the-rotated-x-axis-text-label" class="nav-link" data-scroll-target="#adjusting-the-rotated-x-axis-text-label">15.4.5 Adjusting the rotated x-axis text label</a></li>
+  </ul></li>
+  <li><a href="#plotting-interactive-parallel-coordinates-plot-parallelplot-methods" id="toc-plotting-interactive-parallel-coordinates-plot-parallelplot-methods" class="nav-link" data-scroll-target="#plotting-interactive-parallel-coordinates-plot-parallelplot-methods">15.5 Plotting Interactive Parallel Coordinates Plot: parallelPlot methods</a>
+  <ul class="collapse">
+  <li><a href="#rotate-axis-label" id="toc-rotate-axis-label" class="nav-link" data-scroll-target="#rotate-axis-label">15.5.2 Rotate axis label</a></li>
+  <li><a href="#changing-the-colour-scheme" id="toc-changing-the-colour-scheme" class="nav-link" data-scroll-target="#changing-the-colour-scheme">15.5.3 Changing the colour scheme</a></li>
+  <li><a href="#parallel-coordinates-plot-with-histogram" id="toc-parallel-coordinates-plot-with-histogram" class="nav-link" data-scroll-target="#parallel-coordinates-plot-with-histogram">15.5.4 Parallel coordinates plot with histogram</a></li>
+  </ul></li>
   </ul></li>
   <li><a href="#lesson-5e-treemap-visualisation-with-r" id="toc-lesson-5e-treemap-visualisation-with-r" class="nav-link" data-scroll-target="#lesson-5e-treemap-visualisation-with-r">Lesson 5e: Treemap Visualisation with R</a>
   <ul class="collapse">
   <li><a href="#getting-started-4" id="toc-getting-started-4" class="nav-link" data-scroll-target="#getting-started-4">Getting Started</a></li>
-  <li><a href="#data-4" id="toc-data-4" class="nav-link" data-scroll-target="#data-4">Data</a></li>
-  <li><a href="#designing-treemap-with-treemap-package" id="toc-designing-treemap-with-treemap-package" class="nav-link" data-scroll-target="#designing-treemap-with-treemap-package">16.4 Designing Treemap with treemap Package</a></li>
-  <li><a href="#designing-treemap-using-treemapify-package" id="toc-designing-treemap-using-treemapify-package" class="nav-link" data-scroll-target="#designing-treemap-using-treemapify-package">16.5 Designing Treemap using treemapify Package</a></li>
-  <li><a href="#designing-interactive-treemap-using-d3treer" id="toc-designing-interactive-treemap-using-d3treer" class="nav-link" data-scroll-target="#designing-interactive-treemap-using-d3treer">16.6 Designing Interactive Treemap using d3treeR</a></li>
+  <li><a href="#data-4" id="toc-data-4" class="nav-link" data-scroll-target="#data-4">Data</a>
+  <ul class="collapse">
+  <li><a href="#grouped-summaries-without-the-pipe" id="toc-grouped-summaries-without-the-pipe" class="nav-link" data-scroll-target="#grouped-summaries-without-the-pipe">16.3.3 Grouped summaries without the Pipe</a></li>
+  <li><a href="#grouped-summaries-with-the-pipe" id="toc-grouped-summaries-with-the-pipe" class="nav-link" data-scroll-target="#grouped-summaries-with-the-pipe">16.3.4 Grouped summaries with the pipe</a></li>
+  </ul></li>
+  <li><a href="#designing-treemap-with-treemap-package" id="toc-designing-treemap-with-treemap-package" class="nav-link" data-scroll-target="#designing-treemap-with-treemap-package">16.4 Designing Treemap with treemap Package</a>
+  <ul class="collapse">
+  <li><a href="#designing-a-static-treemap" id="toc-designing-a-static-treemap" class="nav-link" data-scroll-target="#designing-a-static-treemap">16.4.1 Designing a static treemap</a></li>
+  <li><a href="#using-the-basic-arguments" id="toc-using-the-basic-arguments" class="nav-link" data-scroll-target="#using-the-basic-arguments">16.4.2 Using the basic arguments</a></li>
+  <li><a href="#working-with-vcolor-and-type-arguments" id="toc-working-with-vcolor-and-type-arguments" class="nav-link" data-scroll-target="#working-with-vcolor-and-type-arguments">16.4.3 Working with vColor and type arguments</a></li>
+  <li><a href="#colours-in-treemap-package" id="toc-colours-in-treemap-package" class="nav-link" data-scroll-target="#colours-in-treemap-package">16.4.4 Colours in treemap package</a></li>
+  <li><a href="#the-value-type-treemap" id="toc-the-value-type-treemap" class="nav-link" data-scroll-target="#the-value-type-treemap">16.4.5 The “value” type treemap</a></li>
+  <li><a href="#the-manual-type-treemap" id="toc-the-manual-type-treemap" class="nav-link" data-scroll-target="#the-manual-type-treemap">16.4.6 The “manual” type treemap</a></li>
+  <li><a href="#treemap-layout" id="toc-treemap-layout" class="nav-link" data-scroll-target="#treemap-layout">16.4.7 Treemap Layout</a></li>
+  <li><a href="#working-with-algorithm-argument" id="toc-working-with-algorithm-argument" class="nav-link" data-scroll-target="#working-with-algorithm-argument">16.4.8 Working with algorithm argument</a></li>
+  <li><a href="#using-sortid" id="toc-using-sortid" class="nav-link" data-scroll-target="#using-sortid">16.4.9 Using sortID</a></li>
+  </ul></li>
+  <li><a href="#designing-treemap-using-treemapify-package" id="toc-designing-treemap-using-treemapify-package" class="nav-link" data-scroll-target="#designing-treemap-using-treemapify-package">16.5 Designing Treemap using treemapify Package</a>
+  <ul class="collapse">
+  <li><a href="#designing-a-basic-treemap" id="toc-designing-a-basic-treemap" class="nav-link" data-scroll-target="#designing-a-basic-treemap">16.5.1 Designing a basic treemap</a></li>
+  <li><a href="#defining-hierarchy" id="toc-defining-hierarchy" class="nav-link" data-scroll-target="#defining-hierarchy">16.5.2 Defining hierarchy</a></li>
+  </ul></li>
+  <li><a href="#designing-interactive-treemap-using-d3treer" id="toc-designing-interactive-treemap-using-d3treer" class="nav-link" data-scroll-target="#designing-interactive-treemap-using-d3treer">16.6 Designing Interactive Treemap using d3treeR</a>
+  <ul class="collapse">
+  <li><a href="#installing-d3treer-package" id="toc-installing-d3treer-package" class="nav-link" data-scroll-target="#installing-d3treer-package">16.6.1 Installing d3treeR package</a></li>
+  <li><a href="#designing-an-interactive-treemap" id="toc-designing-an-interactive-treemap" class="nav-link" data-scroll-target="#designing-an-interactive-treemap">16.6.2 Designing An Interactive Treemap</a></li>
+  </ul></li>
   </ul></li>
   </ul>
 </nav>
