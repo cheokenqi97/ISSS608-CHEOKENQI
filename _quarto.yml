@@ -1,7 +1,7 @@
 project:
   type: website
  
-website: 
+website:
   title: "ISSS608 - Coursework Website for CHEOK EN QI"
   search: true
 
@@ -14,28 +14,28 @@ website:
       - text: "Hands-on Exercises"
         menu:
           - text: "HE01"
-            href: HE01.html
+            href: HE01.qmd
           - text: "HE02"
-            href: HE02.html
+            href: HE02.qmd
           - text: "HE03"
-            href: HE03.html
+            href: HE03.qmd
           - text: "HE04"
-            href: HE04.html
+            href: HE04.qmd
           - text: "HE05"
-            href: HE05.html
+            href: HE05.qmd
           - text: "HE06"
-            href: HE06.html           
+            href: HE06.qmd           
       - text: "Take-home Exercises"
         menu:
           - text: "THE01"
-            href: THE01.html            
+            href: THE01.qmd            
         
     right:
       - icon: house
-        href: index.html
+        href: index.qmd
         aria-label: Home
       - icon: person-circle
-        href: about.html
+        href: about.qmd
         aria-label: About
       - icon: github
         href: "https://github.com/cheokenqi97"
