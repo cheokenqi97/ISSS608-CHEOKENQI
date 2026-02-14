@@ -19,24 +19,13 @@ This report analyses the income of informal rural labourers in the northern moun
 # Getting Started
 Install and load the required R packages for data manipulation and visualisation.
 ```{r}
-pacman::p_load(
-  tidyverse,
-  readxl,
-  janitor,
-  ggthemes,
-  patchwork,
-  ggridges,
-  scales
-)
-
+pacman::p_load(tidyverse, readxl, knitr, ggthemes, patchwork)
 ```
 
 # Loading Data
 The dataset was imported from an Excel file containing survey responses from informal rural labourers in the northern mountainous regions of Vietnam.
 ```{r}
 df_raw <- read_xlsx("chapthe/data/Upload for elsiver.xlsx")
-df_raw <- clean_names(df_raw)
-
 glimpse(df_raw)
 
 ```
@@ -45,41 +34,72 @@ glimpse(df_raw)
 # Data Preparation
 To prepare the dataset for analysis and visualisation, several cleaning and recoding steps were performed.
 
-1. Categorical variables (e.g., province group, gender, education level, training participation, and credit access) were converted into factor variables to support clearer grouped comparisons in plots.
+1. Key categorical variables (province, gender, race, education level, vocational training type, and credit access) were converted into factor variables to support clearer grouped comparisons in plots.
 
-2. Continuous financial indicators (e.g., income, savings, loans, and related monetary variables) were converted into numeric format to ensure accurate computation and visualisation.
+2. Monetary and numeric variables (total income, savings, loans, and working days) were converted into numeric format to ensure accurate computation and visualisation.
 
-3. Invalid or implausible entries were recoded as missing values (NA) to prevent distortion of summary statistics. Income was defined using tein, which represents total earnings.
+3. Invalid data were recoded as missing values (NA) to reduce distortion in summary statistics. 
+
+4. Total income was defined using tein, which represents total earning
+
 ```{r}
-df <- df_raw
+df <- df_raw %>%
+ 
+  rename_with(tolower) %>% 
+  
 
-# Convert categorical variables to factors
-df$cpro <- factor(df$cpro)
-df$cgen <- factor(df$cgen)
-df$crac <- factor(df$crac)
-df$cjob <- factor(df$cjob)
-df$cqui <- factor(df$cqui)
+  mutate(
+    cpro = factor(cpro,
+                  levels = 1:5,
+                  labels = c("Tuyen Quang","Quang Ninh","Ha Giang","Yen Bai","Bac Giang")),
 
-df$fedu <- factor(df$fedu)
-df$fvtp <- factor(df$fvtp)
-df$fcra <- factor(df$fcra)
-df$ftap <- factor(df$ftap)
+    cgen = factor(cgen,
+                  levels = c(1,2),
+                  labels = c("Male","Female")),
 
-# Convert continuous / financial variables to numeric
-df$tein <- as.numeric(df$tein)
-df$tain <- as.numeric(df$tain)
-df$tsii <- as.numeric(df$tsii)
-df$toin <- as.numeric(df$toin)
-df$lcre <- as.numeric(df$lcre)
-df$lsav <- as.numeric(df$lsav)
-df$lwda <- as.numeric(df$lwda)
+    crac = factor(crac,
+                  levels = c(1,2),
+                  labels = c("King","Minorities")),
 
-# Define income variable (total earnings)
-df$income <- df$tein
+    cjob = factor(cjob,
+                  levels = c(1,2,3),
+                  labels = c("Agriculture","Service/Industrial","Others")),
 
-summary(df)
+    cqui = factor(cqui,
+                  levels = c(1,2,3,4,5),
+                  labels = c("Top","Fourth","Middle","Second","Lowest")),
+
+    fedu = factor(fedu,
+                  levels = c(0,1,2,3),
+                  labels = c("Primary","Lower secondary","Upper secondary","Others")),
+
+    fvtp = factor(fvtp,
+                  levels = c(1,2),
+                  labels = c("Short course","Long course")),
+
+    fcra = factor(fcra,
+                  levels = c(1,2),
+                  labels = c("Inaccessible","Accessible")),
+
+    ftap = factor(ftap,
+                  levels = c(1,2),
+                  labels = c("Low technique","Adequate")),
+
+    tein = as.numeric(tein),
+    tain = as.numeric(tain),
+    tsii = as.numeric(tsii),
+    toin = as.numeric(toin),
+    lcre = as.numeric(lcre),
+    lsav = as.numeric(lsav),
+    lwda = as.numeric(lwda),
+
+    income = tein
+  ) %>% 
+
+  filter(!is.na(income))
 
 
+glimpse(df)
 ```
 
 ------------------------------------------------------------------------
@@ -95,27 +115,25 @@ summary(df)
 ### Visual
 
 ```{r, echo=FALSE}
-ggplot(df, aes(x = income)) +
+ggplot(df %>% drop_na(income), aes(x = income)) +
   geom_histogram(
     aes(y = after_stat(density)),
     bins = 30,
+    color = "black",
     fill = "lightblue",
-    color = "white",
-    alpha = 0.8
+    alpha = 0.6
   ) +
-  geom_density(
-    color = "darkblue",
-    linewidth = 1
-  ) +
+  geom_density(linewidth = 1) +
   labs(
     title = "Distribution of Total Income",
-    x = "Income",
+    x = "Income (Million VND)",
     y = "Density"
   ) +
   theme_minimal()
 
+# Summary Table 
 knitr::kable(
-  df |>
+  df %>%
     summarise(
       Count = sum(!is.na(income)),
       Mean = mean(income, na.rm = TRUE),
@@ -135,27 +153,25 @@ knitr::kable(
 ### Code
 
 ``` r
-ggplot(df, aes(x = income)) +
+ggplot(df %>% drop_na(income), aes(x = income)) +
   geom_histogram(
     aes(y = after_stat(density)),
     bins = 30,
+    color = "black",
     fill = "lightblue",
-    color = "white",
-    alpha = 0.8
+    alpha = 0.6
   ) +
-  geom_density(
-    color = "darkblue",
-    linewidth = 1
-  ) +
+  geom_density(linewidth = 1) +
   labs(
     title = "Distribution of Total Income",
-    x = "Income",
+    x = "Income (Million VND)",
     y = "Density"
   ) +
   theme_minimal()
-  
+
+# Summary Table 
 knitr::kable(
-  df |>
+  df %>%
     summarise(
       Count = sum(!is.na(income)),
       Mean = mean(income, na.rm = TRUE),
@@ -169,6 +185,7 @@ knitr::kable(
   digits = 2,
   caption = "Summary Statistics of Income"
 )
+
 
 ```
 :::
@@ -191,116 +208,105 @@ The income distribution is heavily right-skewed, with the majority of labourers 
 ### Visual
 
 ```{r, echo=FALSE}
-# y-axis cap (consistent across the 3 plots)
 y_max <- quantile(df$income, 0.98, na.rm = TRUE) * 1.10
 
-# Plot A: Income by Province Group (CPRO)
-df_cpro <- df |>
-  mutate(cpro = factor(cpro)) |>
-  drop_na(income, cpro)
+
+# Plot A: Income by Province
+df_cpro <- df %>% drop_na(income, cpro)
 
 p_cpro <- ggplot(df_cpro, aes(x = cpro, y = income)) +
   geom_boxplot(fill = "steelblue") +
   coord_cartesian(ylim = c(0, y_max)) +
   labs(
-    title = "Income by Province Group",
-    x = "Province Group (CPRO)",
-    y = "Income"
+    title = "Income by Province",
+    x = "Province",
+    y = "Income (Million VND)"
   ) +
   theme_minimal()
 
-# Plot B: Income by Education Level (FEDU)
-df_fedu <- df |>
-  mutate(fedu = factor(fedu)) |>
-  drop_na(income, fedu)
+#Plot B: Income by Education
+df_fedu <- df %>% drop_na(income, fedu)
 
 p_fedu <- ggplot(df_fedu, aes(x = fedu, y = income)) +
   geom_boxplot(fill = "steelblue") +
   coord_cartesian(ylim = c(0, y_max)) +
   labs(
     title = "Income by Education Level",
-    x = "Education Level (FEDU)",
-    y = "Income"
+    x = "Education Level",
+    y = "Income (Million VND)"
   ) +
   theme_minimal()
 
-# Plot C: Income by Credit Access (FCRA)
-df_fcra <- df |>
-  mutate(fcra = factor(fcra)) |>
-  drop_na(income, fcra)
+#  Plot C: Income by Credit Access
+df_fcra <- df %>% drop_na(income, fcra)
 
 p_fcra <- ggplot(df_fcra, aes(x = fcra, y = income)) +
   geom_boxplot(fill = "steelblue") +
   coord_cartesian(ylim = c(0, y_max)) +
   labs(
     title = "Income by Credit Access",
-    x = "Credit Access (FCRA)",
-    y = "Income"
+    x = "Credit Access",
+    y = "Income (Million VND)"
   ) +
   theme_minimal()
 
+# Display the combined plots
 p_cpro + p_fedu + p_fcra
-
 ```
 
 ### Code
 
 ``` r
-# y-axis cap (consistent across the 3 plots)
 y_max <- quantile(df$income, 0.98, na.rm = TRUE) * 1.10
 
-# Plot A: Income by Province Group (CPRO)
-df_cpro <- df |>
-  mutate(cpro = factor(cpro)) |>
-  drop_na(income, cpro)
+
+# Plot A: Income by Province
+df_cpro <- df %>% drop_na(income, cpro)
 
 p_cpro <- ggplot(df_cpro, aes(x = cpro, y = income)) +
   geom_boxplot(fill = "steelblue") +
   coord_cartesian(ylim = c(0, y_max)) +
   labs(
-    title = "Income by Province Group",
-    x = "Province Group (CPRO)",
-    y = "Income"
+    title = "Income by Province",
+    x = "Province",
+    y = "Income (Million VND)"
   ) +
   theme_minimal()
 
-# Plot B: Income by Education Level (FEDU)
-df_fedu <- df |>
-  mutate(fedu = factor(fedu)) |>
-  drop_na(income, fedu)
+#Plot B: Income by Education
+df_fedu <- df %>% drop_na(income, fedu)
 
 p_fedu <- ggplot(df_fedu, aes(x = fedu, y = income)) +
   geom_boxplot(fill = "steelblue") +
   coord_cartesian(ylim = c(0, y_max)) +
   labs(
     title = "Income by Education Level",
-    x = "Education Level (FEDU)",
-    y = "Income"
+    x = "Education Level",
+    y = "Income (Million VND)"
   ) +
   theme_minimal()
 
-# Plot C: Income by Credit Access (FCRA)
-df_fcra <- df |>
-  mutate(fcra = factor(fcra)) |>
-  drop_na(income, fcra)
+#  Plot C: Income by Credit Access
+df_fcra <- df %>% drop_na(income, fcra)
 
 p_fcra <- ggplot(df_fcra, aes(x = fcra, y = income)) +
   geom_boxplot(fill = "steelblue") +
   coord_cartesian(ylim = c(0, y_max)) +
   labs(
     title = "Income by Credit Access",
-    x = "Credit Access (FCRA)",
-    y = "Income"
+    x = "Credit Access",
+    y = "Income (Million VND)"
   ) +
   theme_minimal()
 
+# Display the combined plots
 p_cpro + p_fedu + p_fcra
 
 ```
 :::
 
 **Observation:**\
-Income varies across province groups, education levels, and credit access categories. Education shows the clearest pattern, with higher education levels generally associated with higher median incomes. Credit access shows slightly higher earnings, while provincial differences are present but less pronounced. Missing values were excluded for these variables to ensure clearer comparisons across categories.
+Income varies across provinces, education levels, and credit access categories. Education shows the clearest pattern, with higher education levels generally associated with higher median incomes. Credit access is linked to slightly higher earnings, while provincial differences are present but less pronounced. 
 ::::
 
 ------------------------------------------------------------------------
@@ -316,38 +322,41 @@ Income varies across province groups, education levels, and credit access catego
 ### Visual
 
 ```{r, echo=FALSE}
+
 y_max <- quantile(df$income, 0.95, na.rm = TRUE)
 
 # Plot A: Income by Gender
-df_gender <- df |>
-  mutate(cgen = factor(cgen)) |>
-  drop_na(income, cgen)
+df_gender <- df %>% drop_na(income, cgen)
 
 p_gender <- ggplot(df_gender, aes(x = cgen, y = income)) +
   geom_boxplot(fill = "steelblue") +
   coord_cartesian(ylim = c(0, y_max)) +
-  labs(title = "Income by Gender", x = "Gender (CGEN)", y = "Income") +
+  labs(
+    title = "Income by Gender",
+    x = "Gender",
+    y = "Income (Million VND)"
+  ) +
   theme_minimal()
 
-# Plot B: Income by Vocational Training Type (FVTP)
-# Based on the article's Table 3: Short courses (N=609), Long courses (N=92)
-df_training <- df |>
-  mutate(
-    fvtp = factor(fvtp, levels = c(1, 2), labels = c("Short courses", "Long courses"))
-  ) |>
-  drop_na(income, fvtp)
+#  Plot B: Income by Vocational Training Type
+df_training <- df %>% drop_na(income, fvtp)
 
 p_training <- ggplot(df_training, aes(x = fvtp, y = income)) +
   geom_boxplot(fill = "steelblue") +
   coord_cartesian(ylim = c(0, y_max)) +
-  labs(title = "Income by Vocational Training Type", x = "Training type (FVTP)", y = "Income") +
+  labs(
+    title = "Income by Vocational Training Type",
+    x = "Training type",
+    y = "Income (Million VND)"
+  ) +
   theme_minimal()
 
 p_gender + p_training
 
+# 5. Summary Table
 summary_v3 <- bind_rows(
-  df_gender |>
-    group_by(Group = "Gender", Category = cgen) |>
+  df_gender %>%
+    group_by(Group = "Gender", Category = cgen) %>%
     summarise(
       N = n(),
       Median_Income = median(income, na.rm = TRUE),
@@ -355,8 +364,8 @@ summary_v3 <- bind_rows(
       SD = sd(income, na.rm = TRUE),
       .groups = "drop"
     ),
-  df_training |>
-    group_by(Group = "Training type", Category = fvtp) |>
+  df_training %>%
+    group_by(Group = "Training type", Category = fvtp) %>%
     summarise(
       N = n(),
       Median_Income = median(income, na.rm = TRUE),
@@ -372,35 +381,41 @@ knitr::kable(summary_v3, digits = 2)
 ### Code
 
 ``` r
+
 y_max <- quantile(df$income, 0.95, na.rm = TRUE)
 
-df_gender <- df |>
-  mutate(cgen = factor(cgen)) |>
-  drop_na(income, cgen)
+# Plot A: Income by Gender
+df_gender <- df %>% drop_na(income, cgen)
 
 p_gender <- ggplot(df_gender, aes(x = cgen, y = income)) +
   geom_boxplot(fill = "steelblue") +
   coord_cartesian(ylim = c(0, y_max)) +
-  labs(title = "Income by Gender", x = "Gender (CGEN)", y = "Income") +
+  labs(
+    title = "Income by Gender",
+    x = "Gender",
+    y = "Income (Million VND)"
+  ) +
   theme_minimal()
 
-df_training <- df |>
-  mutate(
-    fvtp = factor(fvtp, levels = c(1, 2), labels = c("Short courses", "Long courses"))
-  ) |>
-  drop_na(income, fvtp)
+#  Plot B: Income by Vocational Training Type
+df_training <- df %>% drop_na(income, fvtp)
 
 p_training <- ggplot(df_training, aes(x = fvtp, y = income)) +
   geom_boxplot(fill = "steelblue") +
   coord_cartesian(ylim = c(0, y_max)) +
-  labs(title = "Income by Vocational Training Type", x = "Training type (FVTP)", y = "Income") +
+  labs(
+    title = "Income by Vocational Training Type",
+    x = "Training type",
+    y = "Income (Million VND)"
+  ) +
   theme_minimal()
 
 p_gender + p_training
 
+# 5. Summary Table
 summary_v3 <- bind_rows(
-  df_gender |>
-    group_by(Group = "Gender", Category = cgen) |>
+  df_gender %>%
+    group_by(Group = "Gender", Category = cgen) %>%
     summarise(
       N = n(),
       Median_Income = median(income, na.rm = TRUE),
@@ -408,8 +423,8 @@ summary_v3 <- bind_rows(
       SD = sd(income, na.rm = TRUE),
       .groups = "drop"
     ),
-  df_training |>
-    group_by(Group = "Training type", Category = fvtp) |>
+  df_training %>%
+    group_by(Group = "Training type", Category = fvtp) %>%
     summarise(
       N = n(),
       Median_Income = median(income, na.rm = TRUE),
@@ -424,7 +439,7 @@ knitr::kable(summary_v3, digits = 2)
 :::
 
 **Observation:**\
-Income differences across gender appear modest, with considerable overlap between the two groups. In contrast, vocational training type shows a clearer gap: respondents who attended long courses report substantially higher incomes than those who attended short courses. However, variability within each group remains large, especially for the long-course group. This suggests that factors beyond gender and training type also contribute to income differences.
+Income differences across gender appear minimal, with considerable overlap between the two groups. In contrast, vocational training type shows a clearer gap: respondents who attended long courses report substantially higher incomes than those who attended short courses. However, variability within each group remains large, especially for the long-course group. This suggests that factors beyond gender and training type also contribute to income differences.
 ::::
 
 ------------------------------------------------------------------------
@@ -440,68 +455,70 @@ Income differences across gender appear modest, with considerable overlap betwee
 ### Visual
 
 ```{r, echo=FALSE}
-df_scatter <- df |> drop_na(income, lsav)
+df_scatter <- df %>% drop_na(income, lsav)
 
-# Cap both axes to reduce distortion from extreme values (consistent with earlier plots)
 x_limit <- quantile(df_scatter$income, 0.98, na.rm = TRUE)
 y_limit <- quantile(df_scatter$lsav,  0.98, na.rm = TRUE)
 
-ggplot(df_scatter, aes(income, lsav)) +
+ggplot(df_scatter, aes(x = income, y = lsav)) +
   geom_point(alpha = 0.4) +
   geom_smooth(method = "lm", se = TRUE) +
+  coord_cartesian(xlim = c(0, x_limit), ylim = c(0, y_limit)) +
   labs(
     title = "Association Between Income and Savings",
-    x = "Income",
+    x = "Income (Million VND)",
     y = "Savings"
   ) +
-  coord_cartesian(xlim = c(0, x_limit), ylim = c(0, y_limit)) +
   theme_minimal()
 
+# Summary table
 knitr::kable(
-  df_scatter |>
+  df_scatter %>%
     summarise(
       N = n(),
-      Correlation = cor(income, lsav, method = "pearson"),
+      Correlation_Pearson = cor(income, lsav, method = "pearson", use = "complete.obs"),
+      Correlation_Spearman = cor(income, lsav, method = "spearman", use = "complete.obs"),
       Income_Mean = mean(income, na.rm = TRUE),
       Savings_Mean = mean(lsav, na.rm = TRUE)
     ),
   digits = 3,
   caption = "Summary of Income and Savings Relationship"
 )
-
 ```
 
 ### Code
 
 ``` r
-df_scatter <- df |> drop_na(income, lsav)
+df_scatter <- df %>% drop_na(income, lsav)
 
 x_limit <- quantile(df_scatter$income, 0.98, na.rm = TRUE)
 y_limit <- quantile(df_scatter$lsav,  0.98, na.rm = TRUE)
 
-ggplot(df_scatter, aes(income, lsav)) +
+ggplot(df_scatter, aes(x = income, y = lsav)) +
   geom_point(alpha = 0.4) +
   geom_smooth(method = "lm", se = TRUE) +
+  coord_cartesian(xlim = c(0, x_limit), ylim = c(0, y_limit)) +
   labs(
     title = "Association Between Income and Savings",
-    x = "Income",
+    x = "Income (Million VND)",
     y = "Savings"
   ) +
-  coord_cartesian(xlim = c(0, x_limit), ylim = c(0, y_limit)) +
   theme_minimal()
 
+# Summary table
 knitr::kable(
-  df_scatter |>
+  df_scatter %>%
     summarise(
       N = n(),
-      Correlation = cor(income, lsav, method = "pearson"),
+      Correlation_Pearson = cor(income, lsav, method = "pearson", use = "complete.obs"),
+      Correlation_Spearman = cor(income, lsav, method = "spearman", use = "complete.obs"),
       Income_Mean = mean(income, na.rm = TRUE),
       Savings_Mean = mean(lsav, na.rm = TRUE)
     ),
   digits = 3,
   caption = "Summary of Income and Savings Relationship"
 )
-```
+``` 
 :::
 
 **Observation:**\
@@ -509,6 +526,7 @@ Savings show a weak relationship with income, with points widely dispersed and c
 ::::
 
 ------------------------------------------------------------------------
+
 
 # Visualisation 5: Income by Perception Score (PPO1)
 
@@ -521,26 +539,26 @@ Savings show a weak relationship with income, with points widely dispersed and c
 ### Visual
 
 ```{r, echo=FALSE}
-df_ppo1 <- df |>
-  mutate(ppo1 = ifelse(ppo1 == 0, NA, ppo1)) |>
-  drop_na(ppo1, income) |>
-  mutate(ppo1 = factor(ppo1, levels = 1:5))
+df_ppo1 <- df %>%
+  mutate(ppo1 = na_if(ppo1, 0)) %>%
+  drop_na(ppo1, income) %>%
+  mutate(ppo1 = factor(ppo1, levels = 1:5, ordered = TRUE))
 
 upper_limit <- quantile(df_ppo1$income, 0.95, na.rm = TRUE)
 
 ggplot(df_ppo1, aes(x = ppo1, y = income)) +
-  geom_boxplot(fill = "steelblue") +
+  geom_boxplot() +
   coord_cartesian(ylim = c(0, upper_limit)) +
   labs(
     title = "Income by PPO1 Score",
-    x = "PPO1 Score (1 = Low, 5 = High)",
-    y = "Income"
+    x = "PPO1 score (1–5)",
+    y = "Income (Million VND)"
   ) +
   theme_minimal()
 
 knitr::kable(
-  df_ppo1 |>
-    group_by(ppo1) |>
+  df_ppo1 %>%
+    group_by(ppo1) %>%
     summarise(
       N = n(),
       Median_Income = median(income, na.rm = TRUE),
@@ -549,33 +567,33 @@ knitr::kable(
       .groups = "drop"
     ),
   digits = 2,
-  caption = "Income Summary by PPO1 Score"
+  caption = "Income Summary by PPO1 Score<br>Scale: 1 = strongly disagree to 5 = strongly agree (as defined in the survey)"
 )
 ```
 
 ### Code
 
 ``` r
-df_ppo1 <- df |>
-  mutate(ppo1 = ifelse(ppo1 == 0, NA, ppo1)) |>
-  drop_na(ppo1, income) |>
-  mutate(ppo1 = factor(ppo1, levels = 1:5))
+df_ppo1 <- df %>%
+  mutate(ppo1 = na_if(ppo1, 0)) %>%
+  drop_na(ppo1, income) %>%
+  mutate(ppo1 = factor(ppo1, levels = 1:5, ordered = TRUE))
 
 upper_limit <- quantile(df_ppo1$income, 0.95, na.rm = TRUE)
 
 ggplot(df_ppo1, aes(x = ppo1, y = income)) +
-  geom_boxplot(fill = "steelblue") +
+  geom_boxplot() +
   coord_cartesian(ylim = c(0, upper_limit)) +
   labs(
     title = "Income by PPO1 Score",
-    x = "PPO1 Score (1 = Low, 5 = High)",
-    y = "Income"
+    x = "PPO1 score (1–5)",
+    y = "Income (Million VND)"
   ) +
   theme_minimal()
 
 knitr::kable(
-  df_ppo1 |>
-    group_by(ppo1) |>
+  df_ppo1 %>%
+    group_by(ppo1) %>%
     summarise(
       N = n(),
       Median_Income = median(income, na.rm = TRUE),
@@ -584,13 +602,13 @@ knitr::kable(
       .groups = "drop"
     ),
   digits = 2,
-  caption = "Income Summary by PPO1 Score"
+  caption = "Income Summary by PPO1 Score<br>Scale: 1 = strongly disagree to 5 = strongly agree (as defined in the survey)"
 )
 ```
 :::
 
 **Observation:**\
-Income varies widely within each PPO1 score level, with substantial overlap across categories. Median income changes only modestly across PPO1 scores, and the differences between levels are small relative to overall dispersion. This suggests PPO1 is not strongly associated with income.
+PPO1 reflects respondents’ views on training-related policy/support. This visualisation explores whether income levels differ across PPO1 score categories. Income distributions overlap heavily across PPO1 score levels, and median income changes only minimally from scores 1 to 5. While the mean income is higher for some scores , the large differences  indicate that a small number of high-income outliers likely drive these differences. Overall, the plot suggests no clear or strong relationship between PPO1 score and income.
 ::::
 
 ------------------------------------------------------------------------
@@ -606,38 +624,42 @@ Income varies widely within each PPO1 score level, with substantial overlap acro
 ### Visual
 
 ```{r, echo=FALSE}
-
-df_hm <- df |>
-  drop_na(income, fedu) |>
+df_hm <- df %>%
+  drop_na(income, fedu) %>%
   mutate(
+    
     income_band = ntile(income, 4),
     income_band = factor(
       income_band,
       levels = 1:4,
-      labels = c("Q1 (Lowest)", "Q2", "Q3", "Q4 (Highest)")
+      labels = c("Q1 (Lowest)", "Q2", "Q3", "Q4 (Highest)"),
+      ordered = TRUE
     )
   )
 
-df_hm |>
-  count(fedu, income_band) |>
-  group_by(fedu) |>
-  mutate(pct = n / sum(n)) |>
-  ggplot(aes(fedu, income_band, fill = pct)) +
+#  Plot Heatmap
+df_hm %>%
+  count(fedu, income_band) %>%
+  group_by(fedu) %>%
+  mutate(pct = n / sum(n)) %>%
+  ggplot(aes(x = fedu, y = income_band, fill = pct)) +
   geom_tile(color = "white", linewidth = 0.5) +
-  scale_fill_gradient(labels = percent_format(accuracy = 1)) +
+ 
+  scale_fill_gradient(labels = scales::label_percent(accuracy = 1)) +
   labs(
     title = "Heatmap of Income Band by Education Level",
-    x = "Education Level (FEDU)",
-    y = "Income Band (Quartiles)",
-    fill = "% within education"
+    x = "Education Level",
+    y = "Income Band",
+    fill = "% within Edu"
   ) +
   theme_minimal(base_size = 12)
 
+# Summary Table
 knitr::kable(
-  df_hm |>
-    count(fedu, name = "Number of Respondents") |>
-    mutate(Percentage = percent(`Number of Respondents` / sum(`Number of Respondents`), accuracy = 0.1)),
-  col.names = c("Education Level (FEDU)", "Number of Respondents", "Percentage")
+  df_hm %>%
+    count(fedu, name = "Respondents") %>%
+    mutate(Percentage = scales::percent(Respondents / sum(Respondents), accuracy = 0.1)),
+  col.names = c("Education Level", "Respondents", "Percentage")
 )
 
 cat("Total number of respondents (used in heatmap):", nrow(df_hm))
@@ -646,37 +668,42 @@ cat("Total number of respondents (used in heatmap):", nrow(df_hm))
 ### Code
 
 ``` r
-df_hm <- df |>
-  drop_na(income, fedu) |>
+df_hm <- df %>%
+  drop_na(income, fedu) %>%
   mutate(
+    
     income_band = ntile(income, 4),
     income_band = factor(
       income_band,
       levels = 1:4,
-      labels = c("Q1 (Lowest)", "Q2", "Q3", "Q4 (Highest)")
+      labels = c("Q1 (Lowest)", "Q2", "Q3", "Q4 (Highest)"),
+      ordered = TRUE
     )
   )
 
-df_hm |>
-  count(fedu, income_band) |>
-  group_by(fedu) |>
-  mutate(pct = n / sum(n)) |>
-  ggplot(aes(fedu, income_band, fill = pct)) +
+#  Plot Heatmap
+df_hm %>%
+  count(fedu, income_band) %>%
+  group_by(fedu) %>%
+  mutate(pct = n / sum(n)) %>%
+  ggplot(aes(x = fedu, y = income_band, fill = pct)) +
   geom_tile(color = "white", linewidth = 0.5) +
-  scale_fill_gradient(labels = percent_format(accuracy = 1)) +
+ 
+  scale_fill_gradient(labels = scales::label_percent(accuracy = 1)) +
   labs(
     title = "Heatmap of Income Band by Education Level",
-    x = "Education Level (FEDU)",
-    y = "Income Band (Quartiles)",
-    fill = "% within education"
+    x = "Education Level",
+    y = "Income Band",
+    fill = "% within Edu"
   ) +
   theme_minimal(base_size = 12)
 
+# Summary Table
 knitr::kable(
-  df_hm |>
-    count(fedu, name = "Number of Respondents") |>
-    mutate(Percentage = percent(`Number of Respondents` / sum(`Number of Respondents`), accuracy = 0.1)),
-  col.names = c("Education Level (FEDU)", "Number of Respondents", "Percentage")
+  df_hm %>%
+    count(fedu, name = "Respondents") %>%
+    mutate(Percentage = scales::percent(Respondents / sum(Respondents), accuracy = 0.1)),
+  col.names = c("Education Level", "Respondents", "Percentage")
 )
 
 cat("Total number of respondents (used in heatmap):", nrow(df_hm))
@@ -684,8 +711,7 @@ cat("Total number of respondents (used in heatmap):", nrow(df_hm))
 :::
 
 **Observation:**\
-The heatmap shows how income quartiles are distributed across education levels. Higher education groups have a larger proportion of respondents in the upper income bands (Q3–Q4), while lower education groups are more concentrated in the lower bands (Q1–Q2). Although the differences are not extreme, the overall pattern suggests a positive association between education attainment and income level.
-.
+The heatmap shows, within each education group, the proportion of respondents in each income quartile (Q1 = lowest income, Q4 = highest). Respondents with primary and lower secondary education are more concentrated in the lower income bands (Q1–Q2), while upper secondary and “others” show a relatively higher share in the upper bands (Q3–Q4). This pattern suggests a mild positive relationship between education attainment and income.
 
 ::::
 
@@ -693,7 +719,9 @@ The heatmap shows how income quartiles are distributed across education levels. 
 
 
 # Overall Observations 
-Across all visualisations, income among informal rural labourers in northern mountainous Vietnam is strongly right-skewed and unevenly distributed. Most respondents earn relatively low incomes, while a small group earns substantially more, indicating clear income inequality.
-Among the socioeconomic factors, education shows the most consistent association with income. Higher education levels are linked to higher median incomes and a greater concentration in upper income quartiles. Credit access displays a mild positive relationship with income, while provincial differences are comparatively modest.
+Income of informal rural labourers in the northern mountainous regions of Vietnam is highly uneven and right-skewed, with most labourers clustered at lower income levels and a small group earning much more.
 
-Gender differences are limited, with substantial overlap in income distributions. Training participation is associated with slightly higher median income, though variability within groups remains large. Income and savings are positively but weakly related. Perception measures (PPO1) show minimal income differences. Overall, education appears to be the most structurally relevant factor associated with income variation.
+Across the factors examined, education stands out as the strongest and most consistent correlate of income, reflected in higher medians and a greater share in upper income quartiles for more educated respondents.
+
+Credit access and vocational training type show secondary, weaker patterns , but dispersion remains large, suggesting other influences are also important. In contrast, province, gender, savings , and PPO1 show modest or minimal differentiation in income.
+
