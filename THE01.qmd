@@ -1,215 +1,699 @@
 ---
-title: "Take-Home Exercise 1 – Survey Analysis of Informal Labourers’ Income"
+title: "Take-Home Exercise 1:Survey Analysis of Informal Labourers' Income"
 author: "Cheok En Qi"
-date: today
-format:
-  html:
-    toc: true
-    toc-depth: 2
-execute:
+date: "February 8, 2026"
+date-modified: "last-modified"
+execute: 
+  eval: true
   echo: true
   warning: false
-  message: false
+  freeze: true
 ---
 
 # Overview
 
-This report analyses the income of informal rural labourers in the northern mountainous regions of Vietnam.\
-Using tidyverse data preparation and ggplot2 visualisation techniques, key socio-economic factors affecting income are identified and communicated through analytical charts.
+This report analyses the income of informal rural labourers in the northern mountainous regions of Vietnam.
 
 ------------------------------------------------------------------------
+
+# Getting Started
+Install and load the required R packages for data manipulation and visualisation.
+```{r}
+pacman::p_load(
+  tidyverse,
+  readxl,
+  janitor,
+  ggthemes,
+  patchwork,
+  ggridges,
+  scales
+)
+
+```
+
+# Loading Data
+The dataset was imported from an Excel file containing survey responses from informal rural labourers in the northern mountainous regions of Vietnam.
+```{r}
+df_raw <- read_xlsx("chapthe/data/Upload for elsiver.xlsx")
+df_raw <- clean_names(df_raw)
+
+glimpse(df_raw)
+
+```
+
 
 # Data Preparation
+To prepare the dataset for analysis and visualisation, several cleaning and recoding steps were performed.
 
+1. Categorical variables (e.g., province group, gender, education level, training participation, and credit access) were converted into factor variables to support clearer grouped comparisons in plots.
+
+2. Continuous financial indicators (e.g., income, savings, loans, and related monetary variables) were converted into numeric format to ensure accurate computation and visualisation.
+
+3. Invalid or implausible entries were recoded as missing values (NA) to prevent distortion of summary statistics. Income was defined using tein, which represents total earnings.
 ```{r}
-library(tidyverse)
-library(readxl)
+df <- df_raw
 
-df <- read_excel("chapthe/data/Upload for elsiver.xlsx")
-glimpse(df)
-```
+# Convert categorical variables to factors
+df$cpro <- factor(df$cpro)
+df$cgen <- factor(df$cgen)
+df$crac <- factor(df$crac)
+df$cjob <- factor(df$cjob)
+df$cqui <- factor(df$cqui)
 
-## Cleaning & labelling
+df$fedu <- factor(df$fedu)
+df$fvtp <- factor(df$fvtp)
+df$fcra <- factor(df$fcra)
+df$ftap <- factor(df$ftap)
 
-```{r}
-df <- df %>%
-  mutate(
-    # Province codes (paper provinces)
-    Province = case_when(
-      CPRO == 1 ~ "Tuyen Quang",
-      CPRO == 2 ~ "Quang Ninh",
-      CPRO == 3 ~ "Ha Giang",
-      CPRO == 4 ~ "Yen Bai",
-      CPRO == 5 ~ "Bac Giang",
-      TRUE ~ NA_character_
-    ) %>% factor(),
+# Convert continuous / financial variables to numeric
+df$tein <- as.numeric(df$tein)
+df$tain <- as.numeric(df$tain)
+df$tsii <- as.numeric(df$tsii)
+df$toin <- as.numeric(df$toin)
+df$lcre <- as.numeric(df$lcre)
+df$lsav <- as.numeric(df$lsav)
+df$lwda <- as.numeric(df$lwda)
 
-    # Gender: "1" = Male, "2" = Female (based on your data)
-    Gender = case_when(
-      CGEN == "1" ~ "Male",
-      CGEN == "2" ~ "Female",
-      TRUE ~ NA_character_
-    ) %>% factor(levels = c("Female", "Male")),
+# Define income variable (total earnings)
+df$income <- df$tein
 
-    # Education codes shown in your dataset
-    Education = case_when(
-      FEDU == 0 ~ "Primary",
-      FEDU == 1 ~ "Lower Secondary",
-      FEDU == 2 ~ "Upper Secondary",
-      FEDU == 3 ~ "Others",
-      TRUE ~ NA_character_
-    ) %>% factor(levels = c("Primary", "Lower Secondary", "Upper Secondary", "Others")),
+summary(df)
 
-    # Vocational training: 1=Short, 2=Long (based on your data)
-    Training = case_when(
-      FVTP == 1 ~ "Short",
-      FVTP == 2 ~ "Long",
-      TRUE ~ NA_character_
-    ) %>% factor(levels = c("Short", "Long")),
-
-    # Credit access: 1 and 2 exist in your data.
-    # We'll interpret 1 = Yes, 2 = No (common coding). If your prof says otherwise, swap labels.
-    Credit = case_when(
-      FCRA == 1 ~ "Yes",
-      FCRA == 2 ~ "No",
-      TRUE ~ NA_character_
-    ) %>% factor(levels = c("No", "Yes")),
-
-    # Tech application: 1=Low, 2=Adequate
-    Technology = case_when(
-      FTAP == 1 ~ "Low",
-      FTAP == 2 ~ "Adequate",
-      TRUE ~ NA_character_
-    ) %>% factor(levels = c("Low", "Adequate")),
-
-    Income = as.numeric(TEIN)
-  )
 
 ```
 
 ------------------------------------------------------------------------
 
-# Visualisation 1 — Income Distribution
+# Visualisation 1: Income Distribution
 
-```{r}
-ggplot(df, aes(Income)) +
-  geom_histogram(bins = 30, fill = "#2563eb", color = "white") +
+------------------------------------------------------------------------
+
+:::: callout-note
+## Visualisation 1: Income Distribution
+
+::: panel-tabset
+### Visual
+
+```{r, echo=FALSE}
+ggplot(df, aes(x = income)) +
+  geom_histogram(
+    aes(y = after_stat(density)),
+    bins = 30,
+    fill = "lightblue",
+    color = "white",
+    alpha = 0.8
+  ) +
+  geom_density(
+    color = "darkblue",
+    linewidth = 1
+  ) +
   labs(
     title = "Distribution of Total Income",
-    x = "Income (Million VND)",
-    y = "Count"
+    x = "Income",
+    y = "Density"
   ) +
-  theme_minimal(base_size = 13)
+  theme_minimal()
+
+knitr::kable(
+  df |>
+    summarise(
+      Count = sum(!is.na(income)),
+      Mean = mean(income, na.rm = TRUE),
+      Median = median(income, na.rm = TRUE),
+      SD = sd(income, na.rm = TRUE),
+      Min = min(income, na.rm = TRUE),
+      Q1 = quantile(income, 0.25, na.rm = TRUE),
+      Q3 = quantile(income, 0.75, na.rm = TRUE),
+      Max = max(income, na.rm = TRUE)
+    ),
+  digits = 2,
+  caption = "Summary Statistics of Income"
+)
 
 ```
 
-**Write-up (≤150 words):**\
-The histogram shows a right-skewed income distribution. Most labourers cluster within the lower income range, while a small number earn substantially higher incomes. This indicates that income inequality exists within the surveyed informal rural labour force. The long tail suggests that although a minority benefits from higher earning opportunities (e.g., diversified work or better access to resources), the majority remain concentrated in relatively low-income conditions, reflecting constraints in rural economic opportunities.
+### Code
+
+``` r
+ggplot(df, aes(x = income)) +
+  geom_histogram(
+    aes(y = after_stat(density)),
+    bins = 30,
+    fill = "lightblue",
+    color = "white",
+    alpha = 0.8
+  ) +
+  geom_density(
+    color = "darkblue",
+    linewidth = 1
+  ) +
+  labs(
+    title = "Distribution of Total Income",
+    x = "Income",
+    y = "Density"
+  ) +
+  theme_minimal()
+  
+knitr::kable(
+  df |>
+    summarise(
+      Count = sum(!is.na(income)),
+      Mean = mean(income, na.rm = TRUE),
+      Median = median(income, na.rm = TRUE),
+      SD = sd(income, na.rm = TRUE),
+      Min = min(income, na.rm = TRUE),
+      Q1 = quantile(income, 0.25, na.rm = TRUE),
+      Q3 = quantile(income, 0.75, na.rm = TRUE),
+      Max = max(income, na.rm = TRUE)
+    ),
+  digits = 2,
+  caption = "Summary Statistics of Income"
+)
+
+```
+:::
+
+**Observation:**\
+The income distribution is heavily right-skewed, with the majority of labourers earning in the lower brackets. The long tail on the right shows that a small number earn much more than the rest, highlighting uneven earnings and suggest that income is unevenly distributed. 
+
+::::
+
 ------------------------------------------------------------------------
 
-# Visualisation 2 — Income by Education
+# Visualisation 2: Income Across Socioeconomic Factors (Province, Education, Credit)
 
-```{r}
-ggplot(df, aes(Education, Income)) +
-  geom_boxplot(fill = "#60a5fa") +
-  coord_cartesian(ylim = c(0, 200)) +
+------------------------------------------------------------------------
+
+:::: callout-note
+## Visualisation 2: Income Across Socioeconomic Factors (Province, Education, Credit)
+
+::: panel-tabset
+### Visual
+
+```{r, echo=FALSE}
+# y-axis cap (consistent across the 3 plots)
+y_max <- quantile(df$income, 0.98, na.rm = TRUE) * 1.10
+
+# Plot A: Income by Province Group (CPRO)
+df_cpro <- df |>
+  mutate(cpro = factor(cpro)) |>
+  drop_na(income, cpro)
+
+p_cpro <- ggplot(df_cpro, aes(x = cpro, y = income)) +
+  geom_boxplot(fill = "steelblue") +
+  coord_cartesian(ylim = c(0, y_max)) +
+  labs(
+    title = "Income by Province Group",
+    x = "Province Group (CPRO)",
+    y = "Income"
+  ) +
+  theme_minimal()
+
+# Plot B: Income by Education Level (FEDU)
+df_fedu <- df |>
+  mutate(fedu = factor(fedu)) |>
+  drop_na(income, fedu)
+
+p_fedu <- ggplot(df_fedu, aes(x = fedu, y = income)) +
+  geom_boxplot(fill = "steelblue") +
+  coord_cartesian(ylim = c(0, y_max)) +
   labs(
     title = "Income by Education Level",
-    x = "Education Level",
-    y = "Income (Million VND)"
+    x = "Education Level (FEDU)",
+    y = "Income"
   ) +
-  theme_minimal(base_size = 13)
+  theme_minimal()
 
-```
+# Plot C: Income by Credit Access (FCRA)
+df_fcra <- df |>
+  mutate(fcra = factor(fcra)) |>
+  drop_na(income, fcra)
 
-**Write-up:**\
-Income tends to rise with education level. The median income increases from primary to secondary education categories, and higher education groups show a wider spread of earnings, suggesting that education improves access to better-paying opportunities. The wider variability at higher education levels implies that education may enable labourers to diversify into non-agricultural work, though outcomes still differ across individuals. Overall, the pattern supports the idea that human capital (education) is positively associated with earning potential.
-------------------------------------------------------------------------
-
-# Visualisation 3 — Income by Vocational Training
-
-```{r}
-ggplot(df, aes(Training, Income)) +
-  geom_boxplot(fill = "#34d399") +
-  coord_cartesian(ylim = c(0, 200)) +
+p_fcra <- ggplot(df_fcra, aes(x = fcra, y = income)) +
+  geom_boxplot(fill = "steelblue") +
+  coord_cartesian(ylim = c(0, y_max)) +
   labs(
-    title = "Income by Vocational Training Type",
-    x = "Vocational Training",
-    y = "Income (Million VND)"
+    title = "Income by Credit Access",
+    x = "Credit Access (FCRA)",
+    y = "Income"
   ) +
-  theme_minimal(base_size = 13)
+  theme_minimal()
+
+p_cpro + p_fedu + p_fcra
 
 ```
 
-**Write-up:**\
-Labourers who attended long vocational training courses generally have higher median income than those who attended short courses. This suggests that longer training programmes may provide stronger skill development, improving productivity and enabling access to higher-paying jobs. Although there are still variations within each group, the overall shift in income distribution indicates that vocational training—especially longer programmes—can play an important role in supporting income improvement among informal rural workers.
+### Code
 
-------------------------------------------------------------------------
+``` r
+# y-axis cap (consistent across the 3 plots)
+y_max <- quantile(df$income, 0.98, na.rm = TRUE) * 1.10
 
-# Visualisation 4 — Income by Credit Accessibility
+# Plot A: Income by Province Group (CPRO)
+df_cpro <- df |>
+  mutate(cpro = factor(cpro)) |>
+  drop_na(income, cpro)
 
-```{r}
-ggplot(df, aes(Credit, Income)) +
-  geom_boxplot(fill = "#f59e0b") +
-  coord_cartesian(ylim = c(0, 200)) +
+p_cpro <- ggplot(df_cpro, aes(x = cpro, y = income)) +
+  geom_boxplot(fill = "steelblue") +
+  coord_cartesian(ylim = c(0, y_max)) +
   labs(
-    title = "Income by Credit Accessibility",
-    x = "Access to Credit",
-    y = "Income (Million VND)"
+    title = "Income by Province Group",
+    x = "Province Group (CPRO)",
+    y = "Income"
   ) +
-  theme_minimal(base_size = 13)
-```
+  theme_minimal()
 
-**Write-up:**\
-Respondents with credit access show a higher median income compared to those without. This suggests that financial support may enable labourers to invest in productive activities such as farming inputs, equipment, or small business operations, which can increase earnings. The gap between groups highlights the importance of credit accessibility as a potential lever for rural income improvement. However, the overlap between groups indicates that credit alone may not be sufficient; complementary factors such as skills, technology, and local conditions likely also influence income outcomes.
-------------------------------------------------------------------------
+# Plot B: Income by Education Level (FEDU)
+df_fedu <- df |>
+  mutate(fedu = factor(fedu)) |>
+  drop_na(income, fedu)
 
-# Visualisation 5 — Income by Technology Application
-
-```{r}
-ggplot(df, aes(Technology, Income)) +
-  geom_boxplot(fill = "#a78bfa") +
-  coord_cartesian(ylim = c(0, 200)) +
+p_fedu <- ggplot(df_fedu, aes(x = fedu, y = income)) +
+  geom_boxplot(fill = "steelblue") +
+  coord_cartesian(ylim = c(0, y_max)) +
   labs(
-    title = "Income by Technology Application Level",
-    x = "Technology Application",
-    y = "Income (Million VND)"
+    title = "Income by Education Level",
+    x = "Education Level (FEDU)",
+    y = "Income"
   ) +
-  theme_minimal(base_size = 13)
+  theme_minimal()
 
-```
+# Plot C: Income by Credit Access (FCRA)
+df_fcra <- df |>
+  mutate(fcra = factor(fcra)) |>
+  drop_na(income, fcra)
 
-**Write-up:**\
-Labourers with adequate technology application tend to have slightly higher income compared to those with low technology application. This suggests that technology adoption may improve efficiency and productivity, contributing to better earning outcomes. While the difference may not be extreme, the shift in median income supports the role of technological upgrading as part of broader rural development. The presence of variability in both groups indicates that technology likely interacts with other factors such as access to credit, training, and job type.
-------------------------------------------------------------------------
-
-# Visualisation 6 — Income by Province
-
-```{r}
-ggplot(df, aes(Province, Income)) +
-  geom_boxplot(fill = "#ef4444") +
-  coord_cartesian(ylim = c(0, 200)) +
+p_fcra <- ggplot(df_fcra, aes(x = fcra, y = income)) +
+  geom_boxplot(fill = "steelblue") +
+  coord_cartesian(ylim = c(0, y_max)) +
   labs(
-    title = "Income Variation by Province",
-    x = "Province",
-    y = "Income (Million VND)"
+    title = "Income by Credit Access",
+    x = "Credit Access (FCRA)",
+    y = "Income"
   ) +
-  theme_minimal(base_size = 13)
+  theme_minimal()
+
+p_cpro + p_fedu + p_fcra
+
+```
+:::
+
+**Observation:**\
+Income varies across province groups, education levels, and credit access categories. Education shows the clearest pattern, with higher education levels generally associated with higher median incomes. Credit access shows slightly higher earnings, while provincial differences are present but less pronounced. Missing values were excluded for these variables to ensure clearer comparisons across categories.
+::::
+
+------------------------------------------------------------------------
+
+# Visualisation 3: Income Across Demographic Characteristics (Gender, Training)
+
+------------------------------------------------------------------------
+
+:::: callout-note
+## Visualisation 3: Income Across Demographic Characteristics (Gender, Training)
+
+::: panel-tabset
+### Visual
+
+```{r, echo=FALSE}
+y_max <- quantile(df$income, 0.95, na.rm = TRUE)
+
+# Plot A: Income by Gender
+df_gender <- df |>
+  mutate(cgen = factor(cgen)) |>
+  drop_na(income, cgen)
+
+p_gender <- ggplot(df_gender, aes(x = cgen, y = income)) +
+  geom_boxplot(fill = "steelblue") +
+  coord_cartesian(ylim = c(0, y_max)) +
+  labs(title = "Income by Gender", x = "Gender (CGEN)", y = "Income") +
+  theme_minimal()
+
+# Plot B: Income by Vocational Training Type (FVTP)
+# Based on the article's Table 3: Short courses (N=609), Long courses (N=92)
+df_training <- df |>
+  mutate(
+    fvtp = factor(fvtp, levels = c(1, 2), labels = c("Short courses", "Long courses"))
+  ) |>
+  drop_na(income, fvtp)
+
+p_training <- ggplot(df_training, aes(x = fvtp, y = income)) +
+  geom_boxplot(fill = "steelblue") +
+  coord_cartesian(ylim = c(0, y_max)) +
+  labs(title = "Income by Vocational Training Type", x = "Training type (FVTP)", y = "Income") +
+  theme_minimal()
+
+p_gender + p_training
+
+summary_v3 <- bind_rows(
+  df_gender |>
+    group_by(Group = "Gender", Category = cgen) |>
+    summarise(
+      N = n(),
+      Median_Income = median(income, na.rm = TRUE),
+      Mean_Income = mean(income, na.rm = TRUE),
+      SD = sd(income, na.rm = TRUE),
+      .groups = "drop"
+    ),
+  df_training |>
+    group_by(Group = "Training type", Category = fvtp) |>
+    summarise(
+      N = n(),
+      Median_Income = median(income, na.rm = TRUE),
+      Mean_Income = mean(income, na.rm = TRUE),
+      SD = sd(income, na.rm = TRUE),
+      .groups = "drop"
+    )
+)
+
+knitr::kable(summary_v3, digits = 2)
+```
+
+### Code
+
+``` r
+y_max <- quantile(df$income, 0.95, na.rm = TRUE)
+
+df_gender <- df |>
+  mutate(cgen = factor(cgen)) |>
+  drop_na(income, cgen)
+
+p_gender <- ggplot(df_gender, aes(x = cgen, y = income)) +
+  geom_boxplot(fill = "steelblue") +
+  coord_cartesian(ylim = c(0, y_max)) +
+  labs(title = "Income by Gender", x = "Gender (CGEN)", y = "Income") +
+  theme_minimal()
+
+df_training <- df |>
+  mutate(
+    fvtp = factor(fvtp, levels = c(1, 2), labels = c("Short courses", "Long courses"))
+  ) |>
+  drop_na(income, fvtp)
+
+p_training <- ggplot(df_training, aes(x = fvtp, y = income)) +
+  geom_boxplot(fill = "steelblue") +
+  coord_cartesian(ylim = c(0, y_max)) +
+  labs(title = "Income by Vocational Training Type", x = "Training type (FVTP)", y = "Income") +
+  theme_minimal()
+
+p_gender + p_training
+
+summary_v3 <- bind_rows(
+  df_gender |>
+    group_by(Group = "Gender", Category = cgen) |>
+    summarise(
+      N = n(),
+      Median_Income = median(income, na.rm = TRUE),
+      Mean_Income = mean(income, na.rm = TRUE),
+      SD = sd(income, na.rm = TRUE),
+      .groups = "drop"
+    ),
+  df_training |>
+    group_by(Group = "Training type", Category = fvtp) |>
+    summarise(
+      N = n(),
+      Median_Income = median(income, na.rm = TRUE),
+      Mean_Income = mean(income, na.rm = TRUE),
+      SD = sd(income, na.rm = TRUE),
+      .groups = "drop"
+    )
+)
+
+knitr::kable(summary_v3, digits = 2)
+```
+:::
+
+**Observation:**\
+Income differences across gender appear modest, with considerable overlap between the two groups. In contrast, vocational training type shows a clearer gap: respondents who attended long courses report substantially higher incomes than those who attended short courses. However, variability within each group remains large, especially for the long-course group. This suggests that factors beyond gender and training type also contribute to income differences.
+::::
+
+------------------------------------------------------------------------
+
+# Visualisation 4: Association Between Income and Savings
+
+------------------------------------------------------------------------
+
+:::: callout-note
+## Visualisation 4:Association Between Income and Savings
+
+::: panel-tabset
+### Visual
+
+```{r, echo=FALSE}
+df_scatter <- df |> drop_na(income, lsav)
+
+# Cap both axes to reduce distortion from extreme values (consistent with earlier plots)
+x_limit <- quantile(df_scatter$income, 0.98, na.rm = TRUE)
+y_limit <- quantile(df_scatter$lsav,  0.98, na.rm = TRUE)
+
+ggplot(df_scatter, aes(income, lsav)) +
+  geom_point(alpha = 0.4) +
+  geom_smooth(method = "lm", se = TRUE) +
+  labs(
+    title = "Association Between Income and Savings",
+    x = "Income",
+    y = "Savings"
+  ) +
+  coord_cartesian(xlim = c(0, x_limit), ylim = c(0, y_limit)) +
+  theme_minimal()
+
+knitr::kable(
+  df_scatter |>
+    summarise(
+      N = n(),
+      Correlation = cor(income, lsav, method = "pearson"),
+      Income_Mean = mean(income, na.rm = TRUE),
+      Savings_Mean = mean(lsav, na.rm = TRUE)
+    ),
+  digits = 3,
+  caption = "Summary of Income and Savings Relationship"
+)
 
 ```
 
-**Write-up:**\
-Income distributions vary across provinces, indicating regional differences in earning potential. Some provinces show higher medians and wider ranges, suggesting stronger access to markets, employment diversity, or local economic conditions. These regional disparities imply that income improvement strategies may need to be tailored by province, combining skills development, financial access, and infrastructure support to address local constraints.
+### Code
+
+``` r
+df_scatter <- df |> drop_na(income, lsav)
+
+x_limit <- quantile(df_scatter$income, 0.98, na.rm = TRUE)
+y_limit <- quantile(df_scatter$lsav,  0.98, na.rm = TRUE)
+
+ggplot(df_scatter, aes(income, lsav)) +
+  geom_point(alpha = 0.4) +
+  geom_smooth(method = "lm", se = TRUE) +
+  labs(
+    title = "Association Between Income and Savings",
+    x = "Income",
+    y = "Savings"
+  ) +
+  coord_cartesian(xlim = c(0, x_limit), ylim = c(0, y_limit)) +
+  theme_minimal()
+
+knitr::kable(
+  df_scatter |>
+    summarise(
+      N = n(),
+      Correlation = cor(income, lsav, method = "pearson"),
+      Income_Mean = mean(income, na.rm = TRUE),
+      Savings_Mean = mean(lsav, na.rm = TRUE)
+    ),
+  digits = 3,
+  caption = "Summary of Income and Savings Relationship"
+)
+```
+:::
+
+**Observation:**\
+Savings show a weak relationship with income, with points widely dispersed and clustered at lower savings levels. A small number of extreme values influence the fitted trend line, and most respondents report relatively low savings even as income increases.
+::::
+
 ------------------------------------------------------------------------
 
-# Key Observations
-
-1. Total income is right-skewed, indicating inequality among respondents.
-2. Higher education is associated with higher median income.
-3. Longer vocational training is linked to stronger earning outcomes compared to short courses.
-4.Credit access is associated with higher income and may enable productive investment.
-5.Adequate technology application corresponds to slightly higher income levels.
-6.Income differs across provinces, suggesting regional inequality and the need for targeted interventions.
+# Visualisation 5: Income by Perception Score (PPO1)
 
 ------------------------------------------------------------------------
 
+:::: callout-note
+## Visualisation 5: Income by Perception Score (PPO1)
+
+::: panel-tabset
+### Visual
+
+```{r, echo=FALSE}
+df_ppo1 <- df |>
+  mutate(ppo1 = ifelse(ppo1 == 0, NA, ppo1)) |>
+  drop_na(ppo1, income) |>
+  mutate(ppo1 = factor(ppo1, levels = 1:5))
+
+upper_limit <- quantile(df_ppo1$income, 0.95, na.rm = TRUE)
+
+ggplot(df_ppo1, aes(x = ppo1, y = income)) +
+  geom_boxplot(fill = "steelblue") +
+  coord_cartesian(ylim = c(0, upper_limit)) +
+  labs(
+    title = "Income by PPO1 Score",
+    x = "PPO1 Score (1 = Low, 5 = High)",
+    y = "Income"
+  ) +
+  theme_minimal()
+
+knitr::kable(
+  df_ppo1 |>
+    group_by(ppo1) |>
+    summarise(
+      N = n(),
+      Median_Income = median(income, na.rm = TRUE),
+      Mean_Income = mean(income, na.rm = TRUE),
+      SD = sd(income, na.rm = TRUE),
+      .groups = "drop"
+    ),
+  digits = 2,
+  caption = "Income Summary by PPO1 Score"
+)
+```
+
+### Code
+
+``` r
+df_ppo1 <- df |>
+  mutate(ppo1 = ifelse(ppo1 == 0, NA, ppo1)) |>
+  drop_na(ppo1, income) |>
+  mutate(ppo1 = factor(ppo1, levels = 1:5))
+
+upper_limit <- quantile(df_ppo1$income, 0.95, na.rm = TRUE)
+
+ggplot(df_ppo1, aes(x = ppo1, y = income)) +
+  geom_boxplot(fill = "steelblue") +
+  coord_cartesian(ylim = c(0, upper_limit)) +
+  labs(
+    title = "Income by PPO1 Score",
+    x = "PPO1 Score (1 = Low, 5 = High)",
+    y = "Income"
+  ) +
+  theme_minimal()
+
+knitr::kable(
+  df_ppo1 |>
+    group_by(ppo1) |>
+    summarise(
+      N = n(),
+      Median_Income = median(income, na.rm = TRUE),
+      Mean_Income = mean(income, na.rm = TRUE),
+      SD = sd(income, na.rm = TRUE),
+      .groups = "drop"
+    ),
+  digits = 2,
+  caption = "Income Summary by PPO1 Score"
+)
+```
+:::
+
+**Observation:**\
+Income varies widely within each PPO1 score level, with substantial overlap across categories. Median income changes only modestly across PPO1 scores, and the differences between levels are small relative to overall dispersion. This suggests PPO1 is not strongly associated with income.
+::::
+
+------------------------------------------------------------------------
+
+# Visualisation 6: Heatmap of Income Distribution by Education Level
+
+------------------------------------------------------------------------
+
+:::: callout-note
+## Visualisation 6: Heatmap of Income Distribution by Education Level
+
+::: panel-tabset
+### Visual
+
+```{r, echo=FALSE}
+
+df_hm <- df |>
+  drop_na(income, fedu) |>
+  mutate(
+    income_band = ntile(income, 4),
+    income_band = factor(
+      income_band,
+      levels = 1:4,
+      labels = c("Q1 (Lowest)", "Q2", "Q3", "Q4 (Highest)")
+    )
+  )
+
+df_hm |>
+  count(fedu, income_band) |>
+  group_by(fedu) |>
+  mutate(pct = n / sum(n)) |>
+  ggplot(aes(fedu, income_band, fill = pct)) +
+  geom_tile(color = "white", linewidth = 0.5) +
+  scale_fill_gradient(labels = percent_format(accuracy = 1)) +
+  labs(
+    title = "Heatmap of Income Band by Education Level",
+    x = "Education Level (FEDU)",
+    y = "Income Band (Quartiles)",
+    fill = "% within education"
+  ) +
+  theme_minimal(base_size = 12)
+
+knitr::kable(
+  df_hm |>
+    count(fedu, name = "Number of Respondents") |>
+    mutate(Percentage = percent(`Number of Respondents` / sum(`Number of Respondents`), accuracy = 0.1)),
+  col.names = c("Education Level (FEDU)", "Number of Respondents", "Percentage")
+)
+
+cat("Total number of respondents (used in heatmap):", nrow(df_hm))
+```
+
+### Code
+
+``` r
+df_hm <- df |>
+  drop_na(income, fedu) |>
+  mutate(
+    income_band = ntile(income, 4),
+    income_band = factor(
+      income_band,
+      levels = 1:4,
+      labels = c("Q1 (Lowest)", "Q2", "Q3", "Q4 (Highest)")
+    )
+  )
+
+df_hm |>
+  count(fedu, income_band) |>
+  group_by(fedu) |>
+  mutate(pct = n / sum(n)) |>
+  ggplot(aes(fedu, income_band, fill = pct)) +
+  geom_tile(color = "white", linewidth = 0.5) +
+  scale_fill_gradient(labels = percent_format(accuracy = 1)) +
+  labs(
+    title = "Heatmap of Income Band by Education Level",
+    x = "Education Level (FEDU)",
+    y = "Income Band (Quartiles)",
+    fill = "% within education"
+  ) +
+  theme_minimal(base_size = 12)
+
+knitr::kable(
+  df_hm |>
+    count(fedu, name = "Number of Respondents") |>
+    mutate(Percentage = percent(`Number of Respondents` / sum(`Number of Respondents`), accuracy = 0.1)),
+  col.names = c("Education Level (FEDU)", "Number of Respondents", "Percentage")
+)
+
+cat("Total number of respondents (used in heatmap):", nrow(df_hm))
+```
+:::
+
+**Observation:**\
+The heatmap shows how income quartiles are distributed across education levels. Higher education groups have a larger proportion of respondents in the upper income bands (Q3–Q4), while lower education groups are more concentrated in the lower bands (Q1–Q2). Although the differences are not extreme, the overall pattern suggests a positive association between education attainment and income level.
+.
+
+::::
+
+------------------------------------------------------------------------
+
+
+# Overall Observations 
+Across all visualisations, income among informal rural labourers in northern mountainous Vietnam is strongly right-skewed and unevenly distributed. Most respondents earn relatively low incomes, while a small group earns substantially more, indicating clear income inequality.
+Among the socioeconomic factors, education shows the most consistent association with income. Higher education levels are linked to higher median incomes and a greater concentration in upper income quartiles. Credit access displays a mild positive relationship with income, while provincial differences are comparatively modest.
+
+Gender differences are limited, with substantial overlap in income distributions. Training participation is associated with slightly higher median income, though variability within groups remains large. Income and savings are positively but weakly related. Perception measures (PPO1) show minimal income differences. Overall, education appears to be the most structurally relevant factor associated with income variation.

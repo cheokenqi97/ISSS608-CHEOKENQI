@@ -19,21 +19,7 @@ execute:
 Install and launch the following R packages
 
 ```{r}
-pacman::p_load(
-  scales,
-  viridis,
-  lubridate,
-  ggthemes,
-  gridExtra,
-  readxl,
-  knitr,
-  data.table,
-  ggHoriPlot,
-  tidyverse
-)
-
-library(CGPfunctions)
-?newggslopegraph
+pacman::p_load(scales, viridis, lubridate, ggthemes, gridExtra, readxl, knitr, data.table, CGPfunctions, ggHoriPlot, tidyverse, CGPfunctions)
 
 ```
 
@@ -46,12 +32,15 @@ attacks <- read_csv("chap06/data//eventlog.csv")
 ```
 
 ## 17.4 Plotting Calendar Heatmap
-###  17.4.3 Examining the data structure
+
+### 17.4.3 Examining the data structure
+
 ```{r}
 kable(head(attacks))
 ```
 
 ### 17.4.4 Data Preparation
+
 ```{r}
 make_hr_wkday <- function(ts, sc, tz) {
   real_times <- ymd_hms(ts, 
@@ -83,6 +72,7 @@ kable(head(attacks))
 ```
 
 ### 17.4.5 Building the Calendar Heatmaps
+
 ```{r}
 grouped <- attacks %>% 
   count(wkday, hour) %>% 
@@ -109,8 +99,8 @@ theme(axis.ticks = element_blank(),
       legend.text = element_text(size = 6) )
 ```
 
-
 ### 17.4.6 Building Multiple Calendar Heatmaps
+
 ```{r}
 top4 <- attacks %>% 
   count(source_country, sort = TRUE) %>% 
@@ -145,6 +135,7 @@ theme(axis.ticks = element_blank(),
 ```
 
 ### 17.4.7 Plotting Multiple Calendar Heatmaps
+
 ```{r}
 attacks_by_country <- count(
   attacks, source_country) %>%
@@ -161,8 +152,8 @@ top4_attacks <- attacks %>%
   na.omit()
 ```
 
-
 ### 17.4.8 Plotting Multiple Calendar Heatmaps
+
 ```{r}
 ggplot(top4_attacks, 
        aes(hour, 
@@ -188,11 +179,13 @@ ggplot(top4_attacks,
 ## 17.5 Plotting Cycle Plot
 
 ### 17.5.1 Step 1: Data Import
+
 ```{r}
 air <- read_excel("chap06/data/arrivals_by_air.xlsx")
 ```
 
 ### 17.5.2 Step 2: Deriving month and year fields
+
 ```{r}
 air$month <- factor(month(air$`Month-Year`), 
                     levels=1:12, 
@@ -202,6 +195,7 @@ air$year <- year(ymd(air$`Month-Year`))
 ```
 
 ### 17.5.3 Step 4: Extracting the target country
+
 ```{r}
 Vietnam <- air %>% 
   select(`Vietnam`, 
@@ -211,6 +205,7 @@ Vietnam <- air %>%
 ```
 
 ### 17.5.4 Step 5: Computing year average arrivals by month
+
 ```{r}
 hline.data <- Vietnam %>% 
   group_by(month) %>%
@@ -218,6 +213,7 @@ hline.data <- Vietnam %>%
 ```
 
 ### 17.5.5 Srep 6: Plotting the cycle plot
+
 ```{r}
 ggplot() + 
   geom_line(data=Vietnam,
@@ -239,12 +235,15 @@ ggplot() +
 ```
 
 ## 17.6 Plotting Slopegraph
+
 ### 17.6.1 Step 1: Data Import
+
 ```{r}
 rice <- read_csv("chap06/data/rice.csv")
 ```
 
 ## 17.6.2 Step 2: Plotting the slopegraph
+
 ```{r}
 rice %>% 
   mutate(Year = factor(Year)) %>%
@@ -252,8 +251,5 @@ rice %>%
   newggslopegraph(Year, Yield, Country,
                 Title = "Rice Yield of Top 11 Asian Counties",
                 SubTitle = "1961-1980",
-                Caption = "Prepared by: Dr. Kam Tin Seong")
+                Caption = "Prepared by: Cheok En Qi")
 ```
-
-
-
