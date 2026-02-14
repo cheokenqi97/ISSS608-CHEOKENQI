@@ -15,3 +15,10 @@ _freeze/
 .Rhistory
 .RData
 .DS_Store
+_site/
+_freeze/
+.quarto/
+.Rproj.user/
+.Rhistory
+.RData
+.DS_Store
