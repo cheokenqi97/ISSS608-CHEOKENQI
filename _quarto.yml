@@ -14,28 +14,28 @@ website:
       - text: "Hands-on Exercises"
         menu:
           - text: "HE01"
-            href: HE01.qmd
+            href: HE01.html
           - text: "HE02"
-            href: HE02.qmd
+            href: HE02.html
           - text: "HE03"
-            href: HE03.qmd
+            href: HE03.html
           - text: "HE04"
-            href: HE04.qmd
+            href: HE04.html
           - text: "HE05"
-            href: HE05.qmd
+            href: HE05.html
           - text: "HE06"
-            href: HE06.qmd           
+            href: HE06.html           
       - text: "Take-home Exercises"
         menu:
           - text: "THE01"
-            href: THE01.qmd            
+            href: THE01.html            
         
     right:
       - icon: house
-        href: index.qmd
+        href: index.html
         aria-label: Home
       - icon: person-circle
-        href: about.qmd
+        href: about.html
         aria-label: About
       - icon: github
         href: "https://github.com/cheokenqi97"
