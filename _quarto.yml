@@ -27,7 +27,7 @@ website:
             href: HE06.qmd           
       - text: "Take-home Exercises"
         menu:
-          - text: "TH01"
+          - text: "THE01"
             href: THE01.qmd            
         
     right:
