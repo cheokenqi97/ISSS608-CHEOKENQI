@@ -1,0 +1,478 @@
+[
+  {
+    "objectID": "HE02.html",
+    "href": "HE02.html",
+    "title": "Hands-on Exercise 2",
+    "section": "",
+    "text": "Lesson 2: A Layered Grammar of Graphics: ggplot2 methods\n\n\n\n\n\npacman::p_load(ggrepel, patchwork, \n               ggthemes, hrbrthemes,\n               tidyverse)\nexam_data &lt;- read_csv(\"chap02/data/Exam_data.csv\")"
+  },
+  {
+    "objectID": "HE02.html#getting-started",
+    "href": "HE02.html#getting-started",
+    "title": "Hands-on Exercise 2",
+    "section": "",
+    "text": "pacman::p_load(ggrepel, patchwork, \n               ggthemes, hrbrthemes,\n               tidyverse)\nexam_data &lt;- read_csv(\"chap02/data/Exam_data.csv\")"
+  },
+  {
+    "objectID": "HE01.html",
+    "href": "HE01.html",
+    "title": "Hands-on Exercise 1",
+    "section": "",
+    "text": "Lesson 1: A Layered Grammar of Graphics: ggplot2 methods\n\n\n\n\n\npacman::p_load(tidyverse)\nexam_data &lt;- read_csv(\"chap01/data/Exam_data.csv\")"
+  },
+  {
+    "objectID": "HE01.html#getting-started",
+    "href": "HE01.html#getting-started",
+    "title": "Hands-on Exercise 1",
+    "section": "",
+    "text": "pacman::p_load(tidyverse)\nexam_data &lt;- read_csv(\"chap01/data/Exam_data.csv\")"
+  },
+  {
+    "objectID": "HE05.html#getting-started",
+    "href": "HE05.html#getting-started",
+    "title": "Hands-on Exercise 5",
+    "section": "Getting Started",
+    "text": "Getting Started\nInstall and launch the following R packages\n\npacman::p_load(plotly, ggtern, tidyverse)"
+  },
+  {
+    "objectID": "HE05.html#data",
+    "href": "HE05.html#data",
+    "title": "Hands-on Exercise 5",
+    "section": "Data",
+    "text": "Data\nLoading the data to the R environment by using read_csv() function of readr package\n\npop_data &lt;- read.csv(\"chap05/data/respopagsex2000to2018_tidy.csv\")"
+  },
+  {
+    "objectID": "HE05.html#preparing-the-data",
+    "href": "HE05.html#preparing-the-data",
+    "title": "Hands-on Exercise 5",
+    "section": "13.3.3 Preparing the Data",
+    "text": "13.3.3 Preparing the Data\n\n#Deriving the young, economy active and old measures\nagpop_mutated &lt;- pop_data %&gt;%\n  mutate(`Year` = as.character(Year))%&gt;%\n  spread(AG, Population) %&gt;%\n  mutate(YOUNG = rowSums(.[4:8]))%&gt;%\n  mutate(ACTIVE = rowSums(.[9:16]))  %&gt;%\n  mutate(OLD = rowSums(.[17:21])) %&gt;%\n  mutate(TOTAL = rowSums(.[22:24])) %&gt;%\n  filter(Year == 2018)%&gt;%\n  filter(TOTAL &gt; 0)"
+  },
+  {
+    "objectID": "HE05.html#plotting-ternary-diagram-with-r",
+    "href": "HE05.html#plotting-ternary-diagram-with-r",
+    "title": "Hands-on Exercise 5",
+    "section": "13.4 Plotting Ternary Diagram with R",
+    "text": "13.4 Plotting Ternary Diagram with R\n\n13.4.1 Plotting a static ternary diagram\n\n#Building the static ternary plot\nggtern(data=agpop_mutated,aes(x=YOUNG,y=ACTIVE, z=OLD)) +\n  geom_point()\n\n\n\n\n\n\n\n#Building the static ternary plot\nggtern(data=agpop_mutated, aes(x=YOUNG,y=ACTIVE, z=OLD)) +\n  geom_point() +\n  labs(title=\"Population structure, 2015\") +\n  theme_rgbw()\n\n\n\n\n\n\n\n\n\n\n13.4.2 Plotting an interative ternary diagram\n\n# reusable function for creating annotation object\nlabel &lt;- function(txt) {\n  list(\n    text = txt, \n    x = 0.1, y = 1,\n    ax = 0, ay = 0,\n    xref = \"paper\", yref = \"paper\", \n    align = \"center\",\n    font = list(family = \"serif\", size = 15, color = \"white\"),\n    bgcolor = \"#b3b3b3\", bordercolor = \"black\", borderwidth = 2\n  )\n}\n\n# reusable function for axis formatting\naxis &lt;- function(txt) {\n  list(\n    title = txt, tickformat = \".0%\", tickfont = list(size = 10)\n  )\n}\n\nternaryAxes &lt;- list(\n  aaxis = axis(\"Young\"), \n  baxis = axis(\"Active\"), \n  caxis = axis(\"Old\")\n)\n\n# Initiating a plotly visualization \nplot_ly(\n  agpop_mutated, \n  a = ~YOUNG, \n  b = ~ACTIVE, \n  c = ~OLD, \n  color = I(\"black\"), \n  type = \"scatterternary\"\n) %&gt;%\n  layout(\n    annotations = label(\"Ternary Markers\"), \n    ternary = ternaryAxes\n  )"
+  },
+  {
+    "objectID": "HE05.html#getting-started-1",
+    "href": "HE05.html#getting-started-1",
+    "title": "Hands-on Exercise 5",
+    "section": "Getting Started",
+    "text": "Getting Started\nInstall and launch the following R packages\n\npacman::p_load(corrplot, ggstatsplot, tidyverse)"
+  },
+  {
+    "objectID": "HE05.html#data-1",
+    "href": "HE05.html#data-1",
+    "title": "Hands-on Exercise 5",
+    "section": "Data",
+    "text": "Data\nLoading the data to the R environment by using read_csv() function of readr package\n\nwine &lt;- read.csv(\"chap05/data/wine_quality.csv\")"
+  },
+  {
+    "objectID": "HE05.html#building-correlation-matrix-pairs-method",
+    "href": "HE05.html#building-correlation-matrix-pairs-method",
+    "title": "Hands-on Exercise 5",
+    "section": "6.4 Building Correlation Matrix: pairs() method",
+    "text": "6.4 Building Correlation Matrix: pairs() method\n\n6.4.1 Building a basic correlation matrix\n\npairs(wine[,1:11])\n\n\n\n\n\n\n\npairs(wine[,2:12])\n\n\n\n\n\n\n\n\n\n\n6.4.2 Drawing the lower corner\n\npairs(wine[,2:12], upper.panel = NULL)\n\n\n\n\n\n\n\npairs(wine[,2:12], lower.panel = NULL)\n\n\n\n\n\n\n\n\n\n\n6.4.3 Including with correlation coefficients\n\npanel.cor &lt;- function(x, y, digits=2, prefix=\"\", cex.cor, ...) {\nusr &lt;- par(\"usr\")\non.exit(par(usr))\npar(usr = c(0, 1, 0, 1))\nr &lt;- abs(cor(x, y, use=\"complete.obs\"))\ntxt &lt;- format(c(r, 0.123456789), digits=digits)[1]\ntxt &lt;- paste(prefix, txt, sep=\"\")\nif(missing(cex.cor)) cex.cor &lt;- 0.8/strwidth(txt)\ntext(0.5, 0.5, txt, cex = cex.cor * (1 + r) / 2)\n}\n\npairs(wine[,2:12], \n      upper.panel = panel.cor)"
+  },
+  {
+    "objectID": "HE05.html#visualising-correlation-matrix-ggcormat",
+    "href": "HE05.html#visualising-correlation-matrix-ggcormat",
+    "title": "Hands-on Exercise 5",
+    "section": "6.5 Visualising Correlation Matrix: ggcormat()",
+    "text": "6.5 Visualising Correlation Matrix: ggcormat()\n\n6.5.1 The basic plot\n\nggstatsplot::ggcorrmat(data = wine, cor.vars = 1:11)\n\n\n\n\n\n\n\nggstatsplot::ggcorrmat(data = wine, cor.vars = 1:11, ggcorrplot.args = list(outline.color = \"black\", hc.order = TRUE, tl.cex = 10), title = \"Correlogram for wine dataset\", subtitle = \"Four pairs are no significant at p &lt; 0.05\")\n\n\n\n\n\n\n\nggplot.component = list(theme(text=element_text(size=5), axis.text.x = element_text(size = 8), axis.text.y = element_text(size = 8)))"
+  },
+  {
+    "objectID": "HE05.html#building-multiple-plots",
+    "href": "HE05.html#building-multiple-plots",
+    "title": "Hands-on Exercise 5",
+    "section": "6.6 Building multiple plots",
+    "text": "6.6 Building multiple plots\n\ngrouped_ggcorrmat(data = wine, cor.vars = 1:11, grouping.var = type, type = \"robust\", p.adjust.method = \"holm\", plotgrid.args = list(ncol = 2), ggcorrplot.args = list(outline.color = \"black\", hc.order = TRUE, tl.cex = 10), annotation.args = list(tag_levels = \"a\", title = \"Correlogram for wine dataset\", subtitle = \"The measures are: alcohol, sulphates, fixed acidity, citric acid, chlorides, residual sugar, density, free sulfur dioxide and volatile acidity\", caption = \"Dataset: UCI Machine Learning Repository\"))"
+  },
+  {
+    "objectID": "HE05.html#visualising-correlation-matrix-using-corrplot-package",
+    "href": "HE05.html#visualising-correlation-matrix-using-corrplot-package",
+    "title": "Hands-on Exercise 5",
+    "section": "6.7 Visualising Correlation Matrix using corrplot Package",
+    "text": "6.7 Visualising Correlation Matrix using corrplot Package\n\n6.7.1 Getting started with corrplot\n\nwine.cor &lt;- cor(wine[, 1:11])\n\ncorrplot(wine.cor)\n\n\n\n\n\n\n\n\n\n\n6.7.2 Working with visual geometrics\n\ncorrplot(wine.cor, method = \"ellipse\") \n\n\n\n\n\n\n\ncorrplot(wine.cor, method = \"ellipse\", type=\"lower\")\n\n\n\n\n\n\n\ncorrplot(wine.cor, method = \"ellipse\", type=\"lower\", diag = FALSE, tl.col = \"black\")\n\n\n\n\n\n\n\n\n\n\n6.7.3 Working with layout\n\ncorrplot(wine.cor, \n         method = \"ellipse\", \n         type=\"lower\")\n\n\n\n\n\n\n\ncorrplot(wine.cor, \n         method = \"ellipse\", \n         type=\"lower\",\n         diag = FALSE,\n         tl.col = \"black\")\n\n\n\n\n\n\n\n\n\n\n6.7.4 Working with mixed layout\n\ncorrplot.mixed(wine.cor, lower = \"ellipse\", upper = \"number\", tl.pos = \"lt\", diag = \"l\", tl.col = \"black\")\n\n\n\n\n\n\n\ncorrplot.mixed(wine.cor, lower = \"ellipse\", upper = \"number\", tl.pos = \"lt\", diag = \"l\", tl.col = \"black\")\n\n\n\n6.7.5 Combining corrgram with the significant test\n\nwine.sig = cor.mtest(wine.cor, conf.level= .95)\n\ncorrplot(wine.cor, method = \"number\", type = \"lower\", diag = FALSE,\ntl.col = \"black\", tl.srt = 45, p.mat = wine.sig$p, sig.level = .05)\n\n\n\n\n\n\n\n\n\n\n6.7.6 Reorder a corrgram\n\ncorrplot.mixed(wine.cor, \n               lower = \"ellipse\", \n               upper = \"number\",\n               tl.pos = \"lt\",\n               diag = \"l\",\n               order=\"AOE\",\n               tl.col = \"black\")\n\n\n\n\n\n\n\n\n\n\n6.7.7 Reordering a correlation matrix using hclust\n\ncorrplot(wine.cor, \n         method = \"ellipse\", \n         tl.pos = \"lt\",\n         tl.col = \"black\",\n         order=\"hclust\",\n         hclust.method = \"ward.D\",\n         addrect = 3)"
+  },
+  {
+    "objectID": "HE05.html#getting-started-2",
+    "href": "HE05.html#getting-started-2",
+    "title": "Hands-on Exercise 5",
+    "section": "Getting Started",
+    "text": "Getting Started\nInstall and launch the following R packages\n\npacman::p_load(seriation, dendextend, heatmaply, tidyverse)"
+  },
+  {
+    "objectID": "HE05.html#data-2",
+    "href": "HE05.html#data-2",
+    "title": "Hands-on Exercise 5",
+    "section": "Data",
+    "text": "Data\nLoading the data to the R environment by using read_csv() function of readr package\n\nwh &lt;- read_csv(\"chap05/data/WHData-2018.csv\")\n\nPreparing the data Transforming the data frame into a matrix\n\nwh$Country &lt;- make.unique(as.character(wh$Country))\nrow.names(wh) &lt;- wh$Country\n\nTransforming the data frame into a matrix\n\nwh1 &lt;- dplyr::select(wh, c(3, 7:12))\nwh_matrix &lt;- data.matrix(wh1)"
+  },
+  {
+    "objectID": "HE05.html#static-heatmap",
+    "href": "HE05.html#static-heatmap",
+    "title": "Hands-on Exercise 5",
+    "section": "14.4 Static Heatmap",
+    "text": "14.4 Static Heatmap\n\n14.4.1 heatmap() of R Stats\n\nwh_heatmap &lt;- heatmap(wh_matrix, Rowv=NA, Colv=NA)\n\n\n\n\n\n\n\nwh_heatmap &lt;- heatmap(wh_matrix)\n\n\n\n\n\n\n\nwh_heatmap &lt;- heatmap(wh_matrix,\n                      scale=\"column\",\n                      cexRow = 0.6, \n                      cexCol = 0.8,\n                      margins = c(10, 4))"
+  },
+  {
+    "objectID": "HE05.html#creating-interactive-heatmap",
+    "href": "HE05.html#creating-interactive-heatmap",
+    "title": "Hands-on Exercise 5",
+    "section": "14.5 Creating Interactive Heatmap",
+    "text": "14.5 Creating Interactive Heatmap\n\n14.5.1 Working with heatmaply\n\nheatmaply(mtcars)\n\n\n\n\nheatmaply(wh_matrix[, -c(1, 2, 4, 5)])\n\n\n\n\n\n\n\n14.5.2 Data trasformation\n\n14.5.2.1 Scaling method\n\nheatmaply(wh_matrix[, -c(1, 2, 4, 5)], scale = \"column\")\n\n\n\n\n\n\n\n14.5.2.2 Normalising method\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]))\n\n\n\n\n\n\n\n14.5.2.3 Percentising method\n\nheatmaply(percentize(wh_matrix[, -c(1, 2, 4, 5)]))\n\n\n\n\n\n\n\n\n14.5.3 Clustering algorithm\n\n\n14.5.4 Manual approach\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]), dist_method = \"euclidean\", hclust_method = \"ward.D\")\n\n\n\n\n\n\n\n14.5.5 Statistical approach\n\nwh_d &lt;- dist(normalize(wh_matrix[, -c(1, 2, 4, 5)]), method = \"euclidean\")\ndend_expend(wh_d)[[3]]\n\n  dist_methods hclust_methods     optim\n1      unknown         ward.D 0.6765398\n2      unknown        ward.D2 0.6700807\n3      unknown         single 0.7219100\n4      unknown       complete 0.7259444\n5      unknown        average 0.8023959\n6      unknown       mcquitty 0.7031276\n7      unknown         median 0.7654802\n8      unknown       centroid 0.8122677\n\nwh_clust &lt;- hclust(wh_d, method = \"average\")\nnum_k &lt;- find_k(wh_clust)\nplot(num_k)\n\n\n\n\n\n\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]), dist_method = \"euclidean\", hclust_method = \"average\", k_row = 3)\n\n\n\n\n\n\n\n14.5.6 Seriation\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]), seriate = \"OLO\")\n\n\n\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]), seriate = \"GW\")\n\n\n\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]), seriate = \"mean\")\n\n\n\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]), seriate = \"none\")\n\n\n\n\n\n\n\n14.5.7 Working with colour palettes\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]), seriate = \"none\", colors = Blues)\n\n\n\n\n\n\n\n14.5.8 The finishing touch\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]), Colv=NA, seriate = \"none\", colors = Blues, k_row = 5, margins = c(NA,200,60,NA), fontsize_row = 4, fontsize_col = 5, main=\"World Happiness Score and Variables by Country, 2018 \\nDataTransformation using Normalise Method\", xlab = \"World Happiness Indicators\", ylab = \"World Countries\")"
+  },
+  {
+    "objectID": "HE05.html#getting-started-3",
+    "href": "HE05.html#getting-started-3",
+    "title": "Hands-on Exercise 5",
+    "section": "Getting Started",
+    "text": "Getting Started\nInstall and launch the following R packages\n\npacman::p_load(GGally, parallelPlot, tidyverse)"
+  },
+  {
+    "objectID": "HE05.html#data-3",
+    "href": "HE05.html#data-3",
+    "title": "Hands-on Exercise 5",
+    "section": "Data",
+    "text": "Data\nLoading the data to the R environment by using read_csv() function of readr package\n\nwh &lt;- read_csv(\"chap05/data/WHData-2018.csv\")"
+  },
+  {
+    "objectID": "HE05.html#plotting-static-parallel-coordinates-plot",
+    "href": "HE05.html#plotting-static-parallel-coordinates-plot",
+    "title": "Hands-on Exercise 5",
+    "section": "15.4 Plotting Static Parallel Coordinates Plot",
+    "text": "15.4 Plotting Static Parallel Coordinates Plot\n\n15.4.1 Plotting a simple parallel coordinates\n\nggparcoord(data = wh, \n           columns = c(7:12))\n\n\n\n\n\n\n\n\n\n\n15.4.2 Plotting a parallel coordinates with boxplot\n\nggparcoord(data = wh, \n           columns = c(7:12), \n           groupColumn = 2,\n           scale = \"uniminmax\",\n           alphaLines = 0.2,\n           boxplot = TRUE, \n           title = \"Parallel Coordinates Plot of World Happines Variables\")\n\n\n\n\n\n\n\n\n\n\n15.4.3 Parallel coordinates with facet\n\nggparcoord(data = wh, \n           columns = c(7:12), \n           groupColumn = 2,\n           scale = \"uniminmax\",\n           alphaLines = 0.2,\n           boxplot = TRUE, \n           title = \"Multiple Parallel Coordinates Plots of World Happines Variables by Region\") +\n  facet_wrap(~ Region)\n\n\n\n\n\n\n\n\n\n\n15.4.4 Rotating x-axis text label\n\nggparcoord(data = wh, \n           columns = c(7:12), \n           groupColumn = 2,\n           scale = \"uniminmax\",\n           alphaLines = 0.2,\n           boxplot = TRUE, \n           title = \"Multiple Parallel Coordinates Plots of World Happines Variables by Region\") +\n  facet_wrap(~ Region) + \n  theme(axis.text.x = element_text(angle = 30))\n\n\n\n\n\n\n\n\n\n\n15.4.5 Adjusting the rotated x-axis text label\n\nggparcoord(data = wh, \n           columns = c(7:12), \n           groupColumn = 2,\n           scale = \"uniminmax\",\n           alphaLines = 0.2,\n           boxplot = TRUE, \n           title = \"Multiple Parallel Coordinates Plots of World Happines Variables by Region\") +\n  facet_wrap(~ Region) + \n  theme(axis.text.x = element_text(angle = 30, hjust=1))"
+  },
+  {
+    "objectID": "HE05.html#plotting-interactive-parallel-coordinates-plot-parallelplot-methods",
+    "href": "HE05.html#plotting-interactive-parallel-coordinates-plot-parallelplot-methods",
+    "title": "Hands-on Exercise 5",
+    "section": "15.5 Plotting Interactive Parallel Coordinates Plot: parallelPlot methods",
+    "text": "15.5 Plotting Interactive Parallel Coordinates Plot: parallelPlot methods\n\n15.5.1 The basic plot\n\nwh &lt;- wh %&gt;%\n  select(\"Happiness score\", c(7:12))\nparallelPlot(wh,\n             width = 320,\n             height = 250)\n\n\n\n\n\n\n\n15.5.2 Rotate axis label\n\nparallelPlot(wh,\n             rotateTitle = TRUE)\n\n\n\n\n\n\n\n15.5.3 Changing the colour scheme\n\nparallelPlot(wh,\n             continuousCS = \"YlOrRd\",\n             rotateTitle = TRUE)\n\n\n\n\n\n\n\n15.5.4 Parallel coordinates plot with histogram\n\nhistoVisibility &lt;- rep(TRUE, ncol(wh))\nparallelPlot(wh,\n             rotateTitle = TRUE,\n             histoVisibility = histoVisibility)"
+  },
+  {
+    "objectID": "HE05.html#getting-started-4",
+    "href": "HE05.html#getting-started-4",
+    "title": "Hands-on Exercise 5",
+    "section": "Getting Started",
+    "text": "Getting Started\nInstall and launch the following R packages\n\npacman::p_load(treemap, treemapify, tidyverse)"
+  },
+  {
+    "objectID": "HE05.html#data-4",
+    "href": "HE05.html#data-4",
+    "title": "Hands-on Exercise 5",
+    "section": "Data",
+    "text": "Data\nLoading the data to the R environment by using read_csv() function of readr package\n\nrealis2018 &lt;- read_csv(\"chap05/data/realis2018.csv\")\n\n\n16.3.3 Grouped summaries without the Pipe\n\nrealis2018_grouped &lt;- group_by(realis2018, `Project Name`,\n                               `Planning Region`, `Planning Area`, \n                               `Property Type`, `Type of Sale`)\nrealis2018_summarised &lt;- summarise(realis2018_grouped, \n                          `Total Unit Sold` = sum(`No. of Units`, na.rm = TRUE),\n                          `Total Area` = sum(`Area (sqm)`, na.rm = TRUE),\n                          `Median Unit Price ($ psm)` = median(`Unit Price ($ psm)`, na.rm = TRUE), \n                          `Median Transacted Price` = median(`Transacted Price ($)`, na.rm = TRUE))\n\n\n\n16.3.4 Grouped summaries with the pipe\n\nrealis2018_summarised &lt;- realis2018 %&gt;% \n  group_by(`Project Name`,`Planning Region`, \n           `Planning Area`, `Property Type`, \n           `Type of Sale`) %&gt;%\n  summarise(`Total Unit Sold` = sum(`No. of Units`, na.rm = TRUE), \n            `Total Area` = sum(`Area (sqm)`, na.rm = TRUE),\n            `Median Unit Price ($ psm)` = median(`Unit Price ($ psm)`, na.rm = TRUE),\n            `Median Transacted Price` = median(`Transacted Price ($)`, na.rm = TRUE))"
+  },
+  {
+    "objectID": "HE05.html#designing-treemap-with-treemap-package",
+    "href": "HE05.html#designing-treemap-with-treemap-package",
+    "title": "Hands-on Exercise 5",
+    "section": "16.4 Designing Treemap with treemap Package",
+    "text": "16.4 Designing Treemap with treemap Package\n\n16.4.1 Designing a static treemap\n\nrealis2018_selected &lt;- realis2018_summarised %&gt;%\n  filter(`Property Type` == \"Condominium\", `Type of Sale` == \"Resale\")\n\n\n\n16.4.2 Using the basic arguments\n\ntreemap(realis2018_selected,\n        index=c(\"Planning Region\", \"Planning Area\", \"Project Name\"),\n        vSize=\"Total Unit Sold\",\n        vColor=\"Median Unit Price ($ psm)\",\n        title=\"Resale Condominium by Planning Region and Area, 2017\",\n        title.legend = \"Median Unit Price (S$ per sq. m)\"\n        )\n\n\n\n\n\n\n\n\n\n\n16.4.3 Working with vColor and type arguments\n\ntreemap(realis2018_selected,\n        index=c(\"Planning Region\", \"Planning Area\", \"Project Name\"),\n        vSize=\"Total Unit Sold\",\n        vColor=\"Median Unit Price ($ psm)\",\n        type = \"value\",\n        title=\"Resale Condominium by Planning Region and Area, 2017\",\n        title.legend = \"Median Unit Price (S$ per sq. m)\"\n        )\n\n\n\n\n\n\n\n\n\n\n16.4.4 Colours in treemap package\n\n\n16.4.5 The “value” type treemap\n\ntreemap(realis2018_selected,\n        index=c(\"Planning Region\", \"Planning Area\", \"Project Name\"),\n        vSize=\"Total Unit Sold\",\n        vColor=\"Median Unit Price ($ psm)\",\n        type=\"value\",\n        palette=\"RdYlBu\", \n        title=\"Resale Condominium by Planning Region and Area, 2017\",\n        title.legend = \"Median Unit Price (S$ per sq. m)\"\n        )\n\n\n\n\n\n\n\n\n\n\n16.4.6 The “manual” type treemap\n\ntreemap(realis2018_selected,\n        index=c(\"Planning Region\", \"Planning Area\", \"Project Name\"),\n        vSize=\"Total Unit Sold\",\n        vColor=\"Median Unit Price ($ psm)\",\n        type=\"manual\",\n        palette=\"RdYlBu\", \n        title=\"Resale Condominium by Planning Region and Area, 2017\",\n        title.legend = \"Median Unit Price (S$ per sq. m)\"\n        )\n\n\n\n\n\n\n\ntreemap(realis2018_selected,\n        index=c(\"Planning Region\", \"Planning Area\", \"Project Name\"),\n        vSize=\"Total Unit Sold\",\n        vColor=\"Median Unit Price ($ psm)\",\n        type=\"manual\",\n        palette=\"Blues\", \n        title=\"Resale Condominium by Planning Region and Area, 2017\",\n        title.legend = \"Median Unit Price (S$ per sq. m)\"\n        )\n\n\n\n\n\n\n\n\n\n\n16.4.7 Treemap Layout\ntreemap() supports two popular treemap layouts, namely: “squarified” and “pivotSize”. The default is “pivotSize”.\nThe squarified treemap algorithm (Bruls et al., 2000) produces good aspect ratios, but ignores the sorting order of the rectangles (sortID). The ordered treemap, pivot-by-size, algorithm (Bederson et al., 2002) takes the sorting order (sortID) into account while aspect ratios are still acceptable.\n\n\n16.4.8 Working with algorithm argument\n\ntreemap(realis2018_selected,\n        index=c(\"Planning Region\", \"Planning Area\", \"Project Name\"),\n        vSize=\"Total Unit Sold\",\n        vColor=\"Median Unit Price ($ psm)\",\n        type=\"manual\",\n        palette=\"Blues\", \n        algorithm = \"squarified\",\n        title=\"Resale Condominium by Planning Region and Area, 2017\",\n        title.legend = \"Median Unit Price (S$ per sq. m)\"\n        )\n\n\n\n\n\n\n\n\n\n\n16.4.9 Using sortID\n\ntreemap(realis2018_selected,\n        index=c(\"Planning Region\", \"Planning Area\", \"Project Name\"),\n        vSize=\"Total Unit Sold\",\n        vColor=\"Median Unit Price ($ psm)\",\n        type=\"manual\",\n        palette=\"Blues\", \n        algorithm = \"pivotSize\",\n        sortID = \"Median Transacted Price\",\n        title=\"Resale Condominium by Planning Region and Area, 2017\",\n        title.legend = \"Median Unit Price (S$ per sq. m)\"\n        )"
+  },
+  {
+    "objectID": "HE05.html#designing-treemap-using-treemapify-package",
+    "href": "HE05.html#designing-treemap-using-treemapify-package",
+    "title": "Hands-on Exercise 5",
+    "section": "16.5 Designing Treemap using treemapify Package",
+    "text": "16.5 Designing Treemap using treemapify Package\n\n16.5.1 Designing a basic treemap\n\nggplot(data=realis2018_selected, \n       aes(area = `Total Unit Sold`,\n           fill = `Median Unit Price ($ psm)`),\n       layout = \"scol\",\n       start = \"bottomleft\") + \n  geom_treemap() +\n  scale_fill_gradient(low = \"light blue\", high = \"blue\")\n\n\n\n\n\n\n\n\n\n\n16.5.2 Defining hierarchy\n\nggplot(data=realis2018_selected, \n       aes(area = `Total Unit Sold`,\n           fill = `Median Unit Price ($ psm)`,\n           subgroup = `Planning Region`),\n       start = \"topleft\") + \n  geom_treemap()\n\n\n\n\n\n\n\nggplot(data=realis2018_selected, \n       aes(area = `Total Unit Sold`,\n           fill = `Median Unit Price ($ psm)`,\n           subgroup = `Planning Region`,\n           subgroup2 = `Planning Area`)) + \n  geom_treemap()\n\n\n\n\n\n\n\nggplot(data=realis2018_selected, \n       aes(area = `Total Unit Sold`,\n           fill = `Median Unit Price ($ psm)`,\n           subgroup = `Planning Region`,\n           subgroup2 = `Planning Area`)) + \n  geom_treemap() +\n  geom_treemap_subgroup2_border(colour = \"gray40\",\n                                size = 2) +\n  geom_treemap_subgroup_border(colour = \"gray20\")"
+  },
+  {
+    "objectID": "HE05.html#designing-interactive-treemap-using-d3treer",
+    "href": "HE05.html#designing-interactive-treemap-using-d3treer",
+    "title": "Hands-on Exercise 5",
+    "section": "16.6 Designing Interactive Treemap using d3treeR",
+    "text": "16.6 Designing Interactive Treemap using d3treeR\n\n16.6.1 Installing d3treeR package\n\nlibrary(d3treeR)\n\n\n\n16.6.2 Designing An Interactive Treemap\n\ntm &lt;- treemap(realis2018_summarised,\n        index=c(\"Planning Region\", \"Planning Area\"),\n        vSize=\"Total Unit Sold\",\n        vColor=\"Median Unit Price ($ psm)\",\n        type=\"value\",\n        title=\"Private Residential Property Sold, 2017\",\n        title.legend = \"Median Unit Price (S$ per sq. m)\"\n        )\n\nd3tree(tm,rootname = \"Singapore\" )"
+  },
+  {
+    "objectID": "HE06.html#getting-started",
+    "href": "HE06.html#getting-started",
+    "title": "Hands-on Exercise 6",
+    "section": "Getting Started",
+    "text": "Getting Started\nInstall and launch the following R packages\n\npacman::p_load(scales, viridis, lubridate, ggthemes, gridExtra, readxl, knitr, data.table, CGPfunctions, tidyverse)"
+  },
+  {
+    "objectID": "HE06.html#data",
+    "href": "HE06.html#data",
+    "title": "Hands-on Exercise 6",
+    "section": "Data",
+    "text": "Data\nLoading the data to the R environment by using read_csv() function of readr package\n\nattacks &lt;- read_csv(\"chap06/data//eventlog.csv\")"
+  },
+  {
+    "objectID": "HE06.html#plotting-calendar-heatmap",
+    "href": "HE06.html#plotting-calendar-heatmap",
+    "title": "Hands-on Exercise 6",
+    "section": "17.4 Plotting Calendar Heatmap",
+    "text": "17.4 Plotting Calendar Heatmap\n\n17.4.3 Examining the data structure\n\nkable(head(attacks))\n\n\n\n\ntimestamp\nsource_country\ntz\n\n\n\n\n2015-03-12 15:59:16\nCN\nAsia/Shanghai\n\n\n2015-03-12 16:00:48\nFR\nEurope/Paris\n\n\n2015-03-12 16:02:26\nCN\nAsia/Shanghai\n\n\n2015-03-12 16:02:38\nUS\nAmerica/Chicago\n\n\n2015-03-12 16:03:22\nCN\nAsia/Shanghai\n\n\n2015-03-12 16:03:45\nCN\nAsia/Shanghai\n\n\n\n\n\n\n\n17.4.4 Data Preparation\n\nmake_hr_wkday &lt;- function(ts, sc, tz) {\n  real_times &lt;- ymd_hms(ts, \n                        tz = tz[1], \n                        quiet = TRUE)\n  dt &lt;- data.table(source_country = sc,\n                   wkday = weekdays(real_times),\n                   hour = hour(real_times))\n  return(dt)\n}\n\nwkday_levels &lt;- c('Saturday', 'Friday', \n                  'Thursday', 'Wednesday', \n                  'Tuesday', 'Monday', \n                  'Sunday')\n\nattacks &lt;- attacks %&gt;%\n  group_by(tz) %&gt;%\n  do(make_hr_wkday(.$timestamp, \n                   .$source_country, \n                   .$tz)) %&gt;% \n  ungroup() %&gt;% \n  mutate(wkday = factor(\n    wkday, levels = wkday_levels),\n    hour  = factor(\n      hour, levels = 0:23))\n\nkable(head(attacks))\n\n\n\n\ntz\nsource_country\nwkday\nhour\n\n\n\n\nAfrica/Cairo\nBG\nSaturday\n20\n\n\nAfrica/Cairo\nTW\nSunday\n6\n\n\nAfrica/Cairo\nTW\nSunday\n8\n\n\nAfrica/Cairo\nCN\nSunday\n11\n\n\nAfrica/Cairo\nUS\nSunday\n15\n\n\nAfrica/Cairo\nCA\nMonday\n11\n\n\n\n\n\n\n\n17.4.5 Building the Calendar Heatmaps\n\ngrouped &lt;- attacks %&gt;% \n  count(wkday, hour) %&gt;% \n  ungroup() %&gt;%\n  na.omit()\n\nggplot(grouped, \n       aes(hour, \n           wkday, \n           fill = n)) + \ngeom_tile(color = \"white\", \n          size = 0.1) + \ntheme_tufte(base_family = \"Helvetica\") + \ncoord_equal() +\nscale_fill_gradient(name = \"# of attacks\",\n                    low = \"sky blue\", \n                    high = \"dark blue\") +\nlabs(x = NULL, \n     y = NULL, \n     title = \"Attacks by weekday and time of day\") +\ntheme(axis.ticks = element_blank(),\n      plot.title = element_text(hjust = 0.5),\n      legend.title = element_text(size = 8),\n      legend.text = element_text(size = 6) )\n\n\n\n\n\n\n\n\n\n\n17.4.6 Building Multiple Calendar Heatmaps\n\ntop4 &lt;- attacks %&gt;% \n  count(source_country, sort = TRUE) %&gt;% \n  slice(1:4) %&gt;% \n  pull(source_country)\n\ngrouped &lt;- attacks %&gt;% \n  filter(source_country %in% top4) %&gt;%\n  count(source_country, wkday, hour) %&gt;% \n  ungroup() %&gt;%\n  na.omit()\n\nggplot(grouped, \n       aes(hour, \n           wkday, \n           fill = n)) + \ngeom_tile(color = \"white\", \n          size = 0.1) + \ntheme_tufte(base_family = \"Helvetica\") + \ncoord_equal() +\nfacet_wrap(~source_country, ncol = 2) +\nscale_fill_gradient(name = \"# of attacks\",\n                    low = \"sky blue\", \n                    high = \"dark blue\") +\nlabs(x = NULL, \n     y = NULL, \n     title = \"Attacks by weekday and time of day (Top 4 source countries)\") +\ntheme(axis.ticks = element_blank(),\n      plot.title = element_text(hjust = 0.5),\n      legend.title = element_text(size = 8),\n      legend.text = element_text(size = 6) )\n\n\n\n\n\n\n\n\n\n\n17.4.7 Plotting Multiple Calendar Heatmaps\n\nattacks_by_country &lt;- count(\n  attacks, source_country) %&gt;%\n  mutate(percent = percent(n/sum(n))) %&gt;%\n  arrange(desc(n))\n\ntop4 &lt;- attacks_by_country$source_country[1:4]\ntop4_attacks &lt;- attacks %&gt;%\n  filter(source_country %in% top4) %&gt;%\n  count(source_country, wkday, hour) %&gt;%\n  ungroup() %&gt;%\n  mutate(source_country = factor(\n    source_country, levels = top4)) %&gt;%\n  na.omit()\n\n\n\n17.4.8 Plotting Multiple Calendar Heatmaps\n\nggplot(top4_attacks, \n       aes(hour, \n           wkday, \n           fill = n)) + \n  geom_tile(color = \"white\", \n          size = 0.1) + \n  theme_tufte(base_family = \"Helvetica\") + \n  coord_equal() +\n  scale_fill_gradient(name = \"# of attacks\",\n                    low = \"sky blue\", \n                    high = \"dark blue\") +\n  facet_wrap(~source_country, ncol = 2) +\n  labs(x = NULL, y = NULL, \n     title = \"Attacks on top 4 countries by weekday and time of day\") +\n  theme(axis.ticks = element_blank(),\n        axis.text.x = element_text(size = 7),\n        plot.title = element_text(hjust = 0.5),\n        legend.title = element_text(size = 8),\n        legend.text = element_text(size = 6) )"
+  },
+  {
+    "objectID": "HE06.html#plotting-cycle-plot",
+    "href": "HE06.html#plotting-cycle-plot",
+    "title": "Hands-on Exercise 6",
+    "section": "17.5 Plotting Cycle Plot",
+    "text": "17.5 Plotting Cycle Plot\n\n17.5.1 Step 1: Data Import\n\nair &lt;- read_excel(\"chap06/data/arrivals_by_air.xlsx\")\n\n\n\n17.5.2 Step 2: Deriving month and year fields\n\nair$month &lt;- factor(month(air$`Month-Year`), \n                    levels=1:12, \n                    labels=month.abb, \n                    ordered=TRUE) \nair$year &lt;- year(ymd(air$`Month-Year`))\n\n\n\n17.5.3 Step 4: Extracting the target country\n\nVietnam &lt;- air %&gt;% \n  select(`Vietnam`, \n         month, \n         year) %&gt;%\n  filter(year &gt;= 2010)\n\n\n\n17.5.4 Step 5: Computing year average arrivals by month\n\nhline.data &lt;- Vietnam %&gt;% \n  group_by(month) %&gt;%\n  summarise(avgvalue = mean(`Vietnam`))\n\n\n\n17.5.5 Srep 6: Plotting the cycle plot\n\nggplot() + \n  geom_line(data=Vietnam,\n            aes(x=year, \n                y=`Vietnam`, \n                group=month), \n            colour=\"black\") +\n  geom_hline(aes(yintercept=avgvalue), \n             data=hline.data, \n             linetype=6, \n             colour=\"red\", \n             size=0.5) + \n  facet_grid(~month) +\n  labs(axis.text.x = element_blank(),\n       title = \"Visitor arrivals from Vietnam by air, Jan 2010-Dec 2019\") +\n  xlab(\"\") +\n  ylab(\"No. of Visitors\") +\n  theme_tufte(base_family = \"Helvetica\")"
+  },
+  {
+    "objectID": "HE06.html#plotting-slopegraph",
+    "href": "HE06.html#plotting-slopegraph",
+    "title": "Hands-on Exercise 6",
+    "section": "17.6 Plotting Slopegraph",
+    "text": "17.6 Plotting Slopegraph\n\n17.6.1 Step 1: Data Import\n\nrice &lt;- read_csv(\"chap06/data/rice.csv\")"
+  },
+  {
+    "objectID": "HE06.html#step-2-plotting-the-slopegraph",
+    "href": "HE06.html#step-2-plotting-the-slopegraph",
+    "title": "Hands-on Exercise 6",
+    "section": "17.6.2 Step 2: Plotting the slopegraph",
+    "text": "17.6.2 Step 2: Plotting the slopegraph\n\nrice %&gt;% \n  mutate(Year = factor(Year)) %&gt;%\n  filter(Year %in% c(1961, 1980)) %&gt;%\n  newggslopegraph(Year, Yield, Country,\n                Title = \"Rice Yield of Top 11 Asian Counties\",\n                SubTitle = \"1961-1980\",\n                Caption = \"Prepared by: Cheok En Qi\")"
+  },
+  {
+    "objectID": "THE01.html",
+    "href": "THE01.html",
+    "title": "Take-Home Exercise 1:Survey Analysis of Informal Labourers’ Income",
+    "section": "",
+    "text": "Overview\nThis report analyses the income of informal rural labourers in the northern mountainous regions of Vietnam.\n\n\n\nGetting Started\nInstall and load the required R packages for data manipulation and visualisation.\n\npacman::p_load(tidyverse, readxl, knitr, ggthemes, patchwork)\n\n\n\nLoading Data\nThe dataset was imported from an Excel file containing survey responses from informal rural labourers in the northern mountainous regions of Vietnam.\n\ndf_raw &lt;- read_xlsx(\"chapthe/data/Upload for elsiver.xlsx\")\nglimpse(df_raw)\n\nRows: 725\nColumns: 30\n$ CPRO &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…\n$ CGEN &lt;chr&gt; \"1\", \"1\", \"2\", \"1\", \"2\", \"2\", \"1\", \"1\", \"1\", \"1\", \"1\", \"2\", \"2\", …\n$ CRAC &lt;dbl&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 1, 1, 1, 1, 1, 1,…\n$ CJOB &lt;dbl&gt; 1, 1, 3, 1, 1, NA, 3, 1, 3, 1, 1, 1, 2, 1, NA, 2, 1, 1, 1, 1, 1, …\n$ CQUI &lt;dbl&gt; 3, 5, 3, 3, 3, 4, 1, 3, 3, 3, 3, 3, 2, 3, 5, 1, 2, 2, 2, 2, 2, 2,…\n$ TEIN &lt;dbl&gt; 37, 25, 33, 35, 36, 21, 35, 36, 38, 30, 58, 24, 32, 11, 22, 95, 4…\n$ TAIN &lt;dbl&gt; 25, 22, 25, 30, 28, 17, 25, 28, 26, 22, 40, 24, 23, 11, 20, 30, 3…\n$ TSII &lt;dbl&gt; 7, 0, 0, 5, 0, 0, 0, 0, 12, 2, 0, 0, 0, 0, 0, 50, 17, 10, 12, 15,…\n$ TOIN &lt;dbl&gt; 5, 3, 8, 0, 8, 4, 10, 8, 0, 6, 18, 0, 9, 0, 2, 15, 0, 0, 0, 0, 16…\n$ FEDU &lt;dbl&gt; 1, 0, 1, 1, 0, 0, 3, 0, 2, 0, 0, 0, 0, 0, 0, 2, 1, 2, 2, 2, 2, 2,…\n$ FVTP &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 2, 2, 2, 2,…\n$ FCRA &lt;dbl&gt; 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…\n$ FTAP &lt;dbl&gt; 1, 1, 2, NA, 2, 2, 2, 2, 2, 2, 2, NA, NA, 2, NA, 2, NA, 2, NA, NA…\n$ LHO1 &lt;dbl&gt; NA, 1, NA, 1, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 1, NA, NA, …\n$ LHO2 &lt;dbl&gt; 1, NA, NA, NA, 1, 1, NA, 1, 1, 1, 1, 1, NA, 1, NA, NA, NA, NA, NA…\n$ LHO3 &lt;dbl&gt; NA, NA, NA, NA, NA, NA, 1, NA, NA, NA, NA, NA, 1, NA, NA, 1, 1, 1…\n$ LHO4 &lt;dbl&gt; NA, NA, 1, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n$ LCRE &lt;dbl&gt; NA, 15, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…\n$ LSAV &lt;dbl&gt; 5, NA, 30, NA, NA, 2, 70, NA, 25, 10, 15, NA, NA, 16, NA, 20, NA,…\n$ LWDA &lt;dbl&gt; 240, 350, 260, 300, 360, 360, 260, 260, 300, 300, 270, NA, NA, 20…\n$ PPO1 &lt;dbl&gt; 5, 2, 5, NA, 5, 2, 5, 5, 4, 5, 4, NA, NA, NA, NA, NA, NA, NA, NA,…\n$ PPO2 &lt;dbl&gt; 2, 5, 5, NA, 5, 4, 2, 2, 3, 1, 1, NA, NA, NA, NA, NA, NA, NA, NA,…\n$ PPO3 &lt;dbl&gt; 3, 3, 1, NA, 1, 3, 3, 3, 3, 3, 3, NA, NA, 1, NA, 1, NA, 1, NA, 1,…\n$ PPO4 &lt;dbl&gt; 1, 1, 1, NA, 1, 1, 2, 2, 2, 2, 2, NA, NA, 3, NA, NA, NA, NA, NA, …\n$ PPO5 &lt;dbl&gt; 3, 1, 1, NA, 1, 1, 3, 3, 3, 3, 3, NA, NA, 1, NA, NA, NA, NA, NA, …\n$ ARO1 &lt;dbl&gt; 3, 1, 1, NA, 1, 1, 2, 2, 2, 2, 2, NA, NA, NA, NA, NA, NA, NA, NA,…\n$ ARO2 &lt;dbl&gt; 1, 1, 1, NA, 1, 1, 1, 1, 1, 2, 1, NA, NA, 2, NA, NA, NA, NA, NA, …\n$ ARO3 &lt;dbl&gt; 1, 1, 1, NA, 1, 1, 3, 3, 2, 3, 3, NA, NA, 1, NA, 1, NA, NA, NA, 1…\n$ ARO4 &lt;chr&gt; \"3\", \"3\", NA, NA, \"2\", \"2\", \"3\", \"3\", \"3\", \"3\", \"3\", NA, NA, \"3\",…\n$ ARO5 &lt;dbl&gt; 1, 1, 1, NA, 1, 1, 3, 3, 3, 3, 3, NA, NA, 1, NA, NA, NA, NA, NA, …\n\n\n\n\nData Preparation\nTo prepare the dataset for analysis and visualisation, several cleaning and recoding steps were performed.\n\nKey categorical variables (province, gender, race, education level, vocational training type, and credit access) were converted into factor variables to support clearer grouped comparisons in plots.\nMonetary and numeric variables (total income, savings, loans, and working days) were converted into numeric format to ensure accurate computation and visualisation.\nInvalid data were recoded as missing values (NA) to reduce distortion in summary statistics.\nTotal income was defined using tein, which represents total earning\n\n\ndf &lt;- df_raw %&gt;%\n \n  rename_with(tolower) %&gt;% \n  \n\n  mutate(\n    cpro = factor(cpro,\n                  levels = 1:5,\n                  labels = c(\"Tuyen Quang\",\"Quang Ninh\",\"Ha Giang\",\"Yen Bai\",\"Bac Giang\")),\n\n    cgen = factor(cgen,\n                  levels = c(1,2),\n                  labels = c(\"Male\",\"Female\")),\n\n    crac = factor(crac,\n                  levels = c(1,2),\n                  labels = c(\"King\",\"Minorities\")),\n\n    cjob = factor(cjob,\n                  levels = c(1,2,3),\n                  labels = c(\"Agriculture\",\"Service/Industrial\",\"Others\")),\n\n    cqui = factor(cqui,\n                  levels = c(1,2,3,4,5),\n                  labels = c(\"Top\",\"Fourth\",\"Middle\",\"Second\",\"Lowest\")),\n\n    fedu = factor(fedu,\n                  levels = c(0,1,2,3),\n                  labels = c(\"Primary\",\"Lower secondary\",\"Upper secondary\",\"Others\")),\n\n    fvtp = factor(fvtp,\n                  levels = c(1,2),\n                  labels = c(\"Short course\",\"Long course\")),\n\n    fcra = factor(fcra,\n                  levels = c(1,2),\n                  labels = c(\"Inaccessible\",\"Accessible\")),\n\n    ftap = factor(ftap,\n                  levels = c(1,2),\n                  labels = c(\"Low technique\",\"Adequate\")),\n\n    tein = as.numeric(tein),\n    tain = as.numeric(tain),\n    tsii = as.numeric(tsii),\n    toin = as.numeric(toin),\n    lcre = as.numeric(lcre),\n    lsav = as.numeric(lsav),\n    lwda = as.numeric(lwda),\n\n    income = tein\n  ) %&gt;% \n\n  filter(!is.na(income))\n\n\nglimpse(df)\n\nRows: 724\nColumns: 31\n$ cpro   &lt;fct&gt; Tuyen Quang, Tuyen Quang, Tuyen Quang, Tuyen Quang, Tuyen Quang…\n$ cgen   &lt;fct&gt; Male, Male, Female, Male, Female, Female, Male, Male, Male, Mal…\n$ crac   &lt;fct&gt; Minorities, Minorities, Minorities, Minorities, Minorities, Min…\n$ cjob   &lt;fct&gt; Agriculture, Agriculture, Others, Agriculture, Agriculture, NA,…\n$ cqui   &lt;fct&gt; Middle, Lowest, Middle, Middle, Middle, Second, Top, Middle, Mi…\n$ tein   &lt;dbl&gt; 37, 25, 33, 35, 36, 21, 35, 36, 38, 30, 58, 24, 32, 11, 22, 95,…\n$ tain   &lt;dbl&gt; 25, 22, 25, 30, 28, 17, 25, 28, 26, 22, 40, 24, 23, 11, 20, 30,…\n$ tsii   &lt;dbl&gt; 7, 0, 0, 5, 0, 0, 0, 0, 12, 2, 0, 0, 0, 0, 0, 50, 17, 10, 12, 1…\n$ toin   &lt;dbl&gt; 5, 3, 8, 0, 8, 4, 10, 8, 0, 6, 18, 0, 9, 0, 2, 15, 0, 0, 0, 0, …\n$ fedu   &lt;fct&gt; Lower secondary, Primary, Lower secondary, Lower secondary, Pri…\n$ fvtp   &lt;fct&gt; Short course, Short course, Short course, Short course, Short c…\n$ fcra   &lt;fct&gt; Inaccessible, Accessible, Inaccessible, Inaccessible, Inaccessi…\n$ ftap   &lt;fct&gt; Low technique, Low technique, Adequate, NA, Adequate, Adequate,…\n$ lho1   &lt;dbl&gt; NA, 1, NA, 1, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 1, NA, NA…\n$ lho2   &lt;dbl&gt; 1, NA, NA, NA, 1, 1, NA, 1, 1, 1, 1, 1, NA, 1, NA, NA, NA, NA, …\n$ lho3   &lt;dbl&gt; NA, NA, NA, NA, NA, NA, 1, NA, NA, NA, NA, NA, 1, NA, NA, 1, 1,…\n$ lho4   &lt;dbl&gt; NA, NA, 1, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …\n$ lcre   &lt;dbl&gt; NA, 15, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…\n$ lsav   &lt;dbl&gt; 5, NA, 30, NA, NA, 2, 70, NA, 25, 10, 15, NA, NA, 16, NA, 20, N…\n$ lwda   &lt;dbl&gt; 240, 350, 260, 300, 360, 360, 260, 260, 300, 300, 270, NA, NA, …\n$ ppo1   &lt;dbl&gt; 5, 2, 5, NA, 5, 2, 5, 5, 4, 5, 4, NA, NA, NA, NA, NA, NA, NA, N…\n$ ppo2   &lt;dbl&gt; 2, 5, 5, NA, 5, 4, 2, 2, 3, 1, 1, NA, NA, NA, NA, NA, NA, NA, N…\n$ ppo3   &lt;dbl&gt; 3, 3, 1, NA, 1, 3, 3, 3, 3, 3, 3, NA, NA, 1, NA, 1, NA, 1, NA, …\n$ ppo4   &lt;dbl&gt; 1, 1, 1, NA, 1, 1, 2, 2, 2, 2, 2, NA, NA, 3, NA, NA, NA, NA, NA…\n$ ppo5   &lt;dbl&gt; 3, 1, 1, NA, 1, 1, 3, 3, 3, 3, 3, NA, NA, 1, NA, NA, NA, NA, NA…\n$ aro1   &lt;dbl&gt; 3, 1, 1, NA, 1, 1, 2, 2, 2, 2, 2, NA, NA, NA, NA, NA, NA, NA, N…\n$ aro2   &lt;dbl&gt; 1, 1, 1, NA, 1, 1, 1, 1, 1, 2, 1, NA, NA, 2, NA, NA, NA, NA, NA…\n$ aro3   &lt;dbl&gt; 1, 1, 1, NA, 1, 1, 3, 3, 2, 3, 3, NA, NA, 1, NA, 1, NA, NA, NA,…\n$ aro4   &lt;chr&gt; \"3\", \"3\", NA, NA, \"2\", \"2\", \"3\", \"3\", \"3\", \"3\", \"3\", NA, NA, \"3…\n$ aro5   &lt;dbl&gt; 1, 1, 1, NA, 1, 1, 3, 3, 3, 3, 3, NA, NA, 1, NA, NA, NA, NA, NA…\n$ income &lt;dbl&gt; 37, 25, 33, 35, 36, 21, 35, 36, 38, 30, 58, 24, 32, 11, 22, 95,…\n\n\n\n\n\nVisualisation 1: Income Distribution\n\n\n\n\n\n\n\nNoteVisualisation 1: Income Distribution\n\n\n\n\nVisualCode\n\n\n\n\n\n\n\n\n\n\n\n\nSummary Statistics of Income\n\n\nCount\nMean\nMedian\nSD\nMin\nQ1\nQ3\nMax\n\n\n\n\n724\n38\n31.5\n31.92\n0\n23\n42.25\n560\n\n\n\n\n\n\n\nggplot(df %&gt;% drop_na(income), aes(x = income)) +\n  geom_histogram(\n    aes(y = after_stat(density)),\n    bins = 30,\n    color = \"black\",\n    fill = \"lightblue\",\n    alpha = 0.6\n  ) +\n  geom_density(linewidth = 1) +\n  labs(\n    title = \"Distribution of Total Income\",\n    x = \"Income (Million VND)\",\n    y = \"Density\"\n  ) +\n  theme_minimal()\n\n# Summary Table \nknitr::kable(\n  df %&gt;%\n    summarise(\n      Count = sum(!is.na(income)),\n      Mean = mean(income, na.rm = TRUE),\n      Median = median(income, na.rm = TRUE),\n      SD = sd(income, na.rm = TRUE),\n      Min = min(income, na.rm = TRUE),\n      Q1 = quantile(income, 0.25, na.rm = TRUE),\n      Q3 = quantile(income, 0.75, na.rm = TRUE),\n      Max = max(income, na.rm = TRUE)\n    ),\n  digits = 2,\n  caption = \"Summary Statistics of Income\"\n)\n\n\n\n\nObservation:\nThe income distribution is heavily right-skewed, with the majority of labourers earning in the lower brackets. The long tail on the right shows that a small number earn much more than the rest, highlighting uneven earnings and suggest that income is unevenly distributed.\n\n\n\n\n\nVisualisation 2: Income Across Socioeconomic Factors (Province, Education, Credit)\n\n\n\n\n\n\n\nNoteVisualisation 2: Income Across Socioeconomic Factors (Province, Education, Credit)\n\n\n\n\nVisualCode\n\n\n\n\n\n\n\n\n\n\n\n\n\ny_max &lt;- quantile(df$income, 0.98, na.rm = TRUE) * 1.10\n\n\n# Plot A: Income by Province\ndf_cpro &lt;- df %&gt;% drop_na(income, cpro)\n\np_cpro &lt;- ggplot(df_cpro, aes(x = cpro, y = income)) +\n  geom_boxplot(fill = \"steelblue\") +\n  coord_cartesian(ylim = c(0, y_max)) +\n  labs(\n    title = \"Income by Province\",\n    x = \"Province\",\n    y = \"Income (Million VND)\"\n  ) +\n  theme_minimal()\n\n#Plot B: Income by Education\ndf_fedu &lt;- df %&gt;% drop_na(income, fedu)\n\np_fedu &lt;- ggplot(df_fedu, aes(x = fedu, y = income)) +\n  geom_boxplot(fill = \"steelblue\") +\n  coord_cartesian(ylim = c(0, y_max)) +\n  labs(\n    title = \"Income by Education Level\",\n    x = \"Education Level\",\n    y = \"Income (Million VND)\"\n  ) +\n  theme_minimal()\n\n#  Plot C: Income by Credit Access\ndf_fcra &lt;- df %&gt;% drop_na(income, fcra)\n\np_fcra &lt;- ggplot(df_fcra, aes(x = fcra, y = income)) +\n  geom_boxplot(fill = \"steelblue\") +\n  coord_cartesian(ylim = c(0, y_max)) +\n  labs(\n    title = \"Income by Credit Access\",\n    x = \"Credit Access\",\n    y = \"Income (Million VND)\"\n  ) +\n  theme_minimal()\n\n# Display the combined plots\np_cpro + p_fedu + p_fcra\n\n\n\nObservation:\nIncome varies across provinces, education levels, and credit access categories. Education shows the clearest pattern, with higher education levels generally associated with higher median incomes. Credit access is linked to slightly higher earnings, while provincial differences are present but less pronounced.\n\n\n\n\n\nVisualisation 3: Income Across Demographic Characteristics (Gender, Training)\n\n\n\n\n\n\n\nNoteVisualisation 3: Income Across Demographic Characteristics (Gender, Training)\n\n\n\n\nVisualCode\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nGroup\nCategory\nN\nMedian_Income\nMean_Income\nSD\n\n\n\n\nGender\nMale\n591\n32\n38.39\n32.48\n\n\nGender\nFemale\n133\n31\n36.26\n29.40\n\n\nTraining type\nShort course\n609\n29\n32.47\n16.46\n\n\nTraining type\nLong course\n92\n65\n74.98\n66.55\n\n\n\n\n\n\n\n\ny_max &lt;- quantile(df$income, 0.95, na.rm = TRUE)\n\n# Plot A: Income by Gender\ndf_gender &lt;- df %&gt;% drop_na(income, cgen)\n\np_gender &lt;- ggplot(df_gender, aes(x = cgen, y = income)) +\n  geom_boxplot(fill = \"steelblue\") +\n  coord_cartesian(ylim = c(0, y_max)) +\n  labs(\n    title = \"Income by Gender\",\n    x = \"Gender\",\n    y = \"Income (Million VND)\"\n  ) +\n  theme_minimal()\n\n#  Plot B: Income by Vocational Training Type\ndf_training &lt;- df %&gt;% drop_na(income, fvtp)\n\np_training &lt;- ggplot(df_training, aes(x = fvtp, y = income)) +\n  geom_boxplot(fill = \"steelblue\") +\n  coord_cartesian(ylim = c(0, y_max)) +\n  labs(\n    title = \"Income by Vocational Training Type\",\n    x = \"Training type\",\n    y = \"Income (Million VND)\"\n  ) +\n  theme_minimal()\n\np_gender + p_training\n\n# 5. Summary Table\nsummary_v3 &lt;- bind_rows(\n  df_gender %&gt;%\n    group_by(Group = \"Gender\", Category = cgen) %&gt;%\n    summarise(\n      N = n(),\n      Median_Income = median(income, na.rm = TRUE),\n      Mean_Income = mean(income, na.rm = TRUE),\n      SD = sd(income, na.rm = TRUE),\n      .groups = \"drop\"\n    ),\n  df_training %&gt;%\n    group_by(Group = \"Training type\", Category = fvtp) %&gt;%\n    summarise(\n      N = n(),\n      Median_Income = median(income, na.rm = TRUE),\n      Mean_Income = mean(income, na.rm = TRUE),\n      SD = sd(income, na.rm = TRUE),\n      .groups = \"drop\"\n    )\n)\n\nknitr::kable(summary_v3, digits = 2)\n\n\n\nObservation:\nIncome differences across gender appear minimal, with considerable overlap between the two groups. In contrast, vocational training type shows a clearer gap: respondents who attended long courses report substantially higher incomes than those who attended short courses. However, variability within each group remains large, especially for the long-course group. This suggests that factors beyond gender and training type also contribute to income differences.\n\n\n\n\n\nVisualisation 4: Association Between Income and Savings\n\n\n\n\n\n\n\nNoteVisualisation 4:Association Between Income and Savings\n\n\n\n\nVisualCode\n\n\n\n\n\n\n\n\n\n\n\n\nSummary of Income and Savings Relationship\n\n\n\n\n\n\n\n\n\nN\nCorrelation_Pearson\nCorrelation_Spearman\nIncome_Mean\nSavings_Mean\n\n\n\n\n205\n0.015\n0.403\n50.717\n44.171\n\n\n\n\n\n\n\ndf_scatter &lt;- df %&gt;% drop_na(income, lsav)\n\nx_limit &lt;- quantile(df_scatter$income, 0.98, na.rm = TRUE)\ny_limit &lt;- quantile(df_scatter$lsav,  0.98, na.rm = TRUE)\n\nggplot(df_scatter, aes(x = income, y = lsav)) +\n  geom_point(alpha = 0.4) +\n  geom_smooth(method = \"lm\", se = TRUE) +\n  coord_cartesian(xlim = c(0, x_limit), ylim = c(0, y_limit)) +\n  labs(\n    title = \"Association Between Income and Savings\",\n    x = \"Income (Million VND)\",\n    y = \"Savings\"\n  ) +\n  theme_minimal()\n\n# Summary table\nknitr::kable(\n  df_scatter %&gt;%\n    summarise(\n      N = n(),\n      Correlation_Pearson = cor(income, lsav, method = \"pearson\", use = \"complete.obs\"),\n      Correlation_Spearman = cor(income, lsav, method = \"spearman\", use = \"complete.obs\"),\n      Income_Mean = mean(income, na.rm = TRUE),\n      Savings_Mean = mean(lsav, na.rm = TRUE)\n    ),\n  digits = 3,\n  caption = \"Summary of Income and Savings Relationship\"\n)\n\n\n\nObservation:\nSavings show a weak relationship with income, with points widely dispersed and clustered at lower savings levels. A small number of extreme values influence the fitted trend line, and most respondents report relatively low savings even as income increases.\n\n\n\n\n\nVisualisation 5: Income by Perception Score (PPO1)\n\n\n\n\n\n\n\nNoteVisualisation 5: Income by Perception Score (PPO1)\n\n\n\n\nVisualCode\n\n\n\n\n\n\n\n\n\n\n\n\nIncome Summary by PPO1 ScoreScale: 1 = strongly disagree to 5 = strongly agree (as defined in the survey)\n\n\nppo1\nN\nMedian_Income\nMean_Income\nSD\n\n\n\n\n1\n150\n29\n35.97\n21.90\n\n\n2\n145\n35\n37.20\n17.51\n\n\n3\n78\n34\n41.05\n27.04\n\n\n4\n69\n30\n45.51\n67.56\n\n\n5\n73\n28\n40.10\n42.75\n\n\n\n\n\n\n\ndf_ppo1 &lt;- df %&gt;%\n  mutate(ppo1 = na_if(ppo1, 0)) %&gt;%\n  drop_na(ppo1, income) %&gt;%\n  mutate(ppo1 = factor(ppo1, levels = 1:5, ordered = TRUE))\n\nupper_limit &lt;- quantile(df_ppo1$income, 0.95, na.rm = TRUE)\n\nggplot(df_ppo1, aes(x = ppo1, y = income)) +\n  geom_boxplot() +\n  coord_cartesian(ylim = c(0, upper_limit)) +\n  labs(\n    title = \"Income by PPO1 Score\",\n    x = \"PPO1 score (1–5)\",\n    y = \"Income (Million VND)\"\n  ) +\n  theme_minimal()\n\nknitr::kable(\n  df_ppo1 %&gt;%\n    group_by(ppo1) %&gt;%\n    summarise(\n      N = n(),\n      Median_Income = median(income, na.rm = TRUE),\n      Mean_Income = mean(income, na.rm = TRUE),\n      SD = sd(income, na.rm = TRUE),\n      .groups = \"drop\"\n    ),\n  digits = 2,\n  caption = \"Income Summary by PPO1 Score&lt;br&gt;Scale: 1 = strongly disagree to 5 = strongly agree (as defined in the survey)\"\n)\n\n\n\nObservation:\nPPO1 reflects respondents’ views on training-related policy/support. This visualisation explores whether income levels differ across PPO1 score categories. Income distributions overlap heavily across PPO1 score levels, and median income changes only minimally from scores 1 to 5. While the mean income is higher for some scores , the large differences indicate that a small number of high-income outliers likely drive these differences. Overall, the plot suggests no clear or strong relationship between PPO1 score and income.\n\n\n\n\n\nVisualisation 6: Heatmap of Income Distribution by Education Level\n\n\n\n\n\n\n\nNoteVisualisation 6: Heatmap of Income Distribution by Education Level\n\n\n\n\nVisualCode\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nEducation Level\nRespondents\nPercentage\n\n\n\n\nPrimary\n473\n67.5%\n\n\nLower secondary\n136\n19.4%\n\n\nUpper secondary\n73\n10.4%\n\n\nOthers\n19\n2.7%\n\n\n\n\n\nTotal number of respondents (used in heatmap): 701\n\n\n\n\ndf_hm &lt;- df %&gt;%\n  drop_na(income, fedu) %&gt;%\n  mutate(\n    \n    income_band = ntile(income, 4),\n    income_band = factor(\n      income_band,\n      levels = 1:4,\n      labels = c(\"Q1 (Lowest)\", \"Q2\", \"Q3\", \"Q4 (Highest)\"),\n      ordered = TRUE\n    )\n  )\n\n#  Plot Heatmap\ndf_hm %&gt;%\n  count(fedu, income_band) %&gt;%\n  group_by(fedu) %&gt;%\n  mutate(pct = n / sum(n)) %&gt;%\n  ggplot(aes(x = fedu, y = income_band, fill = pct)) +\n  geom_tile(color = \"white\", linewidth = 0.5) +\n \n  scale_fill_gradient(labels = scales::label_percent(accuracy = 1)) +\n  labs(\n    title = \"Heatmap of Income Band by Education Level\",\n    x = \"Education Level\",\n    y = \"Income Band\",\n    fill = \"% within Edu\"\n  ) +\n  theme_minimal(base_size = 12)\n\n# Summary Table\nknitr::kable(\n  df_hm %&gt;%\n    count(fedu, name = \"Respondents\") %&gt;%\n    mutate(Percentage = scales::percent(Respondents / sum(Respondents), accuracy = 0.1)),\n  col.names = c(\"Education Level\", \"Respondents\", \"Percentage\")\n)\n\ncat(\"Total number of respondents (used in heatmap):\", nrow(df_hm))\n\n\n\nObservation:\nThe heatmap shows, within each education group, the proportion of respondents in each income quartile (Q1 = lowest income, Q4 = highest). Respondents with primary and lower secondary education are more concentrated in the lower income bands (Q1–Q2), while upper secondary and “others” show a relatively higher share in the upper bands (Q3–Q4). This pattern suggests a mild positive relationship between education attainment and income.\n\n\n\n\n\nOverall Observations\nIncome of informal rural labourers in the northern mountainous regions of Vietnam is highly uneven and right-skewed, with most labourers clustered at lower income levels and a small group earning much more.\nAcross the factors examined, education stands out as the strongest and most consistent correlate of income, reflected in higher medians and a greater share in upper income quartiles for more educated respondents.\nCredit access and vocational training type show secondary, weaker patterns , but dispersion remains large, suggesting other influences are also important. In contrast, province, gender, savings , and PPO1 show modest or minimal differentiation in income."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "👋 Welcome",
+    "section": "",
+    "text": "Cheok En Qi\nThis website contains my coursework and hands-on exercises for ISSS608,\nfocusing on data visualisation, analytics, and storytelling using R & Quarto.\n\n\n\n\n\n\n\n\n\nView all hands-on exercise submissions and visualisation work →\n\n\n\n\n\n\n\n\nAbout Me"
+  },
+  {
+    "objectID": "index.html#isss608-visual-analytics-coursework-website",
+    "href": "index.html#isss608-visual-analytics-coursework-website",
+    "title": "👋 Welcome",
+    "section": "",
+    "text": "Cheok En Qi\nThis website contains my coursework and hands-on exercises for ISSS608,\nfocusing on data visualisation, analytics, and storytelling using R & Quarto."
+  },
+  {
+    "objectID": "index.html#exercises",
+    "href": "index.html#exercises",
+    "title": "👋 Welcome",
+    "section": "",
+    "text": "View all hands-on exercise submissions and visualisation work →"
+  },
+  {
+    "objectID": "index.html#about",
+    "href": "index.html#about",
+    "title": "👋 Welcome",
+    "section": "",
+    "text": "About Me"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About Me",
+    "section": "",
+    "text": "Hi, I’m Cheok En Qi, a postgraduate student with interests in\ndata analytics and visualisation."
+  },
+  {
+    "objectID": "about.html#this-website",
+    "href": "about.html#this-website",
+    "title": "About Me",
+    "section": "This Website",
+    "text": "This Website\nThis site serves as a collection of my:\n\nHands-on exercises\n\nIn-class practices\n\nCoursework submissions\n\n\nAll pages are built using Quarto + R Markdown."
+  },
+  {
+    "objectID": "about.html#links",
+    "href": "about.html#links",
+    "title": "About Me",
+    "section": "Links",
+    "text": "Links\n\nGitHub: https://github.com/cheokenqi97"
+  },
+  {
+    "objectID": "HE04.html#getting-started",
+    "href": "HE04.html#getting-started",
+    "title": "Hands-on Exercise 4",
+    "section": "Getting Started",
+    "text": "Getting Started\nInstall and launch the following R packages\n\npacman::p_load(ggdist, ggridges, ggthemes,\n               colorspace, tidyverse)"
+  },
+  {
+    "objectID": "HE04.html#data",
+    "href": "HE04.html#data",
+    "title": "Hands-on Exercise 4",
+    "section": "Data",
+    "text": "Data\nLoading the data to the R environment by using read_csv() function of readr package\n\nexam &lt;- read_csv(\"chap04/data/Exam_data.csv\")"
+  },
+  {
+    "objectID": "HE04.html#visualising-distribution-with-ridgeline-plot",
+    "href": "HE04.html#visualising-distribution-with-ridgeline-plot",
+    "title": "Hands-on Exercise 4",
+    "section": "9.3 Visualising Distribution with Ridgeline Plot",
+    "text": "9.3 Visualising Distribution with Ridgeline Plot\n\n9.3.1 Plotting ridgeline graph: ggridges method\n\nggplot(exam, \n       aes(x = ENGLISH, \n           y = CLASS)) +\n  geom_density_ridges(\n    scale = 3,\n    rel_min_height = 0.01,\n    bandwidth = 3.4,\n    fill = lighten(\"#7097BB\", .3),\n    color = \"white\"\n  ) +\n  scale_x_continuous(\n    name = \"English grades\",\n    expand = c(0, 0)\n    ) +\n  scale_y_discrete(name = NULL, expand = expansion(add = c(0.2, 2.6))) +\n  theme_ridges()\n\n\n\n\n\n\n\n\n\n\n9.3.2 Varying fill colors along the x axis\n\nggplot(exam, \n       aes(x = ENGLISH, \n           y = CLASS,\n           fill = stat(x))) +\n  geom_density_ridges_gradient(\n    scale = 3,\n    rel_min_height = 0.01) +\n  scale_fill_viridis_c(name = \"Temp. [F]\",\n                       option = \"C\") +\n  scale_x_continuous(\n    name = \"English grades\",\n    expand = c(0, 0)\n  ) +\n  scale_y_discrete(name = NULL, expand = expansion(add = c(0.2, 2.6))) +\n  theme_ridges()\n\n\n\n\n\n\n\n\n\n\n9.3.3 Mapping the probabilities directly onto colour\n\nggplot(exam,\n       aes(x = ENGLISH, \n           y = CLASS, \n           fill = 0.5 - abs(0.5-stat(ecdf)))) +\n  stat_density_ridges(geom = \"density_ridges_gradient\", \n                      calc_ecdf = TRUE) +\n  scale_fill_viridis_c(name = \"Tail probability\",\n                       direction = -1) +\n  theme_ridges()\n\n\n\n\n\n\n\n\n\n\n9.3.4 Ridgeline plots with quantile lines\n\nggplot(exam,\n       aes(x = ENGLISH, \n           y = CLASS, \n           fill = factor(stat(quantile))\n           )) +\n  stat_density_ridges(\n    geom = \"density_ridges_gradient\",\n    calc_ecdf = TRUE, \n    quantiles = 4,\n    quantile_lines = TRUE) +\n  scale_fill_viridis_d(name = \"Quartiles\") +\n  theme_ridges()\n\n\n\n\n\n\n\nggplot(exam,\n       aes(x = ENGLISH, \n           y = CLASS, \n           fill = factor(stat(quantile))\n           )) +\n  stat_density_ridges(\n    geom = \"density_ridges_gradient\",\n    calc_ecdf = TRUE, \n    quantiles = c(0.025, 0.975)\n    ) +\n  scale_fill_manual(\n    name = \"Probability\",\n    values = c(\"#FF0000A0\", \"#A0A0A0A0\", \"#0000FFA0\"),\n    labels = c(\"(0, 0.025]\", \"(0.025, 0.975]\", \"(0.975, 1]\")\n  ) +\n  theme_ridges()"
+  },
+  {
+    "objectID": "HE04.html#visualising-distribution-with-raincloud-plot",
+    "href": "HE04.html#visualising-distribution-with-raincloud-plot",
+    "title": "Hands-on Exercise 4",
+    "section": "9.4 Visualising Distribution with Raincloud Plot",
+    "text": "9.4 Visualising Distribution with Raincloud Plot\n\n9.4.1 Plotting a Half Eye graph\n\nggplot(exam, \n       aes(x = RACE, \n           y = ENGLISH)) +\n  stat_halfeye(adjust = 0.5,\n               justification = -0.2,\n               .width = 0,\n               point_colour = NA)"
+  },
+  {
+    "objectID": "HE04.html#adding-the-boxplot-with-geom_boxplot",
+    "href": "HE04.html#adding-the-boxplot-with-geom_boxplot",
+    "title": "Hands-on Exercise 4",
+    "section": "9.4.2 Adding the boxplot with geom_boxplot()",
+    "text": "9.4.2 Adding the boxplot with geom_boxplot()\n\nggplot(exam, \n       aes(x = RACE, \n           y = ENGLISH)) +\n  stat_halfeye(adjust = 0.5,\n               justification = -0.2,\n               .width = 0,\n               point_colour = NA) +\n  geom_boxplot(width = .20,\n               outlier.shape = NA)"
+  },
+  {
+    "objectID": "HE04.html#adding-the-dot-plots-with-stat_dots",
+    "href": "HE04.html#adding-the-dot-plots-with-stat_dots",
+    "title": "Hands-on Exercise 4",
+    "section": "9.4.3 Adding the Dot Plots with stat_dots()",
+    "text": "9.4.3 Adding the Dot Plots with stat_dots()\n\nggplot(exam, \n       aes(x = RACE, \n           y = ENGLISH)) +\n  stat_halfeye(adjust = 0.5,\n               justification = -0.2,\n               .width = 0,\n               point_colour = NA) +\n  geom_boxplot(width = .20,\n               outlier.shape = NA) +\n  stat_dots(side = \"left\", \n            justification = 1.2, \n            binwidth = .5,\n            dotsize = 2)\n\n\n\n\n\n\n\n\n\n9.4.4 Finishing touch\n\nggplot(exam, \n       aes(x = RACE, \n           y = ENGLISH)) +\n  stat_halfeye(adjust = 0.5,\n               justification = -0.2,\n               .width = 0,\n               point_colour = NA) +\n  geom_boxplot(width = .20,\n               outlier.shape = NA) +\n  stat_dots(side = \"left\", \n            justification = 1.2, \n            binwidth = .5,\n            dotsize = 1.5) +\n  coord_flip() +\n  theme_economist()"
+  },
+  {
+    "objectID": "HE04.html#getting-started-1",
+    "href": "HE04.html#getting-started-1",
+    "title": "Hands-on Exercise 4",
+    "section": "Getting Started",
+    "text": "Getting Started\nInstall and launch the following R packages\n\npacman::p_load(ggstatsplot, tidyverse)"
+  },
+  {
+    "objectID": "HE04.html#data-1",
+    "href": "HE04.html#data-1",
+    "title": "Hands-on Exercise 4",
+    "section": "Data",
+    "text": "Data\nLoading the data to the R environment by using read_csv() function of readr package\n\nexam &lt;- read_csv(\"chap04/data/Exam_data.csv\")\n\n##10.2 Visual Statistical Analysis with ggstatsplot ggstatsplot is an extension of ggplot2 package for creating graphics with details from statistical tests included in the information-rich plots themselves.\n\nTo provide alternative statistical inference methods by default.\nTo follow best practices for statistical reporting. For all statistica\n\n\n10.3.3 One-sample test: gghistostats() method\n\nset.seed(1234)\n\ngghistostats(\n  data = exam,\n  x = ENGLISH,\n  type = \"bayes\",\n  test.value = 60,\n  xlab = \"English scores\"\n)\n\n\n\n\n\n\n\n\n\n\n10.3.4 Unpacking the Bayes Factor\nA Bayes factor is the ratio of the likelihood of one particular hypothesis to the likelihood of another. It can be interpreted as a measure of the strength of evidence in favor of one theory among two competing theories.\nThat’s because the Bayes factor gives us a way to evaluate the data in favor of a null hypothesis, and to use external information to do so. It tells us what the weight of the evidence is in favor of a given hypothesis.\nWhen we are comparing two hypotheses, H1 (the alternate hypothesis) and H0 (the null hypothesis), the Bayes Factor is often written as B10. It can be defined mathematically as\n\n\n10.3.5 How to interpret Bayes Factor\nA Bayes Factor can be any positive number.\n\n\n10.3.6 Two-sample mean test: ggbetweenstats()\n\nggbetweenstats(\n  data = exam,\n  x = GENDER, \n  y = MATHS,\n  type = \"np\",\n  messages = FALSE\n)\n\n\n\n\n\n\n\n\n###10.3.7 Oneway ANOVA Test: ggbetweenstats() method\n\nggbetweenstats(\n  data = exam,\n  x = RACE, \n  y = ENGLISH,\n  type = \"p\",\n  mean.ci = TRUE, \n  pairwise.comparisons = TRUE, \n  pairwise.display = \"s\",\n  p.adjust.method = \"fdr\",\n  messages = FALSE\n)\n\n\n\n\n\n\n\n\n\n\n10.3.8 Significant Test of Correlation: ggscatterstats()\n\nggscatterstats(\n  data = exam,\n  x = MATHS,\n  y = ENGLISH,\n  marginal = FALSE,\n  )\n\n\n\n\n\n\n\n\n###10.3.9 Significant Test of Association (Depedence) : ggbarstats() methods\n\nexam1 &lt;- exam %&gt;% \n  mutate(MATHS_bins = \n           cut(MATHS, \n               breaks = c(0,60,75,85,100))\n)\nggbarstats(exam1, \n           x = MATHS_bins, \n           y = GENDER)"
+  },
+  {
+    "objectID": "HE04.html#getting-started-2",
+    "href": "HE04.html#getting-started-2",
+    "title": "Hands-on Exercise 4",
+    "section": "Getting Started",
+    "text": "Getting Started\nInstall and launch the following R packages\n\npacman::p_load(plotly, crosstalk, DT, \n               ggdist, ggridges, colorspace,\n               gganimate, tidyverse)"
+  },
+  {
+    "objectID": "HE04.html#data-2",
+    "href": "HE04.html#data-2",
+    "title": "Hands-on Exercise 4",
+    "section": "Data",
+    "text": "Data\nLoading the data to the R environment by using read_csv() function of readr package\n\nexam &lt;- read_csv(\"chap04/data/Exam_data.csv\")"
+  },
+  {
+    "objectID": "HE04.html#visualizing-the-uncertainty-of-point-estimates-ggplot2-methods",
+    "href": "HE04.html#visualizing-the-uncertainty-of-point-estimates-ggplot2-methods",
+    "title": "Hands-on Exercise 4",
+    "section": "11.3 Visualizing the uncertainty of point estimates: ggplot2 methods",
+    "text": "11.3 Visualizing the uncertainty of point estimates: ggplot2 methods\n\nmy_sum &lt;- exam %&gt;%\n  group_by(RACE) %&gt;%\n  summarise(\n    n=n(),\n    mean=mean(MATHS),\n    sd=sd(MATHS)\n    ) %&gt;%\n  mutate(se=sd/sqrt(n-1))\n\n\n11.3.1 Plotting standard error bars of point estimates\n\nggplot(my_sum) +\n  geom_errorbar(\n    aes(x=RACE, \n        ymin=mean-se, \n        ymax=mean+se), \n    width=0.2, \n    colour=\"black\", \n    alpha=0.9, \n    linewidth=0.5) +\n  geom_point(aes\n           (x=RACE, \n            y=mean), \n           stat=\"identity\", \n           color=\"red\",\n           size = 1.5,\n           alpha=1) +\n  ggtitle(\"Standard error of mean maths score by rac\")\n\n\n\n\n\n\n\n\n\n\n11.3.2 Plotting confidence interval of point estimates\n\nggplot(my_sum) +\n  geom_errorbar(\n    aes(x=reorder(RACE, -mean), \n        ymin=mean-1.96*se, \n        ymax=mean+1.96*se), \n    width=0.2, \n    colour=\"black\", \n    alpha=0.9, \n    linewidth=0.5) +\n  geom_point(aes\n           (x=RACE, \n            y=mean), \n           stat=\"identity\", \n           color=\"red\",\n           size = 1.5,\n           alpha=1) +\n  labs(x = \"Maths score\",\n       title = \"95% confidence interval of mean maths score by race\")\n\n\n\n\n\n\n\n\n\n\n11.3.3 Visualizing the uncertainty of point estimates with interactive error bars\n\nshared_df = SharedData$new(my_sum)\n\nbscols(widths = c(4,8),\n       ggplotly((ggplot(shared_df) +\n                   geom_errorbar(aes(\n                     x=reorder(RACE, -mean),\n                     ymin=mean-2.58*se, \n                     ymax=mean+2.58*se), \n                     width=0.2, \n                     colour=\"black\", \n                     alpha=0.9, \n                     size=0.5) +\n                   geom_point(aes(\n                     x=RACE, \n                     y=mean, \n                     text = paste(\"Race:\", `RACE`, \n                                  \"&lt;br&gt;N:\", `n`,\n                                  \"&lt;br&gt;Avg. Scores:\", round(mean, digits = 2),\n                                  \"&lt;br&gt;95% CI:[\", \n                                  round((mean-2.58*se), digits = 2), \",\",\n                                  round((mean+2.58*se), digits = 2),\"]\")),\n                     stat=\"identity\", \n                     color=\"red\", \n                     size = 1.5, \n                     alpha=1) + \n                   xlab(\"Race\") + \n                   ylab(\"Average Scores\") + \n                   theme_minimal() + \n                   theme(axis.text.x = element_text(\n                     angle = 45, vjust = 0.5, hjust=1)) +\n                   ggtitle(\"99% Confidence interval of average /&lt;br&gt;maths scores by race\")), \n                tooltip = \"text\"), \n       DT::datatable(shared_df, \n                     rownames = FALSE, \n                     class=\"compact\", \n                     width=\"100%\", \n                     options = list(pageLength = 10,\n                                    scrollX=T), \n                     colnames = c(\"No. of pupils\", \n                                  \"Avg Scores\",\n                                  \"Std Dev\",\n                                  \"Std Error\")) %&gt;%\n         formatRound(columns=c('mean', 'sd', 'se'),\n                     digits=2))"
+  },
+  {
+    "objectID": "HE04.html#visualising-uncertainty-ggdist-package",
+    "href": "HE04.html#visualising-uncertainty-ggdist-package",
+    "title": "Hands-on Exercise 4",
+    "section": "11.4 Visualising Uncertainty: ggdist package",
+    "text": "11.4 Visualising Uncertainty: ggdist package\n\n11.4.1 Visualizing the uncertainty of point estimates: ggdist methods\n\nexam %&gt;%\n  ggplot(aes(x = RACE, \n             y = MATHS)) +\n  stat_pointinterval() +\n  labs(\n    title = \"Visualising confidence intervals of mean math score\",\n    subtitle = \"Mean Point + Multiple-interval plot\")\n\n\n\n\n\n\n\nexam %&gt;%\n  ggplot(aes(x = RACE, y = MATHS)) +\n  stat_pointinterval(.width = 0.95,\n  .point = median,\n  .interval = qi) +\n  labs(\n    title = \"Visualising confidence intervals of median math score\",\n    subtitle = \"Median Point + Multiple-interval plot\")\n\n\n\n\n\n\n\n\n\n\n11.4.2 Visualizing the uncertainty of point estimates: ggdist methods\n\nexam %&gt;%\n  ggplot(aes(x = RACE, \n             y = MATHS)) +\n  stat_pointinterval(\n    show.legend = FALSE) +   \n  labs(\n    title = \"Visualising confidence intervals of mean math score\",\n    subtitle = \"Mean Point + Multiple-interval plot\")\n\n\n\n\n\n\n\n\n\n\n11.4.3 Visualizing the uncertainty of point estimates: ggdist methods\n\nexam %&gt;%\n  ggplot(aes(x = RACE, \n             y = MATHS)) +\n  stat_gradientinterval(   \n    fill = \"skyblue\",      \n    show.legend = TRUE     \n  ) +                        \n  labs(\n    title = \"Visualising confidence intervals of mean math score\",\n    subtitle = \"Gradient + interval plot\")"
+  },
+  {
+    "objectID": "HE04.html#visualising-uncertainty-with-hypothetical-outcome-plots-hops",
+    "href": "HE04.html#visualising-uncertainty-with-hypothetical-outcome-plots-hops",
+    "title": "Hands-on Exercise 4",
+    "section": "11.5 Visualising Uncertainty with Hypothetical Outcome Plots (HOPs)",
+    "text": "11.5 Visualising Uncertainty with Hypothetical Outcome Plots (HOPs)\n\n11.5.1 Installing ungeviz package\n\n## devtools::install_github(\"wilkelab/ungeviz\")\n\n\n\n11.5.2 Launch the application in R\n\nlibrary(ungeviz)\n\n\n\n11.5.3 Visualising Uncertainty with Hypothetical Outcome Plots (HOPs)\n\nggplot(data = exam, \n       (aes(x = factor(RACE), \n            y = MATHS))) +\n  geom_point(position = position_jitter(\n    height = 0.3, \n    width = 0.05), \n    size = 0.4, \n    color = \"#0072B2\", \n    alpha = 1/2) +\n  geom_hpline(data = sampler(25, \n                             group = RACE), \n              height = 0.6, \n              color = \"#D55E00\") +\n  theme_bw() + \n  transition_states(.draw, 1, 3)"
+  },
+  {
+    "objectID": "HE04.html#getting-started-3",
+    "href": "HE04.html#getting-started-3",
+    "title": "Hands-on Exercise 4",
+    "section": "Getting Started",
+    "text": "Getting Started\nInstall and launch the following R packages\n\npacman::p_load(tidyverse, FunnelPlotR, plotly, knitr)"
+  },
+  {
+    "objectID": "HE04.html#data-3",
+    "href": "HE04.html#data-3",
+    "title": "Hands-on Exercise 4",
+    "section": "Data",
+    "text": "Data\nLoading the data to the R environment by using read_csv() function of readr package\n\ncovid19 &lt;- read_csv(\"chap04/data/COVID-19_DKI_Jakarta.csv\") %&gt;%\n  mutate_if(is.character, as.factor)"
+  },
+  {
+    "objectID": "HE04.html#funnelplotr-methods",
+    "href": "HE04.html#funnelplotr-methods",
+    "title": "Hands-on Exercise 4",
+    "section": "8.4 FunnelPlotR methods",
+    "text": "8.4 FunnelPlotR methods\n\n8.4.1 FunnelPlotR methods: The basic plot\n\nfunnel_plot(\n  .data = covid19,\n  numerator = Positive,\n  denominator = Death,\n  group = `Sub-district`\n)\n\n\n\n\n\n\n\n\nA funnel plot object with 267 points of which 0 are outliers. \nPlot is adjusted for overdispersion. \n\n\n\n\n8.4.2 FunnelPlotR methods: Makeover 1\n\nfunnel_plot(\n  .data = covid19,\n  numerator = Death,\n  denominator = Positive,\n  group = `Sub-district`,\n  data_type = \"PR\",     #&lt;&lt;\n  xrange = c(0, 6500),  #&lt;&lt;\n  yrange = c(0, 0.05)   #&lt;&lt;\n)\n\n\n\n\n\n\n\n\nA funnel plot object with 267 points of which 7 are outliers. \nPlot is adjusted for overdispersion. \n\n\n\n\n8.4.3 FunnelPlotR methods: Makeover 2\n\nfunnel_plot(\n  .data = covid19,\n  numerator = Death,\n  denominator = Positive,\n  group = `Sub-district`,\n  data_type = \"PR\",   \n  xrange = c(0, 6500),  \n  yrange = c(0, 0.05),\n  label = NA,\n  title = \"Cumulative COVID-19 Fatality Rate by Cumulative Total Number of COVID-19 Positive Cases\", #&lt;&lt;           \n  x_label = \"Cumulative COVID-19 Positive Cases\", #&lt;&lt;\n  y_label = \"Cumulative Fatality Rate\"  #&lt;&lt;\n)\n\n\n\n\n\n\n\n\nA funnel plot object with 267 points of which 7 are outliers. \nPlot is adjusted for overdispersion."
+  },
+  {
+    "objectID": "HE04.html#funnel-plot-for-fair-visual-comparison-ggplot2-methods",
+    "href": "HE04.html#funnel-plot-for-fair-visual-comparison-ggplot2-methods",
+    "title": "Hands-on Exercise 4",
+    "section": "8.5 Funnel Plot for Fair Visual Comparison: ggplot2 methods",
+    "text": "8.5 Funnel Plot for Fair Visual Comparison: ggplot2 methods\n\n8.5.1 Computing the basic derived fields\n\ndf &lt;- covid19 %&gt;%\n  mutate(rate = Death / Positive) %&gt;%\n  mutate(rate.se = sqrt((rate*(1-rate)) / (Positive))) %&gt;%\n  filter(rate &gt; 0)\nfit.mean &lt;- weighted.mean(df$rate, 1/df$rate.se^2)\n\n\n\n8.5.2 Calculate lower and upper limits for 95% and 99.9% CI\n\nnumber.seq &lt;- seq(1, max(df$Positive), 1)\nnumber.ll95 &lt;- fit.mean - 1.96 * sqrt((fit.mean*(1-fit.mean)) / (number.seq)) \nnumber.ul95 &lt;- fit.mean + 1.96 * sqrt((fit.mean*(1-fit.mean)) / (number.seq)) \nnumber.ll999 &lt;- fit.mean - 3.29 * sqrt((fit.mean*(1-fit.mean)) / (number.seq)) \nnumber.ul999 &lt;- fit.mean + 3.29 * sqrt((fit.mean*(1-fit.mean)) / (number.seq)) \ndfCI &lt;- data.frame(number.ll95, number.ul95, number.ll999, \n                   number.ul999, number.seq, fit.mean)\n\n\n\n8.5.3 Plotting a static funnel plot\n\np &lt;- ggplot(df, aes(x = Positive, y = rate)) +\n  geom_point(aes(label=`Sub-district`), \n             alpha=0.4) +\n  geom_line(data = dfCI, \n            aes(x = number.seq, \n                y = number.ll95), \n            size = 0.4, \n            colour = \"grey40\", \n            linetype = \"dashed\") +\n  geom_line(data = dfCI, \n            aes(x = number.seq, \n                y = number.ul95), \n            size = 0.4, \n            colour = \"grey40\", \n            linetype = \"dashed\") +\n  geom_line(data = dfCI, \n            aes(x = number.seq, \n                y = number.ll999), \n            size = 0.4, \n            colour = \"grey40\") +\n  geom_line(data = dfCI, \n            aes(x = number.seq, \n                y = number.ul999), \n            size = 0.4, \n            colour = \"grey40\") +\n  geom_hline(data = dfCI, \n             aes(yintercept = fit.mean), \n             size = 0.4, \n             colour = \"grey40\") +\n  coord_cartesian(ylim=c(0,0.05)) +\n  annotate(\"text\", x = 1, y = -0.13, label = \"95%\", size = 3, colour = \"grey40\") + \n  annotate(\"text\", x = 4.5, y = -0.18, label = \"99%\", size = 3, colour = \"grey40\") + \n  ggtitle(\"Cumulative Fatality Rate by Cumulative Number of COVID-19 Cases\") +\n  xlab(\"Cumulative Number of COVID-19 Cases\") + \n  ylab(\"Cumulative Fatality Rate\") +\n  theme_light() +\n  theme(plot.title = element_text(size=12),\n        legend.position = c(0.91,0.85), \n        legend.title = element_text(size=7),\n        legend.text = element_text(size=7),\n        legend.background = element_rect(colour = \"grey60\", linetype = \"dotted\"),\n        legend.key.height = unit(0.3, \"cm\"))\np\n\n\n\n\n\n\n\n\n\n\n8.5.4 Interactive Funnel Plot: plotly + ggplot2\n\nfp_ggplotly &lt;- ggplotly(p,\n  tooltip = c(\"label\", \n              \"x\", \n              \"y\"))\nfp_ggplotly"
+  },
+  {
+    "objectID": "HE03.html#getting-started",
+    "href": "HE03.html#getting-started",
+    "title": "Hands-on Exercise 3",
+    "section": "Getting Started",
+    "text": "Getting Started\nInstall and launch the following R packages\n\npacman::p_load(ggiraph, plotly, patchwork, DT, tidyverse)"
+  },
+  {
+    "objectID": "HE03.html#data",
+    "href": "HE03.html#data",
+    "title": "Hands-on Exercise 3",
+    "section": "Data",
+    "text": "Data\nLoading the data to the R environment by using read_csv() function of readr package\n\nexam_data &lt;- read_csv(\"chap03/data/Exam_data.csv\")"
+  },
+  {
+    "objectID": "HE03.html#interactive-data-visualisation---ggiraph-methods",
+    "href": "HE03.html#interactive-data-visualisation---ggiraph-methods",
+    "title": "Hands-on Exercise 3",
+    "section": "3.4 Interactive Data Visualisation - ggiraph methods",
+    "text": "3.4 Interactive Data Visualisation - ggiraph methods\n\n3.4.1 Tooltip effect with tooltip aesthetic\n\np &lt;- ggplot(data=exam_data, \n       aes(x = MATHS)) +\n  geom_dotplot_interactive(\n    aes(tooltip = ID),\n    stackgroups = TRUE, \n    binwidth = 1, \n    method = \"histodot\") +\n  scale_y_continuous(NULL, \n                     breaks = NULL)\ngirafe(\n  ggobj = p,\n  width_svg = 6,\n  height_svg = 6*0.618\n)\n\n\n\n\n\n##3.5 Interactivity\n\n\n3.5.1 Displaying multiple information on tooltip\n\nexam_data$tooltip &lt;- c(paste0(     \n  \"Name = \", exam_data$ID,         \n  \"\\n Class = \", exam_data$CLASS)) \n\np &lt;- ggplot(data=exam_data, \n       aes(x = MATHS)) +\n  geom_dotplot_interactive(\n    aes(tooltip = exam_data$tooltip), \n    stackgroups = TRUE,\n    binwidth = 1,\n    method = \"histodot\") +\n  scale_y_continuous(NULL,               \n                     breaks = NULL)\ngirafe(\n  ggobj = p,\n  width_svg = 8,\n  height_svg = 8*0.618\n)\n\n\n\n\n\n##3.6 Interactivity ### 3.6.1 Customising Tooltip style\n\ntooltip_css &lt;- \"background-color:white; #&lt;&lt;\nfont-style:bold; color:white;\" #&lt;&lt;\n\np &lt;- ggplot(data=exam_data, \n       aes(x = MATHS)) +\n  geom_dotplot_interactive(              \n    aes(tooltip = ID),                   \n    stackgroups = TRUE,                  \n    binwidth = 1,                        \n    method = \"histodot\") +               \n  scale_y_continuous(NULL,               \n                     breaks = NULL)\ngirafe(                                  \n  ggobj = p,                             \n  width_svg = 6,                         \n  height_svg = 6*0.618,\n  options = list(    #&lt;&lt;\n    opts_tooltip(    #&lt;&lt;\n      css = tooltip_css)) #&lt;&lt;\n)                                        \n\n\n\n\n\n\n\n3.6.2 Displaying statistics on tooltip\n\ntooltip &lt;- function(y, ymax, accuracy = .01) {\n  mean &lt;- scales::number(y, accuracy = accuracy)\n  sem &lt;- scales::number(ymax - y, accuracy = accuracy)\n  paste(\"Mean maths scores:\", mean, \"+/-\", sem)\n}\n\ngg_point &lt;- ggplot(data=exam_data, \n                   aes(x = RACE),\n) +\n  stat_summary(aes(y = MATHS, \n                   tooltip = after_stat(  \n                     tooltip(y, ymax))),  \n    fun.data = \"mean_se\", \n    geom = GeomInteractiveCol,  \n    fill = \"light blue\"\n  ) +\n  stat_summary(aes(y = MATHS),\n    fun.data = mean_se,\n    geom = \"errorbar\", width = 0.2, size = 0.2\n  )\n\ngirafe(ggobj = gg_point,\n       width_svg = 8,\n       height_svg = 8*0.618)                       \n\n\n\n\n\n\n\n3.6.3 Hover effect with data_id aesthetic\n\np &lt;- ggplot(data=exam_data, \n       aes(x = MATHS)) +\n  geom_dotplot_interactive(           \n    aes(data_id = CLASS),             \n    stackgroups = TRUE,               \n    binwidth = 1,                        \n    method = \"histodot\") +               \n  scale_y_continuous(NULL,               \n                     breaks = NULL)\ngirafe(                                  \n  ggobj = p,                             \n  width_svg = 6,                         \n  height_svg = 6*0.618                      \n)                                                          \n\n\n\n\n\n\n\n3.6.4 Styling hover effect\n\np &lt;- ggplot(data=exam_data, \n       aes(x = MATHS)) +\n  geom_dotplot_interactive(              \n    aes(data_id = CLASS),              \n    stackgroups = TRUE,                  \n    binwidth = 1,                        \n    method = \"histodot\") +               \n  scale_y_continuous(NULL,               \n                     breaks = NULL)\ngirafe(                                  \n  ggobj = p,                             \n  width_svg = 6,                         \n  height_svg = 6*0.618,\n  options = list(                        \n    opts_hover(css = \"fill: #202020;\"),  \n    opts_hover_inv(css = \"opacity:0.2;\") \n  )                                        \n)                                                                                                \n\n\n\n\n\n\n\n3.6.5 Combining tooltip and hover effect\n\np &lt;- ggplot(data=exam_data, \n       aes(x = MATHS)) +\n  geom_dotplot_interactive(              \n    aes(tooltip = CLASS, \n        data_id = CLASS),              \n    stackgroups = TRUE,                  \n    binwidth = 1,                        \n    method = \"histodot\") +               \n  scale_y_continuous(NULL,               \n                     breaks = NULL)\ngirafe(                                  \n  ggobj = p,                             \n  width_svg = 6,                         \n  height_svg = 6*0.618,\n  options = list(                        \n    opts_hover(css = \"fill: #202020;\"),  \n    opts_hover_inv(css = \"opacity:0.2;\") \n  )                                        \n)                                                                                                                                     \n\n\n\n\n\n\n\n3.6.6 Click effect with onclick\n\nexam_data$onclick &lt;- sprintf(\"window.open(\\\"%s%s\\\")\",\n\"https://www.moe.gov.sg/schoolfinder?journey=Primary%20school\",\nas.character(exam_data$ID))\n\np &lt;- ggplot(data=exam_data, \n       aes(x = MATHS)) +\n  geom_dotplot_interactive(              \n    aes(onclick = onclick),              \n    stackgroups = TRUE,                  \n    binwidth = 1,                        \n    method = \"histodot\") +               \n  scale_y_continuous(NULL,               \n                     breaks = NULL)\ngirafe(                                  \n  ggobj = p,                             \n  width_svg = 6,                         \n  height_svg = 6*0.618)                                                                                                                                                                           \n\n\n\n\n\n\n\n3.6.7 Coordinated Multiple Views with ggiraph\n\np1 &lt;- ggplot(data=exam_data, \n       aes(x = MATHS)) +\n  geom_dotplot_interactive(              \n    aes(data_id = ID),              \n    stackgroups = TRUE,                  \n    binwidth = 1,                        \n    method = \"histodot\") +  \n  coord_cartesian(xlim=c(0,100)) + \n  scale_y_continuous(NULL,               \n                     breaks = NULL)\n\np2 &lt;- ggplot(data=exam_data, \n       aes(x = ENGLISH)) +\n  geom_dotplot_interactive(              \n    aes(data_id = ID),              \n    stackgroups = TRUE,                  \n    binwidth = 1,                        \n    method = \"histodot\") + \n  coord_cartesian(xlim=c(0,100)) + \n  scale_y_continuous(NULL,               \n                     breaks = NULL)\n\ngirafe(code = print(p1 + p2), \n       width_svg = 6,\n       height_svg = 3,\n       options = list(\n         opts_hover(css = \"fill: #202020;\"),\n         opts_hover_inv(css = \"opacity:0.2;\")\n         )\n       )"
+  },
+  {
+    "objectID": "HE03.html#interactive-data-visualisation---plotly-methods",
+    "href": "HE03.html#interactive-data-visualisation---plotly-methods",
+    "title": "Hands-on Exercise 3",
+    "section": "3.7 Interactive Data Visualisation - plotly methods",
+    "text": "3.7 Interactive Data Visualisation - plotly methods\n\n3.7.1 Creating an interactive scatter plot: plot_ly() method\n\nplot_ly(data = exam_data, \n             x = ~MATHS, \n             y = ~ENGLISH)\n\n\n\n\n\n\n\n3.7.2 Working with visual variable: plot_ly() method\n\nplot_ly(data = exam_data, \n            x = ~ENGLISH, \n            y = ~MATHS, \n            color = ~RACE)\n\n\n\n\n\n\n\n3.7.3 Creating an interactive scatter plot: ggplotly() method\n\np &lt;- ggplot(data=exam_data, \n            aes(x = MATHS,\n                y = ENGLISH)) +\n  geom_point(size=1) +\n  coord_cartesian(xlim=c(0,100),\n                  ylim=c(0,100))\nggplotly(p)\n\n\n\n\n\n\n\n3.7.4 Coordinated Multiple Views with plotly\n\nd &lt;- highlight_key(exam_data)\np1 &lt;- ggplot(data=d, \n            aes(x = MATHS,\n                y = ENGLISH)) +\n  geom_point(size=1) +\n  coord_cartesian(xlim=c(0,100),\n                  ylim=c(0,100))\n\np2 &lt;- ggplot(data=d, \n            aes(x = MATHS,\n                y = SCIENCE)) +\n  geom_point(size=1) +\n  coord_cartesian(xlim=c(0,100),\n                  ylim=c(0,100))\nsubplot(ggplotly(p1),\n        ggplotly(p2))"
+  },
+  {
+    "objectID": "HE03.html#interactive-data-visualisation---crosstalk-methods",
+    "href": "HE03.html#interactive-data-visualisation---crosstalk-methods",
+    "title": "Hands-on Exercise 3",
+    "section": "3.8 Interactive Data Visualisation - crosstalk methods",
+    "text": "3.8 Interactive Data Visualisation - crosstalk methods\n\n3.8.1 Interactive Data Table: DT package\n\nDT::datatable(exam_data, class= \"compact\")\n\n\n\n\n\n\n\n3.8.2 Linked brushing: crosstalk method\n\nd &lt;- highlight_key(exam_data) \np &lt;- ggplot(d, \n            aes(ENGLISH, \n                MATHS)) + \n  geom_point(size=1) +\n  coord_cartesian(xlim=c(0,100),\n                  ylim=c(0,100))\n\ngg &lt;- highlight(ggplotly(p),        \n                \"plotly_selected\")  \n\ncrosstalk::bscols(gg,               \n                  DT::datatable(d), \n                  widths = 5)"
+  },
+  {
+    "objectID": "HE03.html#getting-started-1",
+    "href": "HE03.html#getting-started-1",
+    "title": "Hands-on Exercise 3",
+    "section": "Getting Started",
+    "text": "Getting Started\nInstall and launch the following R packages\n\npacman::p_load(readxl, gifski, gapminder, plotly, gganimate, tidyverse)"
+  },
+  {
+    "objectID": "HE03.html#data-1",
+    "href": "HE03.html#data-1",
+    "title": "Hands-on Exercise 3",
+    "section": "Data",
+    "text": "Data\nLoading the data to the R environment by using read_xls() function of readr package (import excel worksheet)\n\ncol &lt;- c(\"Country\", \"Continent\")\nglobalPop &lt;- read_xls(\"chap03/data/GlobalPopulation.xls\", sheet=\"Data\") %&gt;% mutate_at(col, as.factor) %&gt;% mutate(Year = as.integer(Year))"
+  },
+  {
+    "objectID": "HE03.html#animated-data-visualisation-gganimate-methods",
+    "href": "HE03.html#animated-data-visualisation-gganimate-methods",
+    "title": "Hands-on Exercise 3",
+    "section": "4.3 Animated Data Visualisation: gganimate methods",
+    "text": "4.3 Animated Data Visualisation: gganimate methods\n\n4.3.1 Building a static population bubble plot\n\nggplot(globalPop, aes(x = Old, y = Young, size = Population, colour = Country)) + geom_point(alpha = 0.7, show.legend = FALSE) + scale_colour_manual(values = country_colors) + scale_size(range = c(2, 12)) + labs(title = 'Year: {frame_time}', x = '% Aged', y = '% Young') \n\n\n\n\n\n\n\n\n\n\n4.3.2 Building the animated bubble plot\n\nggplot(globalPop, aes(x = Old, y = Young, size = Population, colour = Country)) + geom_point(alpha = 0.7, show.legend = FALSE) + scale_colour_manual(values = country_colors) + scale_size(range = c(2, 12)) + labs(title = 'Year: {frame_time}', x = '% Aged', y = '% Young') + transition_time(Year) + ease_aes('linear')"
+  },
+  {
+    "objectID": "HE03.html#animated-data-visualisation-plotly",
+    "href": "HE03.html#animated-data-visualisation-plotly",
+    "title": "Hands-on Exercise 3",
+    "section": "4.4 Animated Data Visualisation: plotly",
+    "text": "4.4 Animated Data Visualisation: plotly\n\ngg &lt;- ggplot(globalPop, \n       aes(x = Old, \n           y = Young, \n           size = Population, \n           colour = Country)) +\n  geom_point(aes(size = Population,\n                 frame = Year),\n             alpha = 0.7, \n             show.legend = FALSE) + scale_color_manual(values=country_colors) +\n  scale_size(range = c(2, 12)) +\n  labs(x = '% Aged', \n       y = '% Young')\n\nggplotly(gg)"
+  },
+  {
+    "objectID": "HE03.html#building-an-animated-bubble-plot-ggplotly-method",
+    "href": "HE03.html#building-an-animated-bubble-plot-ggplotly-method",
+    "title": "Hands-on Exercise 3",
+    "section": "4.4.1 Building an animated bubble plot: ggplotly() method",
+    "text": "4.4.1 Building an animated bubble plot: ggplotly() method\n\ngg &lt;- ggplot(globalPop, aes(x = Old, y = Young, size = Population,  colour = Country)) + geom_point(aes(size = Population, frame = Year), alpha = 0.7) + scale_colour_manual(values = country_colors) + scale_size(range = c(2, 12)) + labs(x = '% Aged', y = '% Young') + theme(legend.position='none') \n\nggplotly(gg)    \n\n\n\n\n\n\n4.4.2 Building an animated bubble plot: plot_ly() method\n\nbp &lt;- globalPop %&gt;% plot_ly(x = ~Old, y = ~Young, size = ~Population, color = ~Continent, sizes = c(2, 100), frame = ~Year, text = ~Country, hoverinfo = \"text\", type = 'scatter', mode = 'markers') %&gt;% layout(showlegend = FALSE) \n\nbp"
+  }
+]
