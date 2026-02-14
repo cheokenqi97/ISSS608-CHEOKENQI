@@ -42,7 +42,7 @@ website:
         aria-label: GitHub
 
   page-footer:
-    left: "Made with Quarto ✨"
+    left: "Made with Quarto"
     right: "ISSS608"
  
 format:
