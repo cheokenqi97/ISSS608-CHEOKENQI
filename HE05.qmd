@@ -46,7 +46,9 @@ agpop_mutated <- pop_data %>%
 ```
 
 ## 13.4 Plotting Ternary Diagram with R
+
 ### 13.4.1 Plotting a static ternary diagram
+
 ```{r}
 #Building the static ternary plot
 ggtern(data=agpop_mutated,aes(x=YOUNG,y=ACTIVE, z=OLD)) +
@@ -60,6 +62,7 @@ ggtern(data=agpop_mutated, aes(x=YOUNG,y=ACTIVE, z=OLD)) +
 ```
 
 ### 13.4.2 Plotting an interative ternary diagram
+
 ```{r}
 # reusable function for creating annotation object
 label <- function(txt) {
@@ -102,7 +105,7 @@ plot_ly(
   )
 ```
 
-# Lesson 5b:  Visual Correlation Analysis
+# Lesson 5b: Visual Correlation Analysis
 
 ## Getting Started
 
@@ -121,19 +124,23 @@ wine <- read.csv("chap05/data/wine_quality.csv")
 ```
 
 ## 6.4 Building Correlation Matrix: pairs() method
+
 ### 6.4.1 Building a basic correlation matrix
+
 ```{r}
 pairs(wine[,1:11])
 pairs(wine[,2:12])
 ```
 
 ### 6.4.2 Drawing the lower corner
+
 ```{r}
 pairs(wine[,2:12], upper.panel = NULL)
 pairs(wine[,2:12], lower.panel = NULL)
 ```
 
 ### 6.4.3 Including with correlation coefficients
+
 ```{r}
 panel.cor <- function(x, y, digits=2, prefix="", cex.cor, ...) {
 usr <- par("usr")
@@ -151,7 +158,9 @@ pairs(wine[,2:12],
 ```
 
 ## 6.5 Visualising Correlation Matrix: ggcormat()
+
 ### 6.5.1 The basic plot
+
 ```{r}
 ggstatsplot::ggcorrmat(data = wine, cor.vars = 1:11)
 
@@ -161,12 +170,15 @@ ggplot.component = list(theme(text=element_text(size=5), axis.text.x = element_t
 ```
 
 ## 6.6 Building multiple plots
+
 ```{r}
 grouped_ggcorrmat(data = wine, cor.vars = 1:11, grouping.var = type, type = "robust", p.adjust.method = "holm", plotgrid.args = list(ncol = 2), ggcorrplot.args = list(outline.color = "black", hc.order = TRUE, tl.cex = 10), annotation.args = list(tag_levels = "a", title = "Correlogram for wine dataset", subtitle = "The measures are: alcohol, sulphates, fixed acidity, citric acid, chlorides, residual sugar, density, free sulfur dioxide and volatile acidity", caption = "Dataset: UCI Machine Learning Repository"))
 ```
 
 ## 6.7 Visualising Correlation Matrix using corrplot Package
+
 ### 6.7.1 Getting started with corrplot
+
 ```{r}
 wine.cor <- cor(wine[, 1:11])
 
@@ -174,6 +186,7 @@ corrplot(wine.cor)
 ```
 
 ### 6.7.2 Working with visual geometrics
+
 ```{r}
 corrplot(wine.cor, method = "ellipse") 
 corrplot(wine.cor, method = "ellipse", type="lower")
@@ -182,6 +195,7 @@ corrplot(wine.cor, method = "ellipse", type="lower", diag = FALSE, tl.col = "bla
 ```
 
 ### 6.7.3 Working with layout
+
 ```{r}
 corrplot(wine.cor, 
          method = "ellipse", 
@@ -195,6 +209,7 @@ corrplot(wine.cor,
 ```
 
 ### 6.7.4 Working with mixed layout
+
 ```{r}
 corrplot.mixed(wine.cor, lower = "ellipse", upper = "number", tl.pos = "lt", diag = "l", tl.col = "black")
 
@@ -202,6 +217,7 @@ corrplot.mixed(wine.cor, lower = "ellipse", upper = "number", tl.pos = "lt", dia
 ```
 
 ### 6.7.5 Combining corrgram with the significant test
+
 ```{r}
 wine.sig = cor.mtest(wine.cor, conf.level= .95)
 
@@ -210,6 +226,7 @@ tl.col = "black", tl.srt = 45, p.mat = wine.sig$p, sig.level = .05)
 ```
 
 ### 6.7.6 Reorder a corrgram
+
 ```{r}
 corrplot.mixed(wine.cor, 
                lower = "ellipse", 
@@ -221,6 +238,7 @@ corrplot.mixed(wine.cor,
 ```
 
 ### 6.7.7 Reordering a correlation matrix using hclust
+
 ```{r}
 corrplot(wine.cor, 
          method = "ellipse", 
@@ -233,7 +251,7 @@ corrplot(wine.cor,
 
 # Lesson 5c: Heatmap for Visualising and Analysing Multivariate Data
 
-##  Getting Started
+## Getting Started
 
 Install and launch the following R packages
 
@@ -241,7 +259,7 @@ Install and launch the following R packages
 pacman::p_load(seriation, dendextend, heatmaply, tidyverse)
 ```
 
-##  Data
+## Data
 
 Loading the data to the R environment by using read_csv() function of readr package
 
@@ -249,14 +267,15 @@ Loading the data to the R environment by using read_csv() function of readr pack
 wh <- read_csv("chap05/data/WHData-2018.csv")
 ```
 
-Preparing the data 
-Transforming the data frame into a matrix
+Preparing the data Transforming the data frame into a matrix
+
 ```{r}
 wh$Country <- make.unique(as.character(wh$Country))
 row.names(wh) <- wh$Country
 ```
 
 Transforming the data frame into a matrix
+
 ```{r}
 wh1 <- dplyr::select(wh, c(3, 7:12))
 wh_matrix <- data.matrix(wh1)
@@ -279,7 +298,9 @@ wh_heatmap <- heatmap(wh_matrix,
 ```
 
 ## 14.5 Creating Interactive Heatmap
+
 ### 14.5.1 Working with heatmaply
+
 ```{r}
 heatmaply(mtcars)
 
@@ -287,22 +308,27 @@ heatmaply(wh_matrix[, -c(1, 2, 4, 5)])
 ```
 
 ### 14.5.2 Data trasformation
+
 ##### 14.5.2.1 Scaling method
+
 ```{r}
 heatmaply(wh_matrix[, -c(1, 2, 4, 5)], scale = "column")
 ```
 
 #### 14.5.2.2 Normalising method
+
 ```{r}
 heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]))
 ```
 
 #### 14.5.2.3 Percentising method
+
 ```{r}
 heatmaply(percentize(wh_matrix[, -c(1, 2, 4, 5)]))
 ```
 
 ### 14.5.3 Clustering algorithm
+
 ### 14.5.4 Manual approach
 
 ```{r}
@@ -310,6 +336,7 @@ heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]), dist_method = "euclidean", hcl
 ```
 
 ### 14.5.5 Statistical approach
+
 ```{r}
 wh_d <- dist(normalize(wh_matrix[, -c(1, 2, 4, 5)]), method = "euclidean")
 dend_expend(wh_d)[[3]]
@@ -322,6 +349,7 @@ heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]), dist_method = "euclidean", hcl
 ```
 
 ### 14.5.6 Seriation
+
 ```{r}
 heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]), seriate = "OLO")
 heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]), seriate = "GW")
@@ -331,19 +359,20 @@ heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]), seriate = "none")
 ```
 
 ### 14.5.7 Working with colour palettes
+
 ```{r}
 heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]), seriate = "none", colors = Blues)
 ```
 
 ### 14.5.8 The finishing touch
+
 ```{r}
 heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]), Colv=NA, seriate = "none", colors = Blues, k_row = 5, margins = c(NA,200,60,NA), fontsize_row = 4, fontsize_col = 5, main="World Happiness Score and Variables by Country, 2018 \nDataTransformation using Normalise Method", xlab = "World Happiness Indicators", ylab = "World Countries")
 ```
 
-
 # Lesson 5d: Visual Multivariate Analysis with Parallel Coordinates Plot
 
-##  Getting Started
+## Getting Started
 
 Install and launch the following R packages
 
@@ -351,7 +380,7 @@ Install and launch the following R packages
 pacman::p_load(GGally, parallelPlot, tidyverse)
 ```
 
-##  Data
+## Data
 
 Loading the data to the R environment by using read_csv() function of readr package
 
@@ -360,13 +389,16 @@ wh <- read_csv("chap05/data/WHData-2018.csv")
 ```
 
 ## 15.4 Plotting Static Parallel Coordinates Plot
+
 ### 15.4.1 Plotting a simple parallel coordinates
+
 ```{r}
 ggparcoord(data = wh, 
            columns = c(7:12))
 ```
 
 ### 15.4.2 Plotting a parallel coordinates with boxplot
+
 ```{r}
 ggparcoord(data = wh, 
            columns = c(7:12), 
@@ -378,6 +410,7 @@ ggparcoord(data = wh,
 ```
 
 ### 15.4.3 Parallel coordinates with facet
+
 ```{r}
 ggparcoord(data = wh, 
            columns = c(7:12), 
@@ -390,6 +423,7 @@ ggparcoord(data = wh,
 ```
 
 ### 15.4.4 Rotating x-axis text label
+
 ```{r}
 ggparcoord(data = wh, 
            columns = c(7:12), 
@@ -404,6 +438,7 @@ ggparcoord(data = wh,
 ```
 
 ### 15.4.5 Adjusting the rotated x-axis text label
+
 ```{r}
 ggparcoord(data = wh, 
            columns = c(7:12), 
@@ -419,6 +454,7 @@ ggparcoord(data = wh,
 ## 15.5 Plotting Interactive Parallel Coordinates Plot: parallelPlot methods
 
 #### 15.5.1 The basic plot
+
 ```{r}
 wh <- wh %>%
   select("Happiness score", c(7:12))
@@ -428,6 +464,7 @@ parallelPlot(wh,
 ```
 
 ### 15.5.2 Rotate axis label
+
 ```{r}
 parallelPlot(wh,
              rotateTitle = TRUE)
@@ -452,7 +489,7 @@ parallelPlot(wh,
 
 # Lesson 5e: Treemap Visualisation with R
 
-##  Getting Started
+## Getting Started
 
 Install and launch the following R packages
 
@@ -460,7 +497,7 @@ Install and launch the following R packages
 pacman::p_load(treemap, treemapify, tidyverse) 
 ```
 
-##  Data
+## Data
 
 Loading the data to the R environment by using read_csv() function of readr package
 
@@ -469,6 +506,7 @@ realis2018 <- read_csv("chap05/data/realis2018.csv")
 ```
 
 ### 16.3.3 Grouped summaries without the Pipe
+
 ```{r}
 realis2018_grouped <- group_by(realis2018, `Project Name`,
                                `Planning Region`, `Planning Area`, 
@@ -481,6 +519,7 @@ realis2018_summarised <- summarise(realis2018_grouped,
 ```
 
 ### 16.3.4 Grouped summaries with the pipe
+
 ```{r}
 realis2018_summarised <- realis2018 %>% 
   group_by(`Project Name`,`Planning Region`, 
@@ -493,13 +532,16 @@ realis2018_summarised <- realis2018 %>%
 ```
 
 ## 16.4 Designing Treemap with treemap Package
+
 ### 16.4.1 Designing a static treemap
+
 ```{r}
 realis2018_selected <- realis2018_summarised %>%
   filter(`Property Type` == "Condominium", `Type of Sale` == "Resale")
 ```
 
 ### 16.4.2 Using the basic arguments
+
 ```{r}
 treemap(realis2018_selected,
         index=c("Planning Region", "Planning Area", "Project Name"),
@@ -511,6 +553,7 @@ treemap(realis2018_selected,
 ```
 
 ### 16.4.3 Working with vColor and type arguments
+
 ```{r}
 treemap(realis2018_selected,
         index=c("Planning Region", "Planning Area", "Project Name"),
@@ -523,6 +566,7 @@ treemap(realis2018_selected,
 ```
 
 ### 16.4.4 Colours in treemap package
+
 ### 16.4.5 The “value” type treemap
 
 ```{r}
@@ -538,6 +582,7 @@ treemap(realis2018_selected,
 ```
 
 ### 16.4.6 The “manual” type treemap
+
 ```{r}
 treemap(realis2018_selected,
         index=c("Planning Region", "Planning Area", "Project Name"),
@@ -561,11 +606,13 @@ treemap(realis2018_selected,
 ```
 
 ### 16.4.7 Treemap Layout
+
 treemap() supports two popular treemap layouts, namely: “squarified” and “pivotSize”. The default is “pivotSize”.
 
 The squarified treemap algorithm (Bruls et al., 2000) produces good aspect ratios, but ignores the sorting order of the rectangles (sortID). The ordered treemap, pivot-by-size, algorithm (Bederson et al., 2002) takes the sorting order (sortID) into account while aspect ratios are still acceptable.
 
 ### 16.4.8 Working with algorithm argument
+
 ```{r}
 treemap(realis2018_selected,
         index=c("Planning Region", "Planning Area", "Project Name"),
@@ -580,6 +627,7 @@ treemap(realis2018_selected,
 ```
 
 ### 16.4.9 Using sortID
+
 ```{r}
 treemap(realis2018_selected,
         index=c("Planning Region", "Planning Area", "Project Name"),
@@ -597,6 +645,7 @@ treemap(realis2018_selected,
 ## 16.5 Designing Treemap using treemapify Package
 
 ### 16.5.1 Designing a basic treemap
+
 ```{r}
 ggplot(data=realis2018_selected, 
        aes(area = `Total Unit Sold`,
@@ -608,6 +657,7 @@ ggplot(data=realis2018_selected,
 ```
 
 ### 16.5.2 Defining hierarchy
+
 ```{r}
 ggplot(data=realis2018_selected, 
        aes(area = `Total Unit Sold`,
@@ -635,15 +685,15 @@ ggplot(data=realis2018_selected,
 ```
 
 ## 16.6 Designing Interactive Treemap using d3treeR
+
 ### 16.6.1 Installing d3treeR package
+
 ```{r}
-install.packages("devtools")
-library(devtools)
-install_github("timelyportfolio/d3treeR")
 library(d3treeR)
 ```
 
 ### 16.6.2 Designing An Interactive Treemap
+
 ```{r}
 tm <- treemap(realis2018_summarised,
         index=c("Planning Region", "Planning Area"),
@@ -656,6 +706,3 @@ tm <- treemap(realis2018_summarised,
 
 d3tree(tm,rootname = "Singapore" )
 ```
-
-
-

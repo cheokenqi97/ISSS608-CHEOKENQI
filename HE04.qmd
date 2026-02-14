@@ -32,7 +32,9 @@ exam <- read_csv("chap04/data/Exam_data.csv")
 ```
 
 ## 9.3 Visualising Distribution with Ridgeline Plot
+
 ### 9.3.1 Plotting ridgeline graph: ggridges method
+
 ```{r}
 ggplot(exam, 
        aes(x = ENGLISH, 
@@ -53,6 +55,7 @@ ggplot(exam,
 ```
 
 ### 9.3.2 Varying fill colors along the x axis
+
 ```{r}
 ggplot(exam, 
        aes(x = ENGLISH, 
@@ -71,7 +74,6 @@ ggplot(exam,
   theme_ridges()
 ```
 
-
 ### 9.3.3 Mapping the probabilities directly onto colour
 
 ```{r}
@@ -86,8 +88,8 @@ ggplot(exam,
   theme_ridges()
 ```
 
-
 ### 9.3.4 Ridgeline plots with quantile lines
+
 ```{r}
 ggplot(exam,
        aes(x = ENGLISH, 
@@ -120,9 +122,10 @@ ggplot(exam,
   theme_ridges()
 ```
 
-
 ## 9.4 Visualising Distribution with Raincloud Plot
+
 ### 9.4.1 Plotting a Half Eye graph
+
 ```{r}
 ggplot(exam, 
        aes(x = RACE, 
@@ -134,6 +137,7 @@ ggplot(exam,
 ```
 
 ## 9.4.2 Adding the boxplot with geom_boxplot()
+
 ```{r}
 ggplot(exam, 
        aes(x = RACE, 
@@ -146,8 +150,8 @@ ggplot(exam,
                outlier.shape = NA)
 ```
 
-
 ## 9.4.3 Adding the Dot Plots with stat_dots()
+
 ```{r}
 ggplot(exam, 
        aes(x = RACE, 
@@ -165,6 +169,7 @@ ggplot(exam,
 ```
 
 ### 9.4.4 Finishing touch
+
 ```{r}
 ggplot(exam, 
        aes(x = RACE, 
@@ -185,7 +190,6 @@ ggplot(exam,
 
 # Lesson 4B: Visual Statistical Analysis
 
-
 ## Getting Started
 
 Install and launch the following R packages
@@ -203,13 +207,13 @@ Loading the data to the R environment by using read_csv() function of readr pack
 exam <- read_csv("chap04/data/Exam_data.csv")
 ```
 
-##10.2 Visual Statistical Analysis with ggstatsplot
-ggstatsplot  is an extension of ggplot2 package for creating graphics with details from statistical tests included in the information-rich plots themselves.
+##10.2 Visual Statistical Analysis with ggstatsplot ggstatsplot is an extension of ggplot2 package for creating graphics with details from statistical tests included in the information-rich plots themselves.
 
 -   To provide alternative statistical inference methods by default.
 -   To follow best practices for statistical reporting. For all statistica
 
 ### 10.3.3 One-sample test: gghistostats() method
+
 ```{r}
 set.seed(1234)
 
@@ -224,17 +228,19 @@ gghistostats(
 ```
 
 ### 10.3.4 Unpacking the Bayes Factor
+
 A Bayes factor is the ratio of the likelihood of one particular hypothesis to the likelihood of another. It can be interpreted as a measure of the strength of evidence in favor of one theory among two competing theories.
 
 That’s because the Bayes factor gives us a way to evaluate the data in favor of a null hypothesis, and to use external information to do so. It tells us what the weight of the evidence is in favor of a given hypothesis.
 
 When we are comparing two hypotheses, H1 (the alternate hypothesis) and H0 (the null hypothesis), the Bayes Factor is often written as B10. It can be defined mathematically as
 
-
 ### 10.3.5 How to interpret Bayes Factor
+
 A Bayes Factor can be any positive number.
 
 ### 10.3.6 Two-sample mean test: ggbetweenstats()
+
 ```{r}
 ggbetweenstats(
   data = exam,
@@ -246,6 +252,7 @@ ggbetweenstats(
 ```
 
 ###10.3.7 Oneway ANOVA Test: ggbetweenstats() method
+
 ```{r}
 ggbetweenstats(
   data = exam,
@@ -261,6 +268,7 @@ ggbetweenstats(
 ```
 
 ### 10.3.8 Significant Test of Correlation: ggscatterstats()
+
 ```{r}
 ggscatterstats(
   data = exam,
@@ -271,6 +279,7 @@ ggscatterstats(
 ```
 
 ###10.3.9 Significant Test of Association (Depedence) : ggbarstats() methods
+
 ```{r}
 exam1 <- exam %>% 
   mutate(MATHS_bins = 
@@ -282,9 +291,7 @@ ggbarstats(exam1,
            y = GENDER)
 ```
 
-
 # Lesson 4C: Visualising Uncertainty
-
 
 ## Getting Started
 
@@ -305,6 +312,7 @@ exam <- read_csv("chap04/data/Exam_data.csv")
 ```
 
 ## 11.3 Visualizing the uncertainty of point estimates: ggplot2 methods
+
 ```{r}
 my_sum <- exam %>%
   group_by(RACE) %>%
@@ -317,6 +325,7 @@ my_sum <- exam %>%
 ```
 
 ### 11.3.1 Plotting standard error bars of point estimates
+
 ```{r}
 ggplot(my_sum) +
   geom_errorbar(
@@ -338,6 +347,7 @@ ggplot(my_sum) +
 ```
 
 ### 11.3.2 Plotting confidence interval of point estimates
+
 ```{r}
 ggplot(my_sum) +
   geom_errorbar(
@@ -359,7 +369,8 @@ ggplot(my_sum) +
        title = "95% confidence interval of mean maths score by race")
 ```
 
-###  11.3.3 Visualizing the uncertainty of point estimates with interactive error bars
+### 11.3.3 Visualizing the uncertainty of point estimates with interactive error bars
+
 ```{r}
 shared_df = SharedData$new(my_sum)
 
@@ -408,7 +419,9 @@ bscols(widths = c(4,8),
 ```
 
 ## 11.4 Visualising Uncertainty: ggdist package
+
 ### 11.4.1 Visualizing the uncertainty of point estimates: ggdist methods
+
 ```{r}
 exam %>%
   ggplot(aes(x = RACE, 
@@ -429,6 +442,7 @@ exam %>%
 ```
 
 ### 11.4.2 Visualizing the uncertainty of point estimates: ggdist methods
+
 ```{r}
 exam %>%
   ggplot(aes(x = RACE, 
@@ -456,17 +470,21 @@ exam %>%
 ```
 
 ## 11.5 Visualising Uncertainty with Hypothetical Outcome Plots (HOPs)
+
 ### 11.5.1 Installing ungeviz package
+
 ```{r}
-devtools::install_github("wilkelab/ungeviz")
+## devtools::install_github("wilkelab/ungeviz")
 ```
 
 ### 11.5.2 Launch the application in R
+
 ```{r}
 library(ungeviz)
 ```
 
 ### 11.5.3 Visualising Uncertainty with Hypothetical Outcome Plots (HOPs)
+
 ```{r}
 ggplot(data = exam, 
        (aes(x = factor(RACE), 
@@ -485,9 +503,7 @@ ggplot(data = exam,
   transition_states(.draw, 1, 3)
 ```
 
-
 # Lesson 4D: Funnel Plots for Fair Comparisons
-
 
 ## Getting Started
 
@@ -507,7 +523,9 @@ covid19 <- read_csv("chap04/data/COVID-19_DKI_Jakarta.csv") %>%
 ```
 
 ## 8.4 FunnelPlotR methods
+
 ### 8.4.1 FunnelPlotR methods: The basic plot
+
 ```{r}
 funnel_plot(
   .data = covid19,
@@ -518,6 +536,7 @@ funnel_plot(
 ```
 
 ### 8.4.2 FunnelPlotR methods: Makeover 1
+
 ```{r}
 funnel_plot(
   .data = covid19,
@@ -531,6 +550,7 @@ funnel_plot(
 ```
 
 ### 8.4.3 FunnelPlotR methods: Makeover 2
+
 ```{r}
 funnel_plot(
   .data = covid19,
@@ -548,7 +568,9 @@ funnel_plot(
 ```
 
 ## 8.5 Funnel Plot for Fair Visual Comparison: ggplot2 methods
+
 ### 8.5.1 Computing the basic derived fields
+
 ```{r}
 df <- covid19 %>%
   mutate(rate = Death / Positive) %>%
@@ -558,6 +580,7 @@ fit.mean <- weighted.mean(df$rate, 1/df$rate.se^2)
 ```
 
 ### 8.5.2 Calculate lower and upper limits for 95% and 99.9% CI
+
 ```{r}
 number.seq <- seq(1, max(df$Positive), 1)
 number.ll95 <- fit.mean - 1.96 * sqrt((fit.mean*(1-fit.mean)) / (number.seq)) 
@@ -569,6 +592,7 @@ dfCI <- data.frame(number.ll95, number.ul95, number.ll999,
 ```
 
 ### 8.5.3 Plotting a static funnel plot
+
 ```{r}
 p <- ggplot(df, aes(x = Positive, y = rate)) +
   geom_point(aes(label=`Sub-district`), 
@@ -616,6 +640,7 @@ p
 ```
 
 ### 8.5.4 Interactive Funnel Plot: plotly + ggplot2
+
 ```{r}
 fp_ggplotly <- ggplotly(p,
   tooltip = c("label", 
@@ -623,4 +648,3 @@ fp_ggplotly <- ggplotly(p,
               "y"))
 fp_ggplotly
 ```
-

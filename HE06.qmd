@@ -19,8 +19,7 @@ execute:
 Install and launch the following R packages
 
 ```{r}
-pacman::p_load(scales, viridis, lubridate, ggthemes, gridExtra, readxl, knitr, data.table, CGPfunctions, ggHoriPlot, tidyverse, CGPfunctions)
-
+pacman::p_load(scales, viridis, lubridate, ggthemes, gridExtra, readxl, knitr, data.table, CGPfunctions, tidyverse)
 ```
 
 ## Data
