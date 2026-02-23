@@ -1,5 +1,5 @@
 ---
-title: "Hands-on Exercise 6"
+title: "Hands-on Exercise 7"
 author: "Cheok En Qi"
 date: "January 13, 2026"
 date-modified: "last-modified"
@@ -12,7 +12,7 @@ execute:
 
 ------------------------------------------------------------------------
 
-# Lesson 6: Visualising and Analysing Time-oriented Data
+# Lesson 7: Visualising and Analysing Time-oriented Data
 
 ## Getting Started
 
@@ -27,7 +27,7 @@ pacman::p_load(scales, viridis, lubridate, ggthemes, gridExtra, readxl, knitr, d
 Loading the data to the R environment by using read_csv() function of readr package
 
 ```{r}
-attacks <- read_csv("chap06/data//eventlog.csv")
+attacks <- read_csv("chap07/data//eventlog.csv")
 ```
 
 ## 17.4 Plotting Calendar Heatmap
@@ -180,7 +180,7 @@ ggplot(top4_attacks,
 ### 17.5.1 Step 1: Data Import
 
 ```{r}
-air <- read_excel("chap06/data/arrivals_by_air.xlsx")
+air <- read_excel("chap07/data/arrivals_by_air.xlsx")
 ```
 
 ### 17.5.2 Step 2: Deriving month and year fields
@@ -238,7 +238,7 @@ ggplot() +
 ### 17.6.1 Step 1: Data Import
 
 ```{r}
-rice <- read_csv("chap06/data/rice.csv")
+rice <- read_csv("chap07/data/rice.csv")
 ```
 
 ## 17.6.2 Step 2: Plotting the slopegraph
