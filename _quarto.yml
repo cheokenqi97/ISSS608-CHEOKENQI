@@ -26,7 +26,9 @@ website:
           - text: "HE07"
             href: HE07.qmd           
           - text: "HE08"
-            href: HE08.qmd      
+            href: HE08.qmd     
+          - text: "HE09"
+            href: HE09.qmd     
       - text: "Take-home Exercises"
         menu:
           - text: "THE01"
