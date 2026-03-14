@@ -8,7 +8,7 @@
 .httr-oauth
 .DS_Store
 .quarto
-_site/
+
 _freeze/
 .quarto/
 .Rproj.user/
