@@ -34,7 +34,7 @@ odbcClose(con)
 
 ```
 
-## Data
+## Importing Data
 
 The code chunk below is used to import CoffeeChain.rds into R.
 
