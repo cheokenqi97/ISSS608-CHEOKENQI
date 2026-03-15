@@ -18,7 +18,6 @@ Singapore’s total fertility rate has fallen to a historic low, raising concern
 knitr::include_graphics("chapthe2/images/singapore_fertility_rate_photo.png")
 ```
 
-
 The goal of this project is to build an interactive dashboard that helps users explore (i) how fertility has changed over time, and (ii) whether marriage and divorce indicators are statistically associated with fertility, including possible lag effects.
 
 This take home exercise 2 serve as the prototype for this project.
@@ -53,6 +52,7 @@ To prepare the dataset for analysis and visualisation, the raw worksheet was cle
 As this is part of the group project, Group 16 uses the same data preparation process so that all members work from a consistent cleaned dataset before proceeding to our respective analytical tasks.
 
 ## 3.1 Extract series names (getting the variable names)
+
 The first row of the worksheet contains the original series labels rather than actual data values/observations. This step extracts those labels, removes extra spaces, fills in any blank names with placeholders, and converts them into clean, unique variable names. A lookup table (series_key) is also created so that the cleaned names can still be traced back to the original labels in the dataset.
 
 ```{r}
@@ -70,7 +70,6 @@ series_names <- make.unique(janitor::make_clean_names(series_labels))
 series_key <- tibble(series = series_names, label = series_labels)
 ```
 
-
 Below shows a small sample of the original series labels and their cleaned variable names.
 
 ```{r,echo=FALSE}
@@ -80,18 +79,15 @@ sample_name_map <- tibble(original_label = series_labels, cleaned_name = series_
 knitr::kable(sample_name_map)
 ```
 
-
 ## 3.2 Assign cleaned column names
 
 After extracting the series labels, the first row is removed from the raw worksheet because it is no longer needed as data. The cleaned series names are then assigned as column names, while the first column is temporarily kept as time_raw so that it can be parsed into valid dates in the next step.
-
 
 ```{r}
 raw1 <- raw0 %>%
   slice(-1) %>%
   setNames(c("time_raw", series_names))
 ```
-
 
 ## 3.3 Parse date rows and identify valid time-series observations (finding which rows are real dates and remove unnecessary rows)
 
@@ -123,7 +119,6 @@ is_ts_row <- !is.na(raw1$date) &
 stopifnot(sum(is_ts_row) > 0)
 ```
 
-
 ## 3.4 Convert values into numeric format
 
 After identifying the valid time-series rows, the dataset is reshaped into a tidy long format where each row represents one year, one series, and one value. The raw values are then converted into numeric format so that they can be used for plotting and analysis. Where multiple observations exist for the same series within the same year, only the latest non-missing observation is kept.
@@ -131,7 +126,6 @@ After identifying the valid time-series rows, the dataset is reshaped into a tid
 At this stage, two cleaned datasets are created: df_long_clean for flexible filtering and visualisation, and df_wide_clean for easier year-based comparison across variables.
 
 The cleaned annual panel spans from 1950 to 2025 and contains 117 usable series, showing that the raw worksheet has been successfully transformed into an analysis-ready dataset.
-
 
 ```{r}
 df_long_clean <- raw1 %>%
@@ -157,7 +151,6 @@ df_wide_clean <- df_long_clean %>%
 cat("Annual panel year range:", min(df_wide_clean$year), "to", max(df_wide_clean$year), "\n")
 cat("Non-missing series:", n_distinct(df_long_clean$series), "\n")
 ```
-
 
 ## 3.5 Create final dataset for EDA and Analytical tasks
 
@@ -268,7 +261,8 @@ This section is shared between group members of Group 16 because it establishes 
 ------------------------------------------------------------------------
 
 :::: callout-note
-### 4.1 EDA 1 - Trend of total fertility rate (TFR) over time 
+### 4.1 EDA 1 - Trend of total fertility rate (TFR) over time
+
 ::: panel-tabset
 ### Visual
 
@@ -298,11 +292,10 @@ ggplot(tfr_df, aes(x = year, y = value)) +
 :::
 
 **Observation:**\
-Singapore’s total fertility rate has declined steadily over the period from the 1960s to 2025. The steepest decrease occurred between the 1960s and the late 1970s, after which the rate continued to trend downward more gradually, with only minor fluctuations. Since the mid-1970s, the TFR has remained below the replacement level of 2.1. In 2025, it reached 0.87, the lowest value recorded in the series, reinforcing recent reports that Singapore’s fertility rate is at a historic low. A TFR of 0.87 indicates that, on average a woman would be expected to have an average of 0.87 children over her lifetime.
+Singapore’s total fertility rate shows a strong long-run decline from the 1960s to 2025. The steepest fall occurred between the 1960s and late 1970s, after which the rate continued to decrease more gradually with minor fluctuations. Since the mid-1970s, the TFR has remained below the replacement level of 2.1. In 2025, it reached 0.87, the lowest value in the series. A TFR of 0.87 means that, on average, a woman would be expected to have 0.87 children over her lifetime.
 ::::
 
 ------------------------------------------------------------------------
-
 
 :::: callout-note
 ### 4.2 EDA 2 - Local Fertility Peaks and Dragon-Year Comparison
@@ -427,19 +420,17 @@ p3 <- ggplot(peak_years_check, aes(x = reorder(factor(year), local_bump), y = lo
 
 p1 / p2
 p3
-
 ```
 :::
 
 **Observation:**\
-Although TFR shows a clear long-run decline, several local peaks can still be observed in the series. To investigate these short-term increases, local peak years were first identified from the data, followed by a comparison with dragon years, which are commonly linked to higher birth numbers. The local bump measures how much a year’s TFR exceeds the average of the year before and after it. Hence, a value of 0.10 means the TFR is 0.10 births per woman above its immediate surrounding trend, while higher values indicate a stronger local spike.The analysis suggests that while there are some prominent peaks, such as 1976, 1988 and 2000, coincide with dragon years, but others do not. This suggests that dragon years may contribute to selected fertility spikes, but they do not explain all local fluctuations.
-
+Although TFR shows a clear long-run decline, several short-term local peaks are still visible in the series. To examine these increases, local peak years were identified and compared with dragon years, which are commonly associated with higher birth numbers. The local bump measures how much a year’s TFR exceeds the average of the year before and after it. For example, a local bump of 0.10 means the TFR is 0.10 births per woman above its immediate surrounding trend. The results show that some prominent peaks, such as 1976, 1988 and 2000, coincide with dragon years, while others do not. This suggests that dragon years may contribute to selected fertility spikes, but they do not explain all local fluctuations.
 ::::
 
 ------------------------------------------------------------------------
 
 :::: callout-note
-### 4.3 EDA 3: Fertility, Marriage and Divorce Trends  (context against TFR)
+### 4.3 EDA 3: Fertility, Marriage and Divorce Trends (context against TFR)
 
 ::: panel-tabset
 ### Visual
@@ -542,10 +533,9 @@ tfr_plot / marriage_plot / divorce_plot
 :::
 
 **Observation:**\
-TFR shows a clear long-run decline, while marriage rates generally trend downward and divorce rates trend upward before stabilising in recent years. This suggests that fertility decline occurred alongside weaker marriage patterns and rising divorce over time. Overall, the charts suggest that lower fertility in Singapore coincides with fewer marriages and higher divorce rates over the long run, though this does not by itself prove a causal relationship.
+TFR shows a clear long-run decline, while the available marriage and divorce series from around 1980 onward show a general decline in marriage rates and a rise in divorce rates before stabilising in recent years. Taken together, these patterns suggest that lower fertility in Singapore has occurred alongside lower marriage rates and higher divorce rates over time. However, these descriptive trends do not by themselves establish causality.
 
 ::::
-
 
 ------------------------------------------------------------------------
 
@@ -557,26 +547,32 @@ TFR shows a clear long-run decline, while marriage rates generally trend downwar
 
 ```{r, echo=FALSE}
 p_mar <- ggplot(analysis_df, aes(x = marriage, y = tfr)) +
-  geom_point(size = 2) +
+  geom_point(size = 2, alpha = 0.7) +
   geom_smooth(method = "lm", se = FALSE, linewidth = 1) +
+  coord_cartesian(ylim = c(0.8, 2.1)) +
   labs(
     title = "TFR vs Marriage",
-    x = "Marriage indicator",
-    y = "TFR"
+    x = "Marriage rate",
+    y = "Births per woman"
   ) +
   theme_minimal() +
-  theme(plot.title = element_text(face = "bold"))
+  theme(
+    plot.title = element_text(face = "bold")
+  )
 
 p_div <- ggplot(analysis_df, aes(x = divorce, y = tfr)) +
-  geom_point(size = 2) +
+  geom_point(size = 2, alpha = 0.7) +
   geom_smooth(method = "lm", se = FALSE, linewidth = 1) +
+  coord_cartesian(ylim = c(0.8, 2.1)) +
   labs(
     title = "TFR vs Divorce",
-    x = "Divorce indicator",
-    y = "TFR"
+    x = "Divorce rate",
+    y = "Births per woman"
   ) +
   theme_minimal() +
-  theme(plot.title = element_text(face = "bold"))
+  theme(
+    plot.title = element_text(face = "bold")
+  )
 
 p_mar / p_div
 ```
@@ -585,33 +581,40 @@ p_mar / p_div
 
 ``` r
 p_mar <- ggplot(analysis_df, aes(x = marriage, y = tfr)) +
-  geom_point(size = 2) +
+  geom_point(size = 2, alpha = 0.7) +
   geom_smooth(method = "lm", se = FALSE, linewidth = 1) +
+  coord_cartesian(ylim = c(0.8, 2.1)) +
   labs(
     title = "TFR vs Marriage",
-    x = "Marriage indicator",
-    y = "TFR"
+    x = "Marriage rate",
+    y = "Births per woman"
   ) +
   theme_minimal() +
-  theme(plot.title = element_text(face = "bold"))
+  theme(
+    plot.title = element_text(face = "bold")
+  )
 
 p_div <- ggplot(analysis_df, aes(x = divorce, y = tfr)) +
-  geom_point(size = 2) +
+  geom_point(size = 2, alpha = 0.7) +
   geom_smooth(method = "lm", se = FALSE, linewidth = 1) +
+  coord_cartesian(ylim = c(0.8, 2.1)) +
   labs(
     title = "TFR vs Divorce",
-    x = "Divorce indicator",
-    y = "TFR"
+    x = "Divorce rate",
+    y = "Births per woman"
   ) +
   theme_minimal() +
-  theme(plot.title = element_text(face = "bold"))
+  theme(
+    plot.title = element_text(face = "bold")
+  )
 
 p_mar / p_div
 ```
 :::
 
 **Observation:**\
-The scatterplots suggest a positive association between TFR and the marriage indicator, and a negative association between TFR and the divorce indicator. Years with higher marriage values generally correspond to higher fertility, while years with higher divorce values tend to correspond to lower fertility. However, these patterns are descriptive and may partly reflect shared long-run trends over time rather than a direct relationship.
+The scatterplots suggest a positive association between TFR and marriage, and a negative association between TFR and divorce. In general, years with higher marriage values tend to be associated with higher fertility, while years with higher divorce values tend to be associated with lower fertility. However, these patterns are descriptive and may partly reflect shared long-run time trends rather than a direct causal relationship.
+
 ::::
 
 ------------------------------------------------------------------------
@@ -620,6 +623,7 @@ The scatterplots suggest a positive association between TFR and the marriage ind
 
 :::: callout-note
 ### 4.5 EDA 5: Correlation Matrix of TFR, Marriage and Divorce
+
 ::: panel-tabset
 ### Visual
 
@@ -670,16 +674,14 @@ ggplot(corr_df, aes(x = Var1, y = Var2, fill = Freq)) +
     plot.title = element_text(face = "bold"),
     axis.text.x = element_text(angle = 45, hjust = 1)
   )
-
 ```
 :::
 
 **Observation:**\
-The correlation matrix shows that TFR is strongly positively correlated with marriage and strongly negatively correlated with divorce. Marriage and divorce are also strongly negatively correlated with each other. This suggests that higher fertility tends to be associated with higher marriage values and lower divorce values in the data.
+The correlation matrix shows that TFR is strongly positively correlated with marriage and strongly negatively correlated with divorce. Marriage and divorce are also strongly negatively correlated with each other. Overall, this indicates that higher fertility tends to be associated with higher marriage values and lower divorce values in the data, although these correlations may partly reflect shared long-run trends.
 ::::
 
 ------------------------------------------------------------------------
-
 
 # 5.0 Analytical Tasks
 
@@ -689,6 +691,7 @@ My groupmate, Sze Ching, focuses on regression-based analysis, while my focus in
 
 The correlation component is designed to support the planned Shiny application, where users will be able to interactively explore the strength, direction, and stability of these relationships. This helps complement the descriptive visualisations by providing a more structured analytical layer for understanding how fertility patterns move alongside marriage and divorce indicators over time.
 
+While time-series forecasting is one possible analytical direction under this project theme, this project focuses on exploratory and explanatory analysis of fertility trends rather than predictive modelling. Specifically, the project examines how Singapore’s Total Fertility Rate has evolved over time and how it relates to demographic indicators such as marriage and divorce. The analytical components therefore emphasise time-series visualisation, correlation analysis, rolling correlations, and regression with lagged variables. These techniques support interactive exploration within the Shiny application and help users better understand the relationships and temporal dynamics present in the demographic time-series data.
 
 :::: callout-note
 ### 5.1 Analysis 1: Correlation in Levels and First Differences
@@ -808,7 +811,7 @@ knitr::kable(
 :::
 
 **Observation:**\
-The clustered correlation plot shows that TFR is positively associated with marriage and negatively associated with divorce, while marriage and divorce are also strongly negatively related to each other. However, the first-difference results show that these relationships are not equally robust after removing long-run trend effects. In particular, the TFR–divorce correlation weakens substantially after differencing, suggesting that its strong negative relationship in levels is largely trend-driven. By contrast, the TFR–marriage correlation remains moderately positive after differencing, indicating that some association is still present in year-to-year changes.
+The correlations in levels show that TFR is positively associated with marriage and negatively associated with divorce, while marriage and divorce are also strongly negatively related. However, the first-difference results indicate that these relationships weaken to different degrees after removing long-run trend effects. In particular, the TFR–divorce correlation falls sharply after differencing, suggesting that its strong negative relationship in levels is largely trend-driven. By contrast, the TFR–marriage correlation remains moderately positive after differencing, indicating that some association is still present in year-to-year changes.
 ::::
 
 ------------------------------------------------------------------------
@@ -917,21 +920,19 @@ ggplot(roll_out, aes(x = year, y = correlation, colour = series)) +
 :::
 
 **Observation:**\
-The rolling correlations show that the association between TFR and marriage remains mostly positive across time, suggesting a relatively stable positive relationship over the long run. In contrast, the correlation between TFR and divorce varies substantially across periods, becoming strongly negative in some windows and positive in others. This indicates that marriage is a more consistent associated indicator of fertility in the dataset, while the relationship with divorce is less stable over time.
+The rolling correlations show that the association between TFR and marriage remains positive across most windows, suggesting a relatively more consistent positive relationship over time. In contrast, the correlation between TFR and divorce varies substantially, becoming strongly negative in some periods and positive in others. This suggests that marriage is more consistently associated with fertility in the dataset, while the relationship with divorce is less stable over time. The analysis is based on the common overlapping period from 1980 to 2024, where all three series are available in comparable form. With a 10-year rolling window, the plotted rolling correlations begin later because each point summarises the relationship over the preceding 10 years.
+
 ::::
 
 ------------------------------------------------------------------------
 
-
 :::: callout-note
-
 ### 5.3 Analysis 3: Hierarchical Clustering of Years by TFR, Marriage and Divorce
 
 ::: panel-tabset
 ### Visual
 
 ```{r, echo=FALSE}
-
 # prepare data for clustering
 cluster_df <- analysis_df %>%
   select(year, tfr, marriage, divorce) %>%
@@ -943,13 +944,24 @@ cluster_mat <- cluster_df %>%
   select(tfr, marriage, divorce) %>%
   scale()
 
+# use actual years as labels
+rownames(cluster_mat) <- cluster_df$year
+
 # hierarchical clustering
 d <- dist(cluster_mat, method = "euclidean")
 hc <- hclust(d, method = "ward.D2")
 
 # dendrogram
-plot(hc, main = "Hierarchical Clustering Dendrogram of Years")
+plot(
+  hc,
+  main = "Hierarchical Clustering Dendrogram of Years",
+  xlab = "",
+  sub = "",
+  cex = 0.7
+)
+
 rect.hclust(hc, k = 3, border = 2:4)
+
 ```
 
 ### Code
@@ -967,25 +979,31 @@ cluster_mat <- cluster_df %>%
   select(tfr, marriage, divorce) %>%
   scale()
 
+# use actual years as labels
+rownames(cluster_mat) <- cluster_df$year
+
 # hierarchical clustering
 d <- dist(cluster_mat, method = "euclidean")
 hc <- hclust(d, method = "ward.D2")
 
 # dendrogram
-plot(hc, main = "Hierarchical Clustering Dendrogram of Years")
-rect.hclust(hc, k = 3, border = 2:4)
+plot(
+  hc,
+  main = "Hierarchical Clustering Dendrogram of Years",
+  xlab = NULL,
+  sub = NULL,
+  cex = 0.7
+)
 
+rect.hclust(hc, k = 3, border = 2:4)
 ```
 :::
 
 **Observation:**\
-Hierarchical clustering groups years according to similar combinations of TFR, marriage and divorce. The dendrogram indicates that the years can be divided into three broad clusters, suggesting that Singapore’s demographic patterns evolved across a few distinct phases over time.
+Hierarchical clustering groups years according to similar combinations of TFR, marriage and divorce. Using a three-cluster cut, the dendrogram suggests that the years can be grouped into three broad phases with similar demographic profiles. This indicates that Singapore’s fertility, marriage and divorce patterns did not change uniformly over time, but instead appear to have evolved across a few distinct periods.
 ::::
 
 ------------------------------------------------------------------------
-
-
-
 
 # 6.0 UI Design
 
@@ -997,7 +1015,7 @@ The prototype will first be developed and tested in Quarto using R code and stat
 
 The Home Page is designed to provide users with a high-level overview of Singapore’s fertility trends and the main purpose of the dashboard. It will include a short introduction to the issue of declining fertility, headline indicators such as the latest total fertility rate, and a brief explanation of the three main areas of analysis: trend exploration, Correlation analysis, and relationship analysis with marriage and divorce indicators.
 
-The purpose of this page is to orient users before they move into the detailed analytical sections. It allows users to quickly understand what the dashboard is about and what questions it can help answer. 
+The purpose of this page is to orient users before they move into the detailed analytical sections. It allows users to quickly understand what the dashboard is about and what questions it can help answer.
 
 This will be completed by me.
 
@@ -1020,9 +1038,10 @@ This will be completed by group member Sze Ching.
 The Analytical Tasks page will support deeper investigation into the relationship between fertility and related demographic indicators. This section will contain separate modules for correlation analysis and regression analysis.
 
 #### 6.3.1 Correlation Analysis
+
 The Correlation Analysis page is designed to let users interactively examine how fertility is associated with marriage and divorce indicators across different time periods and analytical settings.
 
-The layout will consist of a control panel on the left and an output panel on the right. In the control panel, users will be able to filter the year range to focus on a selected analysis period. 
+The layout will consist of a control panel on the left and an output panel on the right. In the control panel, users will be able to filter the year range to focus on a selected analysis period.
 
 The output panel will display three main elements. First, a clustered correlation plot will summarise the overall correlation structure between total fertility rate, marriage, and divorce indicators. Second, a hierarchical clustering dendrogram will group years according to similar combinations of fertility, marriage, and divorce patterns so that users can identify broad phases in the demographic series. Third, a rolling correlation chart will show how the correlation between fertility and each indicator changes across time windows, allowing users to assess whether the observed relationships are stable or time-varying.
 
@@ -1052,4 +1071,15 @@ Overall, this prototype outlines the initial design of a Shiny dashboard for exp
 
 The design combines exploratory visualisation and analytical modelling within a single interactive application. By including filters, the dashboard allows users to tailor the analysis to their own interests.
 
+### 7.0 Package Selection Justification
+
+To support the development of the Shiny application, we selected packages based on clarity of output, ease of integration with Shiny, interpretability and suitability for the project scope.
+
+For visualisation, we selected **ggplot2** as the main charting library because it produces clear and consistent visual output, is easy to customise, and integrates well with Shiny through **plotOutput()**. It is well suited for presenting demographic time-series trends, scatterplots and rolling correlation charts in a structured and readable format.
+
+For correlation analysis, we used the **cor()** function to compute correlation matrices and the **corrplot** package to visualise them. This library was selected because it provides clear graphical representations of correlation structures, including clustered correlation matrices that help highlight relationships among fertility, marriage, and divorce indicators.
+
+For arranging multiple charts in the same output view, we used **patchwork** because it allows plots to be combined in a simple and flexible way while keeping the code readable.
+
+For statistical modelling, we used **lm()** for regression because they are sufficient for the scope of this project. Since the Shiny app is intended to support interactive exploration, simpler and more explainable models were preferred.
 

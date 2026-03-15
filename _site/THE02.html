@@ -238,6 +238,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#figure-2-proposed-layout-of-the-eda-page" id="toc-figure-2-proposed-layout-of-the-eda-page" class="nav-link" data-scroll-target="#figure-2-proposed-layout-of-the-eda-page">6.2 Figure 2: Proposed layout of the EDA page</a></li>
   <li><a href="#figure-3-proposed-layout-of-the-analytical-tasks" id="toc-figure-3-proposed-layout-of-the-analytical-tasks" class="nav-link" data-scroll-target="#figure-3-proposed-layout-of-the-analytical-tasks">6.3 Figure 3: Proposed layout of the Analytical Tasks</a></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">6.4 Conclusion</a></li>
+  <li><a href="#package-selection-justification" id="toc-package-selection-justification" class="nav-link" data-scroll-target="#package-selection-justification">7.0 Package Selection Justification</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -271,7 +272,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">March 10, 2026</p>
+      <p class="date-modified">March 15, 2026</p>
     </div>
   </div>
     
@@ -614,7 +615,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p><strong>Observation:</strong><br>
-Singapore’s total fertility rate has declined steadily over the period from the 1960s to 2025. The steepest decrease occurred between the 1960s and the late 1970s, after which the rate continued to trend downward more gradually, with only minor fluctuations. Since the mid-1970s, the TFR has remained below the replacement level of 2.1. In 2025, it reached 0.87, the lowest value recorded in the series, reinforcing recent reports that Singapore’s fertility rate is at a historic low. A TFR of 0.87 indicates that, on average a woman would be expected to have an average of 0.87 children over her lifetime.</p>
+Singapore’s total fertility rate shows a strong long-run decline from the 1960s to 2025. The steepest fall occurred between the 1960s and late 1970s, after which the rate continued to decrease more gradually with minor fluctuations. Since the mid-1970s, the TFR has remained below the replacement level of 2.1. In 2025, it reached 0.87, the lowest value in the series. A TFR of 0.87 means that, on average, a woman would be expected to have 0.87 children over her lifetime.</p>
 </div>
 </div>
 <hr>
@@ -709,7 +710,7 @@ Singapore’s total fertility rate has declined steadily over the period from th
 </div>
 </div>
 <p><strong>Observation:</strong><br>
-Although TFR shows a clear long-run decline, several local peaks can still be observed in the series. To investigate these short-term increases, local peak years were first identified from the data, followed by a comparison with dragon years, which are commonly linked to higher birth numbers. The local bump measures how much a year’s TFR exceeds the average of the year before and after it. Hence, a value of 0.10 means the TFR is 0.10 births per woman above its immediate surrounding trend, while higher values indicate a stronger local spike.The analysis suggests that while there are some prominent peaks, such as 1976, 1988 and 2000, coincide with dragon years, but others do not. This suggests that dragon years may contribute to selected fertility spikes, but they do not explain all local fluctuations.</p>
+Although TFR shows a clear long-run decline, several short-term local peaks are still visible in the series. To examine these increases, local peak years were identified and compared with dragon years, which are commonly associated with higher birth numbers. The local bump measures how much a year’s TFR exceeds the average of the year before and after it. For example, a local bump of 0.10 means the TFR is 0.10 births per woman above its immediate surrounding trend. The results show that some prominent peaks, such as 1976, 1988 and 2000, coincide with dragon years, while others do not. This suggests that dragon years may contribute to selected fertility spikes, but they do not explain all local fluctuations.</p>
 </div>
 </div>
 <hr>
@@ -786,7 +787,7 @@ Although TFR shows a clear long-run decline, several local peaks can still be ob
 </div>
 </div>
 <p><strong>Observation:</strong><br>
-TFR shows a clear long-run decline, while marriage rates generally trend downward and divorce rates trend upward before stabilising in recent years. This suggests that fertility decline occurred alongside weaker marriage patterns and rising divorce over time. Overall, the charts suggest that lower fertility in Singapore coincides with fewer marriages and higher divorce rates over the long run, though this does not by itself prove a causal relationship.</p>
+TFR shows a clear long-run decline, while the available marriage and divorce series from around 1980 onward show a general decline in marriage rates and a rise in divorce rates before stabilising in recent years. Taken together, these patterns suggest that lower fertility in Singapore has occurred alongside lower marriage rates and higher divorce rates over time. However, these descriptive trends do not by themselves establish causality.</p>
 </div>
 </div>
 <hr>
@@ -816,33 +817,39 @@ TFR shows a clear long-run decline, while marriage rates generally trend downwar
 </div>
 <div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>p_mar <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(analysis_df, <span class="fu">aes</span>(<span class="at">x =</span> marriage, <span class="at">y =</span> tfr)) <span class="sc">+</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"TFR vs Marriage"</span>,</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Marriage indicator"</span>,</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"TFR"</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>))</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>p_div <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(analysis_df, <span class="fu">aes</span>(<span class="at">x =</span> divorce, <span class="at">y =</span> tfr)) <span class="sc">+</span></span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"TFR vs Divorce"</span>,</span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Divorce indicator"</span>,</span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"TFR"</span></span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>))</span>
-<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>p_mar <span class="sc">/</span> p_div</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">2.1</span>)) <span class="sc">+</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"TFR vs Marriage"</span>,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Marriage rate"</span>,</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Births per woman"</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>)</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>p_div <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(analysis_df, <span class="fu">aes</span>(<span class="at">x =</span> divorce, <span class="at">y =</span> tfr)) <span class="sc">+</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">2.1</span>)) <span class="sc">+</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"TFR vs Divorce"</span>,</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Divorce rate"</span>,</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Births per woman"</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>)</span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>p_mar <span class="sc">/</span> p_div</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
 <p><strong>Observation:</strong><br>
-The scatterplots suggest a positive association between TFR and the marriage indicator, and a negative association between TFR and the divorce indicator. Years with higher marriage values generally correspond to higher fertility, while years with higher divorce values tend to correspond to lower fertility. However, these patterns are descriptive and may partly reflect shared long-run trends over time rather than a direct relationship.</p>
+The scatterplots suggest a positive association between TFR and marriage, and a negative association between TFR and divorce. In general, years with higher marriage values tend to be associated with higher fertility, while years with higher divorce values tend to be associated with lower fertility. However, these patterns are descriptive and may partly reflect shared long-run time trends rather than a direct causal relationship.</p>
 </div>
 </div>
 <hr>
@@ -896,7 +903,7 @@ The scatterplots suggest a positive association between TFR and the marriage ind
 </div>
 </div>
 <p><strong>Observation:</strong><br>
-The correlation matrix shows that TFR is strongly positively correlated with marriage and strongly negatively correlated with divorce. Marriage and divorce are also strongly negatively correlated with each other. This suggests that higher fertility tends to be associated with higher marriage values and lower divorce values in the data.</p>
+The correlation matrix shows that TFR is strongly positively correlated with marriage and strongly negatively correlated with divorce. Marriage and divorce are also strongly negatively correlated with each other. Overall, this indicates that higher fertility tends to be associated with higher marriage values and lower divorce values in the data, although these correlations may partly reflect shared long-run trends.</p>
 </div>
 </div>
 <hr>
@@ -906,6 +913,7 @@ The correlation matrix shows that TFR is strongly positively correlated with mar
 <p>This section presents the analytical component of the project. As the broader dashboard is developed as a group project, the analytical tasks are split across members.</p>
 <p>My groupmate, Sze Ching, focuses on regression-based analysis, while my focus in this report is on correlation-based analysis and related association checks. In particular, I examine how total fertility rate (TFR) is associated with marriage and divorce indicators, and whether these relationships remain stable when trends, timing differences, and time variation are taken into account.</p>
 <p>The correlation component is designed to support the planned Shiny application, where users will be able to interactively explore the strength, direction, and stability of these relationships. This helps complement the descriptive visualisations by providing a more structured analytical layer for understanding how fertility patterns move alongside marriage and divorce indicators over time.</p>
+<p>While time-series forecasting is one possible analytical direction under this project theme, this project focuses on exploratory and explanatory analysis of fertility trends rather than predictive modelling. Specifically, the project examines how Singapore’s Total Fertility Rate has evolved over time and how it relates to demographic indicators such as marriage and divorce. The analytical components therefore emphasise time-series visualisation, correlation analysis, rolling correlations, and regression with lagged variables. These techniques support interactive exploration within the Shiny application and help users better understand the relationships and temporal dynamics present in the demographic time-series data.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1020,7 +1028,7 @@ The correlation matrix shows that TFR is strongly positively correlated with mar
 </div>
 </div>
 <p><strong>Observation:</strong><br>
-The clustered correlation plot shows that TFR is positively associated with marriage and negatively associated with divorce, while marriage and divorce are also strongly negatively related to each other. However, the first-difference results show that these relationships are not equally robust after removing long-run trend effects. In particular, the TFR–divorce correlation weakens substantially after differencing, suggesting that its strong negative relationship in levels is largely trend-driven. By contrast, the TFR–marriage correlation remains moderately positive after differencing, indicating that some association is still present in year-to-year changes.</p>
+The correlations in levels show that TFR is positively associated with marriage and negatively associated with divorce, while marriage and divorce are also strongly negatively related. However, the first-difference results indicate that these relationships weaken to different degrees after removing long-run trend effects. In particular, the TFR–divorce correlation falls sharply after differencing, suggesting that its strong negative relationship in levels is largely trend-driven. By contrast, the TFR–marriage correlation remains moderately positive after differencing, indicating that some association is still present in year-to-year changes.</p>
 </div>
 </div>
 <hr>
@@ -1097,7 +1105,7 @@ The clustered correlation plot shows that TFR is positively associated with marr
 </div>
 </div>
 <p><strong>Observation:</strong><br>
-The rolling correlations show that the association between TFR and marriage remains mostly positive across time, suggesting a relatively stable positive relationship over the long run. In contrast, the correlation between TFR and divorce varies substantially across periods, becoming strongly negative in some windows and positive in others. This indicates that marriage is a more consistent associated indicator of fertility in the dataset, while the relationship with divorce is less stable over time.</p>
+The rolling correlations show that the association between TFR and marriage remains positive across most windows, suggesting a relatively more consistent positive relationship over time. In contrast, the correlation between TFR and divorce varies substantially, becoming strongly negative in some periods and positive in others. This suggests that marriage is more consistently associated with fertility in the dataset, while the relationship with divorce is less stable over time. The analysis is based on the common overlapping period from 1980 to 2024, where all three series are available in comparable form. With a 10-year rolling window, the plotted rolling correlations begin later because each point summarises the relationship over the preceding 10 years.</p>
 </div>
 </div>
 <hr>
@@ -1138,18 +1146,28 @@ The rolling correlations show that the association between TFR and marriage rema
 <span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(tfr, marriage, divorce) <span class="sc">%&gt;%</span></span>
 <span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale</span>()</span>
 <span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="co"># hierarchical clustering</span></span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">dist</span>(cluster_mat, <span class="at">method =</span> <span class="st">"euclidean"</span>)</span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>hc <span class="ot">&lt;-</span> <span class="fu">hclust</span>(d, <span class="at">method =</span> <span class="st">"ward.D2"</span>)</span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a><span class="co"># dendrogram</span></span>
-<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(hc, <span class="at">main =</span> <span class="st">"Hierarchical Clustering Dendrogram of Years"</span>)</span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a><span class="fu">rect.hclust</span>(hc, <span class="at">k =</span> <span class="dv">3</span>, <span class="at">border =</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="co"># use actual years as labels</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(cluster_mat) <span class="ot">&lt;-</span> cluster_df<span class="sc">$</span>year</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a><span class="co"># hierarchical clustering</span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">dist</span>(cluster_mat, <span class="at">method =</span> <span class="st">"euclidean"</span>)</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>hc <span class="ot">&lt;-</span> <span class="fu">hclust</span>(d, <span class="at">method =</span> <span class="st">"ward.D2"</span>)</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a><span class="co"># dendrogram</span></span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>  hc,</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">"Hierarchical Clustering Dendrogram of Years"</span>,</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="cn">NULL</span>,</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">sub =</span> <span class="cn">NULL</span>,</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">cex =</span> <span class="fl">0.7</span></span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a><span class="fu">rect.hclust</span>(hc, <span class="at">k =</span> <span class="dv">3</span>, <span class="at">border =</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
 <p><strong>Observation:</strong><br>
-Hierarchical clustering groups years according to similar combinations of TFR, marriage and divorce. The dendrogram indicates that the years can be divided into three broad clusters, suggesting that Singapore’s demographic patterns evolved across a few distinct phases over time.</p>
+Hierarchical clustering groups years according to similar combinations of TFR, marriage and divorce. Using a three-cluster cut, the dendrogram suggests that the years can be grouped into three broad phases with similar demographic profiles. This indicates that Singapore’s fertility, marriage and divorce patterns did not change uniformly over time, but instead appear to have evolved across a few distinct periods.</p>
 </div>
 </div>
 <hr>
@@ -1219,6 +1237,14 @@ Hierarchical clustering groups years according to similar combinations of TFR, m
 <h3 class="anchored" data-anchor-id="conclusion">6.4 Conclusion</h3>
 <p>Overall, this prototype outlines the initial design of a Shiny dashboard for exploring Singapore’s fertility trends. The dashboard is intended to help users understand how fertility has changed over time and how fertility is associated with marriage and divorce indicators.</p>
 <p>The design combines exploratory visualisation and analytical modelling within a single interactive application. By including filters, the dashboard allows users to tailor the analysis to their own interests.</p>
+</section>
+<section id="package-selection-justification" class="level3">
+<h3 class="anchored" data-anchor-id="package-selection-justification">7.0 Package Selection Justification</h3>
+<p>To support the development of the Shiny application, we selected packages based on clarity of output, ease of integration with Shiny, interpretability and suitability for the project scope.</p>
+<p>For visualisation, we selected <strong>ggplot2</strong> as the main charting library because it produces clear and consistent visual output, is easy to customise, and integrates well with Shiny through <strong>plotOutput()</strong>. It is well suited for presenting demographic time-series trends, scatterplots and rolling correlation charts in a structured and readable format.</p>
+<p>For correlation analysis, we used the <strong>cor()</strong> function to compute correlation matrices and the <strong>corrplot</strong> package to visualise them. This library was selected because it provides clear graphical representations of correlation structures, including clustered correlation matrices that help highlight relationships among fertility, marriage, and divorce indicators.</p>
+<p>For arranging multiple charts in the same output view, we used <strong>patchwork</strong> because it allows plots to be combined in a simple and flexible way while keeping the code readable.</p>
+<p>For statistical modelling, we used <strong>lm()</strong> for regression because they are sufficient for the scope of this project. Since the Shiny app is intended to support interactive exploration, simpler and more explainable models were preferred.</p>
 
 
 </section>

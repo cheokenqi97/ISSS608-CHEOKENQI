@@ -42,11 +42,11 @@
     "text": "Importing database into R\n\nlibrary(RODBC)\ncon &lt;- odbcConnectAccess2007('chap10/data/Coffee Chain.mdb')\ncoffeechain &lt;- sqlFetch(con, 'CoffeeChain Query')\nwrite_rds(coffeechain, \"chap10/data/CoffeeChain.rds\")\nodbcClose(con)"
   },
   {
-    "objectID": "HE10.html#data",
-    "href": "HE10.html#data",
+    "objectID": "HE10.html#importing-data",
+    "href": "HE10.html#importing-data",
     "title": "Hands-on Exercise 10",
-    "section": "Data",
-    "text": "Data\nThe code chunk below is used to import CoffeeChain.rds into R.\n\ncoffeechain &lt;- read_rds(\"chap10/data/CoffeeChain.rds\")"
+    "section": "Importing Data",
+    "text": "Importing Data\nThe code chunk below is used to import CoffeeChain.rds into R.\n\ncoffeechain &lt;- read_rds(\"chap10/data/CoffeeChain.rds\")"
   },
   {
     "objectID": "HE10.html#aggregating-sales-and-budgeted-sales-at-product-level",
@@ -726,12 +726,5 @@
     "title": "Hands-on Exercise 3",
     "section": "4.4.1 Building an animated bubble plot: ggplotly() method",
     "text": "4.4.1 Building an animated bubble plot: ggplotly() method\n\ngg &lt;- ggplot(globalPop, aes(x = Old, y = Young, size = Population,  colour = Country)) + geom_point(aes(size = Population, frame = Year), alpha = 0.7) + scale_colour_manual(values = country_colors) + scale_size(range = c(2, 12)) + labs(x = '% Aged', y = '% Young') + theme(legend.position='none') \n\nggplotly(gg)    \n\n\n\n\n\n\n4.4.2 Building an animated bubble plot: plot_ly() method\n\nbp &lt;- globalPop %&gt;% plot_ly(x = ~Old, y = ~Young, size = ~Population, color = ~Continent, sizes = c(2, 100), frame = ~Year, text = ~Country, hoverinfo = \"text\", type = 'scatter', mode = 'markers') %&gt;% layout(showlegend = FALSE) \n\nbp"
-  },
-  {
-    "objectID": "HE10.html#importing-data",
-    "href": "HE10.html#importing-data",
-    "title": "Hands-on Exercise 10",
-    "section": "Importing Data",
-    "text": "Importing Data\nThe code chunk below is used to import CoffeeChain.rds into R.\n\ncoffeechain &lt;- read_rds(\"chap10/data/CoffeeChain.rds\")"
   }
 ]
