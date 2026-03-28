@@ -13,6 +13,10 @@ toc: false
 This website contains my coursework and hands-on exercises for ISSS608,\
 focusing on **data visualisation, analytics, and storytelling using R & Quarto**.
 
+```{r echo=FALSE, out.width="90%", out.height="800px", fig.align="center"}
+knitr::include_graphics("chapthe2/images/enqi_homepage.png")
+```
+
 ------------------------------------------------------------------------
 
 ## Exercises
